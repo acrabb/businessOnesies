@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="white">#ffffffff</color>
+    <color name="green">#ff77ee77</color>
+    <color name="blue">#ff5599ff</color>
+    <color name="separatorColor">#ff555555</color>
+    <color name="testingBlue">#ff5588ff</color>
+    <color name="testingRed">#ffff5555</color>
+    <color name="testingGreen">#ff55ff55</color>
+    <color name="testingPurple">#ffff55ff</color>
+    
+</resources>
