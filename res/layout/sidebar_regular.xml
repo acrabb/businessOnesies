@@ -7,32 +7,28 @@
     >
     <Button 
         android:id="@+id/homeButton"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/sidebarButtonHeight"
         style="@style/sidebarButtonStyle"
-        android:text="home"
+        android:text="house"
         />
     <Button 
-        android:id="@+id/noteButton"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/sidebarButtonHeight"
+        android:id="@+id/notesButton"
         style="@style/sidebarButtonStyle"
         android:text="notes"
         />
 	<Button 
         android:id="@+id/drawButton"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/sidebarButtonHeight"
         style="@style/sidebarButtonStyle"
-        android:text="draw"
+        android:text="pencil"
         />
 	<Button 
         android:id="@+id/shapesButton"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/sidebarButtonHeight"
         style="@style/sidebarButtonStyle"
-        android:text="shapes"
+        android:text="square"
         />
-
+	<Button 
+        android:id="@+id/elementsButton"
+        style="@style/sidebarButtonStyle"
+        android:text="UI"
+        />
 
 </LinearLayout>

@@ -12,5 +12,12 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/hello_world" />
+    
+    <Button 
+        android:id="@+id/newProjectButton"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:text="New Project"      
+        />
 
 </RelativeLayout>

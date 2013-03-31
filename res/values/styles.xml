@@ -22,7 +22,7 @@
     <style name="sidebarButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/sidebarButtonHeight</item>
-       <item name="android:padding">5dp</item> 
+       <item name="android:padding">@dimen/sidebarButtonPadding</item> 
         
         
     </style>

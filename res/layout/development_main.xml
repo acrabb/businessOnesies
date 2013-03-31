@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/developmentRelative"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
 
-    <include layout="@layout/sidebar_regular"/>
+    <include layout="@layout/sidebar_regular"
+        android:id="@+id/sidebar"
+        android:layout_alignParentLeft="true"
+        
+        />
+    <edu.berkeley.cs160.onesies.metaapp.MAScreen 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_toRightOf="@id/sidebar"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentBottom="true"
+	    android:background="@color/testingGreen"
+        />
     
 </RelativeLayout>
