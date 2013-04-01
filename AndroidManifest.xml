@@ -27,6 +27,12 @@
             android:screenOrientation="portrait"
             >
         </activity>
+        <activity
+            android:name="edu.berkeley.cs160.onesies.metaapp.UIPopup"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            >
+        </activity>
     </application>
 
 </manifest>

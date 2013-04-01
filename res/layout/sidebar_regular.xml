@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- edu.berkeley.cs160.onesies.metaapp.MASidebar -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="50dp"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/testingRed"
     >
-    <Button 
-        android:id="@+id/homeButton"
-        style="@style/sidebarButtonStyle"
-        android:text="house"
-        />
-    <Button 
-        android:id="@+id/notesButton"
-        style="@style/sidebarButtonStyle"
-        android:text="notes"
-        />
-	<Button 
-        android:id="@+id/drawButton"
-        style="@style/sidebarButtonStyle"
-        android:text="pencil"
-        />
-	<Button 
-        android:id="@+id/shapesButton"
-        style="@style/sidebarButtonStyle"
-        android:text="square"
-        />
-	<Button 
-        android:id="@+id/elementsButton"
-        style="@style/sidebarButtonStyle"
-        android:text="UI"
-        />
-
+    <LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+        >
+	    <Button 
+	        android:id="@+id/homeButton"
+	        style="@style/sidebarButtonStyle"
+	        android:text="house"
+	        />
+	    <Button 
+	        android:id="@+id/notesButton"
+	        style="@style/sidebarButtonStyle"
+	        android:text="notes"
+	        />
+		<Button 
+	        android:id="@+id/drawButton"
+	        style="@style/sidebarButtonStyle"
+	        android:text="pencil"
+	        />
+		<Button 
+	        android:id="@+id/shapesButton"
+	        style="@style/sidebarButtonStyle"
+	        android:text="square"
+	        />
+		<Button 
+	        android:id="@+id/elementsButton"
+	        style="@style/sidebarButtonStyle"
+	        android:text="UI"
+	        />
+    </LinearLayout>
 </LinearLayout>
+<!-- /edu.berkeley.cs160.onesies.metaapp.MASidebar-->

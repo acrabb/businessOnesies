@@ -1,28 +1,27 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 
-public class MASidebar extends View {
+/**
+ * 
+ * This is a class to simply take a load off the DevelopmentActivity class and 
+ * just handle the sidebar view. It should be instantiated with a view, and any
+ * internal handlings of the sidebar should be handled via function calls to
+ * this class.
+ * 
+ * @author andre
+ *
+ */
+public class MASidebar {
 
-	public MASidebar(Context context) {
-		super(context);
-		// TODO Auto-generated constructor stub
-	}
-
-	public MASidebar(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		// TODO Auto-generated constructor stub
-	}
-
-	public MASidebar(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
-	}
+	private View	mSidebar;
 	
-	private void setUp() {
+	public MASidebar() {
 		
 	}
+	public MASidebar(View sidebar) {
+		mSidebar = sidebar;
+	}
+	
 
 }
