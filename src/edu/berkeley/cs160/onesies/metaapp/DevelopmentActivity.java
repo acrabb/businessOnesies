@@ -1,12 +1,24 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 
 
 public class DevelopmentActivity extends Activity {
@@ -14,19 +26,19 @@ public class DevelopmentActivity extends Activity {
 	private MAScreen			mScreen;
 	private RelativeLayout		mDevRelLayout;
 	/*
-	 * 0: Home button
-	 * 1: Info button
-	 * 2: Draw button
-	 * 3: Shapes button
-	 * 4: Elements button
+	 * SIDEBAR VARIABLES
+	 * SHOLUD BE MOVED TO SIDEBAR CLASS UPON IMPLEMENTATION OF IT
 	 */
-	private ArrayList<Button>	sidebarButtons;
-	private ArrayList<Integer>	sidebarButtonIds;
-//	private Button homeButton;
-//	private Button notesButton;
-//	private Button drawButton;
-//	private Button shapesButton;
-//	private Button elementButton;
+	private Button mHomeButton;
+	private Button mNotesButton;
+	private Button mDrawButton;
+	private Button mShapesButton;
+	private Button mElementButton;
+	private View mShapesContentView;
+	
+	
+	private LayoutInflater	mLayoutInflater;
+	private Resources		mResources;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,11 +48,211 @@ public class DevelopmentActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.development_main);
 		
+		mLayoutInflater = (LayoutInflater)getApplicationContext().
+				getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mResources = getResources();
+		
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
-		mScreen = new MAScreen(getApplicationContext());
+//		mScreen = new MAScreen(getApplicationContext());
 //		mDevRelLayout.addView(mScreen);
+		mScreen = (MAScreen) findViewById(R.id.maScreen);
+		mScreen.addView(new Button(getApplicationContext()));
+		
+		mHomeButton = (Button) findViewById(R.id.homeButton);
+		mNotesButton = (Button) findViewById(R.id.notesButton);
+		mDrawButton = (Button) findViewById(R.id.drawButton);
+		mShapesButton = (Button) findViewById(R.id.shapesButton);
+		mElementButton = (Button) findViewById(R.id.elementsButton);
 		
 		
+		mHomeButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				homeButtonTapped(arg0);
+			}
+		});
+		mNotesButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				notesButtonTapped(arg0);
+			}
+		});
+		mDrawButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				drawButtonTapped(arg0);
+			}
+		});
+		mShapesButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				shapesButtonTapped(arg0);
+			}
+		});
+		mElementButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				elementButtonTapped(arg0);
+			}
+		});		
 	}
 	
+	
+	
+	
+	
+	private void homeButtonTapped(View button) {
+//		pMenu = new PopupWindow(button);
+//		pMenu = new PopupWindow(hoontentView, width, height, true);
+		
+		makeToast("Hello Home!");
+	}
+	private void notesButtonTapped(View button) {
+//		pMenu = new PopupWindow(button);
+//		pMenu = new PopupWindow(shapesContentView, width, height, true);
+		makeToast("Hello Notes!");
+	}
+	private void drawButtonTapped(View button) {
+//		pMenu = new PopupWindow(button);
+		makeToast("Hello Draw!");
+	}	
+	private void shapesButtonTapped(View button) {
+		sandboxInflateShapesGridLayout();
+		pMenu.showAsDropDown(button, 0, 0);
+		makeToast("Hello Shapes!");
+	}
+	private void elementButtonTapped(View button) {
+//		pMenu = new PopupWindow(button);
+		sandbox();
+		makeToast("Hello Elements!");
+	}
+	
+	
+	
+	private void elementTapped(View element) {
+		// Take the view, and add it to the MAScreen object.
+		makeToast("Hello Image!");
+		ImageView clone = createImageViewWithBitmap(createBitmapOfView(element));
+		/*
+		 * FIND SOME WAY TO MAKE THE CLONE BE WRAP CONTENT. CURRENTLY ITS AT
+		 * FILL_PARENT OR SOMETHING.
+		 */
+		clone.setBackgroundColor(getResources().getColor(R.color.testingPurple));
+//		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+//				RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//		params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+//		params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+//		clone.setLayoutParams(params);
+		
+		clone.setScaleType(ScaleType.CENTER);
+		clone.setOnTouchListener(new View.OnTouchListener() {
+			
+				float dx = 0, dy = 0;
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				RelativeLayout.LayoutParams params;
+				switch(event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+						params = (RelativeLayout.LayoutParams) v.getLayoutParams();
+						params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+						params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;		
+						v.setLayoutParams(params);
+						dx = event.getX();
+						dy = event.getY();
+						break;
+					case MotionEvent.ACTION_MOVE:
+						float x = event.getX();
+						float y = event.getY();
+						params = (RelativeLayout.LayoutParams) v.getLayoutParams();
+						params.leftMargin = (int) (params.leftMargin + (x-dx));
+						params.topMargin = (int) (params.topMargin + (y-dy));
+						v.setLayoutParams(params);
+						break;
+					case MotionEvent.ACTION_UP:
+						break;
+					default:
+						break;
+				}
+				mScreen.invalidate();
+				return true;
+			}
+		});
+		
+		mScreen.addView(clone);
+	}
+	
+	
+	
+	
+
+	PopupWindow pMenu;
+	private void sandboxInflateShapesGridLayout() {
+		mShapesContentView = mLayoutInflater.inflate(R.layout.shape_popup, null);
+		pMenu = new PopupWindow(mShapesContentView, (int) mResources.getDimension(R.dimen.shapePopupWidth),
+				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
+		/*
+		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
+		 * dismissed properly
+		 */
+		pMenu.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
+		pMenu.setOutsideTouchable(true);
+	}
+	
+	private void sandbox() {
+		ImageView image = createImageViewWithBitmap(createBitmapOfView(mElementButton));
+		image.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				elementTapped(v);
+			}
+		});
+		Dialog dia = new Dialog(this);
+		dia.setContentView(image);
+		dia.show();
+	}
+
+	
+	private Bitmap createBitmapOfView(View theView) {
+		Bitmap b = Bitmap.createBitmap(theView.getWidth(), theView.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas c = new Canvas(b);
+		theView.draw(c);
+		return b;
+	}
+	private ImageView createImageViewWithBitmap(Bitmap bitmap) {
+		ImageView image = new ImageView(getApplicationContext());
+		image.setImageBitmap(bitmap);
+		return image;
+	}
+	/*
+	 * THIS PROBABLY SHOULDN'T BE USED IN REALITY.
+	 * WE SHOULD CREATE AN ARRAYLIST<IMAGEVIEW> TO STORE IMAGES, THEN USE
+	 * AN ADAPTER TO FILL THE GRIDVIEW.
+	 */
+//	private void addImageViewToGridView(ImageView image, View gView) {
+//		gView.addView(image);
+//	}
+	
+	
+	/*****************************************************************************
+	 * MISC METHODS
+	 *****************************************************************************/
+	
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event) 
+	{ 
+	   if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) { 
+	       // Do your thing 
+		   makeToast("ACHAL ROX MY SOX");
+	       return true;
+	   } else {
+	       return super.onKeyDown(keyCode, event); 
+	   }
+	}
+	
+	
+	public void makeToast(String format, Object... args) {
+		Toast.makeText(getApplicationContext(),
+				String.format(format, args), Toast.LENGTH_SHORT).show();
+	}
 }

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
+    <!-- SIDEBAR DIMENS -->
     <dimen name="sidebarButtonHeight">50dp</dimen>
     <dimen name="sidebarButtonPadding">5dp</dimen>
+    
+    
+    <!-- POPUP WINDOW DIMENS -->
+    <dimen name="shapePopupWidth">400dp</dimen>
+    <dimen name="shapePopupHeight">400dp</dimen>
     
 </resources>

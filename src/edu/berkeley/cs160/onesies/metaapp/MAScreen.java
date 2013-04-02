@@ -3,8 +3,10 @@ package edu.berkeley.cs160.onesies.metaapp;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.AbsoluteLayout;
+import android.widget.RelativeLayout;
 
-public class MAScreen extends View {
+public class MAScreen extends RelativeLayout {
 
 	private int backColor = R.color.testingGreen;
 	private float mRatio = 1.60f;
@@ -26,5 +28,6 @@ public class MAScreen extends View {
 		// TODO Auto-generated constructor stub
 		this.setBackgroundColor(getResources().getColor(backColor));
 	}
+	
 
 }

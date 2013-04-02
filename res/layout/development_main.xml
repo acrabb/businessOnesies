@@ -11,13 +11,13 @@
         
         />
     <edu.berkeley.cs160.onesies.metaapp.MAScreen 
+        android:id="@+id/maScreen"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_toRightOf="@id/sidebar"
 	    android:layout_alignParentRight="true"
 	    android:layout_alignParentTop="true"
 	    android:layout_alignParentBottom="true"
-	    android:background="@color/testingGreen"
         />
     
 </RelativeLayout>
