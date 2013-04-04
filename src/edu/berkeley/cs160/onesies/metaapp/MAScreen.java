@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 
 public class MAScreen extends RelativeLayout {
 
-	private int backColor = R.color.testingGreen;
+	private int backColor = R.color.lightseagreen;
 	private float mRatio = 1.60f;
 	
 	public MAScreen(Context context) {

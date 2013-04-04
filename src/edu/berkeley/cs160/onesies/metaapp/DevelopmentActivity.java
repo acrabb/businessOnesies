@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.PopupWindow;
@@ -26,16 +27,9 @@ public class DevelopmentActivity extends Activity {
 	private MAScreen			mScreen;
 	private RelativeLayout		mDevRelLayout;
 	private MASidebar			mSidebar;
-	/*
-	 * SIDEBAR VARIABLES
-	 * SHOLUD BE MOVED TO SIDEBAR CLASS UPON IMPLEMENTATION OF IT
-	 */
-//	private Button mHomeButton;
-//	private Button mNotesButton;
-//	private Button mDrawButton;
-//	private Button mShapesButton;
-//	private Button mElementButton;
-	
+	private PopupWindow			mPopup;
+	private GridLayout			mShapesGridView;
+
 	private View mShapesContentView;
 	
 	
@@ -55,83 +49,15 @@ public class DevelopmentActivity extends Activity {
 		mResources = getResources();
 		
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
-//		mScreen = new MAScreen(getApplicationContext());
-//		mDevRelLayout.addView(mScreen);
 		mScreen = (MAScreen) findViewById(R.id.maScreen);
 		mScreen.addView(new Button(getApplicationContext()));
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
-		mSidebar.setUp();
-		mSidebar.setmActivity(this);
+		mSidebar.setUp(this);
 		
-//		mHomeButton = (Button) findViewById(R.id.homeButton);
-//		mNotesButton = (Button) findViewById(R.id.notesButton);
-//		mDrawButton = (Button) findViewById(R.id.drawButton);
-//		mShapesButton = (Button) findViewById(R.id.shapesButton);
-//		mElementButton = (Button) findViewById(R.id.elementsButton);
-//		
-//		
-//		mHomeButton.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				homeButtonTapped(arg0);
-//			}
-//		});
-//		mNotesButton.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				notesButtonTapped(arg0);
-//			}
-//		});
-//		mDrawButton.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				drawButtonTapped(arg0);
-//			}
-//		});
-//		mShapesButton.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				shapesButtonTapped(arg0);
-//			}
-//		});
-//		mElementButton.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				elementButtonTapped(arg0);
-//			}
-//		});		
-	}
-	
-	
-	
-	
-	
-	private void homeButtonTapped(View button) {
-//		pMenu = new PopupWindow(button);
-//		pMenu = new PopupWindow(hoontentView, width, height, true);
+		// Inflate shape popup and give its gridLayout a listener
 		
-		makeToast("Hello Home!");
+		
 	}
-	private void notesButtonTapped(View button) {
-//		pMenu = new PopupWindow(button);
-//		pMenu = new PopupWindow(shapesContentView, width, height, true);
-		makeToast("Hello Notes!");
-	}
-	private void drawButtonTapped(View button) {
-//		pMenu = new PopupWindow(button);
-		makeToast("Hello Draw!");
-	}	
-	private void shapesButtonTapped(View button) {
-		sandboxInflateShapesGridLayout();
-		pMenu.showAsDropDown(button, 0, 0);
-		makeToast("Hello Shapes!");
-	}
-	private void elementButtonTapped(View button) {
-//		pMenu = new PopupWindow(button);
-		sandbox();
-		makeToast("Hello Elements!");
-	}
-	
 	
 	
 	private void elementTapped(View element) {
@@ -155,7 +81,6 @@ public class DevelopmentActivity extends Activity {
 				float dx = 0, dy = 0;
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				RelativeLayout.LayoutParams params;
 				switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
@@ -183,52 +108,45 @@ public class DevelopmentActivity extends Activity {
 				return true;
 			}
 		});
-		
 		mScreen.addView(clone);
 	}
 	
 	
+	/*****************************************************************************
+	 * "Call Backs" for MASidebar
+	 *****************************************************************************/
 	
-	
-
-	PopupWindow pMenu;
-	private void sandboxInflateShapesGridLayout() {
+	public void showShapesPopup(View button) {
 		mShapesContentView = mLayoutInflater.inflate(R.layout.shape_popup, null);
-		pMenu = new PopupWindow(mShapesContentView, (int) mResources.getDimension(R.dimen.shapePopupWidth),
+		mPopup = new PopupWindow(mShapesContentView, (int) mResources.getDimension(R.dimen.shapePopupWidth),
 				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
 		/*
 		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
 		 * dismissed properly
 		 */
-		pMenu.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
-		pMenu.setOutsideTouchable(true);
+		mShapesGridView = (GridLayout) mShapesContentView.findViewById(R.id.shapesGrid);
+		
+//		mShapesGridView
+		
+		mPopup.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
+		mPopup.setOutsideTouchable(true);
+		mPopup.showAsDropDown(button, 0, 0);
 	}
 	
-	private void sandbox() {
-		ImageView image = createImageViewWithBitmap(createBitmapOfView(mSidebar));
-		image.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				elementTapped(v);
-			}
-		});
-		Dialog dia = new Dialog(this);
-		dia.setContentView(image);
-		dia.show();
-	}
-
 	
-	private Bitmap createBitmapOfView(View theView) {
-		Bitmap b = Bitmap.createBitmap(theView.getWidth(), theView.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(b);
-		theView.draw(c);
-		return b;
-	}
-	private ImageView createImageViewWithBitmap(Bitmap bitmap) {
-		ImageView image = new ImageView(getApplicationContext());
-		image.setImageBitmap(bitmap);
-		return image;
-	}
+//	private void sandbox() {
+//		ImageView image = createImageViewWithBitmap(createBitmapOfView(mSidebar));
+//		image.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				elementTapped(v);
+//			}
+//		});
+//		Dialog dia = new Dialog(this);
+//		dia.setContentView(image);
+//		dia.show();
+//	}
+	
 	/*
 	 * THIS PROBABLY SHOULDN'T BE USED IN REALITY.
 	 * WE SHOULD CREATE AN ARRAYLIST<IMAGEVIEW> TO STORE IMAGES, THEN USE
@@ -243,6 +161,17 @@ public class DevelopmentActivity extends Activity {
 	 * MISC METHODS
 	 *****************************************************************************/
 	
+	private Bitmap createBitmapOfView(View theView) {
+		Bitmap b = Bitmap.createBitmap(theView.getWidth(), theView.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas c = new Canvas(b);
+		theView.draw(c);
+		return b;
+	}
+	private ImageView createImageViewWithBitmap(Bitmap bitmap) {
+		ImageView image = new ImageView(getApplicationContext());
+		image.setImageBitmap(bitmap);
+		return image;
+	}
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event) 
 	{ 
@@ -254,7 +183,6 @@ public class DevelopmentActivity extends Activity {
 	       return super.onKeyDown(keyCode, event); 
 	   }
 	}
-	
 	
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getApplicationContext(),

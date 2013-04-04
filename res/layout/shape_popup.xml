@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/shapesLayout"
     android:layout_width="0dp"
     android:layout_height="0dp"
-    android:columnCount="4"
     >
-    
-	<TextView 
-	    android:layout_width="wrap_content"
+    <GridLayout
+        android:id="@+id/shapesGrid"
+        android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="test1"
-	    />
-	<TextView 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="test2"
-	    />
-	<TextView 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="test3"
-	    />
-	<TextView 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="test4"
-	    />
-	<TextView 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="test5"
-	    />
-    
-</GridLayout>
+	    android:columnCount="1"
+        >
+        <TextView 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="test1"
+		    />
+		<TextView 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="test2"
+		    />
+		<TextView 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="test3"
+		    />
+		<TextView 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="test4"
+		    />
+		<TextView 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="test5"
+		    />
+    </GridLayout>
+</ScrollView>

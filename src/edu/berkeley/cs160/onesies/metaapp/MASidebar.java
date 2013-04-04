@@ -26,30 +26,28 @@ public class MASidebar extends LinearLayout{
 	private Button mShapesButton;
 	private Button mElementButton;
 	
-	private int backColor = R.color.testingPurple;
+	private int backColor = R.color.seagreen;
 	
 	public MASidebar(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
-		this.setBackgroundColor(getResources().getColor(R.color.testingPurple));
+		this.setBackgroundColor(getResources().getColor(backColor));
 	}
 
 	public MASidebar(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
-		this.setBackgroundColor(getResources().getColor(R.color.testingBlue));
-//		setUp();
+		this.setBackgroundColor(getResources().getColor(backColor));
 	}
 
 	public MASidebar(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
-		this.setBackgroundColor(getResources().getColor(R.color.testingRed));
+		this.setBackgroundColor(getResources().getColor(backColor));
 	}
 	
-	public void setUp() {
-		
-//		mActivity =  TODO
+	public void setUp(DevelopmentActivity activity) {
+		mActivity = activity;
 		
 		mHomeButton = (Button) findViewById(R.id.homeButton);
 		mNotesButton = (Button) findViewById(R.id.notesButton);
@@ -108,6 +106,7 @@ public class MASidebar extends LinearLayout{
 	private void shapesButtonTapped(View button) {
 //		mActivity.sandboxInflateShapesGridLayout();
 //		pMenu.showAsDropDown(button, 0, 0);
+		mActivity.showShapesPopup(button);
 		mActivity.makeToast("Hello Shapes!");
 	}
 	private void elementButtonTapped(View button) {

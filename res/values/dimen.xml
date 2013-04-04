@@ -8,6 +8,6 @@
     
     <!-- POPUP WINDOW DIMENS -->
     <dimen name="shapePopupWidth">400dp</dimen>
-    <dimen name="shapePopupHeight">400dp</dimen>
+    <dimen name="shapePopupHeight">100dp</dimen>
     
 </resources>

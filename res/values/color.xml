@@ -4,6 +4,10 @@
     <color name="white">#ffffffff</color>
     <color name="green">#ff77ee77</color>
     <color name="blue">#ff5599ff</color>
+    
+    <color name="seagreen">#ff357f5d</color>
+    <color name="lightseagreen">#ffb7ffde</color>
+    
     <color name="separatorColor">#ff555555</color>
     <color name="testingBlue">#ff5588ff</color>
     <color name="testingRed">#ffff5555</color>
