@@ -1,24 +1,58 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
 	private Button mNewProjectButton;
 	private Intent mIntent;
+	private final double iPhoneScalar = 0.66; 
+	private final static DisplayMetrics display = new DisplayMetrics();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		getWindowManager().getDefaultDisplay().getMetrics(display);
+		RelativeLayout activityMain = (RelativeLayout)findViewById(R.id.background);
 		
+		RelativeLayout iPhone = new RelativeLayout(this);
+		final int height = (int) (iPhoneScalar * display.heightPixels);
+		final int width = (int) (iPhoneScalar * display.widthPixels);
+		final int leftOffset = (int) ((1- iPhoneScalar) * display.heightPixels / 3);
+		final int topOffset = (int) ((1- iPhoneScalar) * display.widthPixels / 2);
+		final int iPhoneID = this.getResources().getIdentifier("iphone4", "drawable", this.getPackageName());
+		RelativeLayout.LayoutParams iPhoneParams = new RelativeLayout.LayoutParams(width, height);
+		iPhoneParams.leftMargin = leftOffset;
+		iPhoneParams.topMargin = topOffset;
+		
+		iPhone.setLayoutParams(iPhoneParams);
+		iPhone.setBackgroundResource(iPhoneID);
+		
+		HomePagePhone screen = new HomePagePhone(this);
+		RelativeLayout.LayoutParams screenParams = new RelativeLayout.LayoutParams(width - 100, (int) (height *iPhoneScalar));
+		screenParams.leftMargin = 53;
+		screenParams.topMargin = 138;
+		screen.setLayoutParams(screenParams);
+		
+		iPhone.addView(screen);
+		activityMain.addView(iPhone);
+		System.out.println("height" + height
+							+ " width" + width 
+							+ " leftOffset" + leftOffset
+							+ " topOffset" + topOffset
+							+ " iPhoneID" + iPhoneID);
+		
+		
+		/*
 		mNewProjectButton = (Button) findViewById(R.id.newProjectButton);
 		mNewProjectButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -31,7 +65,7 @@ public class MainActivity extends Activity {
 				startActivity(mIntent);
 
 			}
-		});
+		});*/
 		
 	}
 
