@@ -25,15 +25,17 @@ public class DevelopmentActivity extends Activity {
 
 	private MAScreen			mScreen;
 	private RelativeLayout		mDevRelLayout;
+	private MASidebar			mSidebar;
 	/*
 	 * SIDEBAR VARIABLES
 	 * SHOLUD BE MOVED TO SIDEBAR CLASS UPON IMPLEMENTATION OF IT
 	 */
-	private Button mHomeButton;
-	private Button mNotesButton;
-	private Button mDrawButton;
-	private Button mShapesButton;
-	private Button mElementButton;
+//	private Button mHomeButton;
+//	private Button mNotesButton;
+//	private Button mDrawButton;
+//	private Button mShapesButton;
+//	private Button mElementButton;
+	
 	private View mShapesContentView;
 	
 	
@@ -57,44 +59,47 @@ public class DevelopmentActivity extends Activity {
 //		mDevRelLayout.addView(mScreen);
 		mScreen = (MAScreen) findViewById(R.id.maScreen);
 		mScreen.addView(new Button(getApplicationContext()));
+		mSidebar = (MASidebar) findViewById(R.id.sidebar);
+		mSidebar.setUp();
+		mSidebar.setmActivity(this);
 		
-		mHomeButton = (Button) findViewById(R.id.homeButton);
-		mNotesButton = (Button) findViewById(R.id.notesButton);
-		mDrawButton = (Button) findViewById(R.id.drawButton);
-		mShapesButton = (Button) findViewById(R.id.shapesButton);
-		mElementButton = (Button) findViewById(R.id.elementsButton);
-		
-		
-		mHomeButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				homeButtonTapped(arg0);
-			}
-		});
-		mNotesButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				notesButtonTapped(arg0);
-			}
-		});
-		mDrawButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				drawButtonTapped(arg0);
-			}
-		});
-		mShapesButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				shapesButtonTapped(arg0);
-			}
-		});
-		mElementButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				elementButtonTapped(arg0);
-			}
-		});		
+//		mHomeButton = (Button) findViewById(R.id.homeButton);
+//		mNotesButton = (Button) findViewById(R.id.notesButton);
+//		mDrawButton = (Button) findViewById(R.id.drawButton);
+//		mShapesButton = (Button) findViewById(R.id.shapesButton);
+//		mElementButton = (Button) findViewById(R.id.elementsButton);
+//		
+//		
+//		mHomeButton.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				homeButtonTapped(arg0);
+//			}
+//		});
+//		mNotesButton.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				notesButtonTapped(arg0);
+//			}
+//		});
+//		mDrawButton.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				drawButtonTapped(arg0);
+//			}
+//		});
+//		mShapesButton.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				shapesButtonTapped(arg0);
+//			}
+//		});
+//		mElementButton.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				elementButtonTapped(arg0);
+//			}
+//		});		
 	}
 	
 	
@@ -200,7 +205,7 @@ public class DevelopmentActivity extends Activity {
 	}
 	
 	private void sandbox() {
-		ImageView image = createImageViewWithBitmap(createBitmapOfView(mElementButton));
+		ImageView image = createImageViewWithBitmap(createBitmapOfView(mSidebar));
 		image.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

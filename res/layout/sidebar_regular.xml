@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- edu.berkeley.cs160.onesies.metaapp.MASidebar -->
-<LinearLayout
+<!--  edu.berkeley.cs160.onesies.MASidebar -->
+<edu.berkeley.cs160.onesies.metaapp.MASidebar
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="50dp"
     android:layout_height="match_parent"
@@ -38,5 +38,5 @@
 	        android:text="UI"
 	        />
     </LinearLayout>
-</LinearLayout>
-<!-- /edu.berkeley.cs160.onesies.metaapp.MASidebar-->
+</edu.berkeley.cs160.onesies.metaapp.MASidebar>
+<!--  /LinearLayout -->
