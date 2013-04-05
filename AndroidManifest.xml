@@ -28,7 +28,7 @@
             >
         </activity>
         <activity
-            android:name="edu.berkeley.cs160.onesies.metaapp.UIPopup"
+            android:name="edu.berkeley.cs160.onesies.metaapp.UIPopupAdapter"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             >

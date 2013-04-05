@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 							+ " topOffset" + topOffset
 							+ " iPhoneID" + iPhoneID);
 		
-		
+	
 		/*
 		mNewProjectButton = (Button) findViewById(R.id.newProjectButton);
 		mNewProjectButton.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +80,15 @@ public class MainActivity extends Activity {
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getApplicationContext(),
 				String.format(format, args), Toast.LENGTH_SHORT).show();
+	}
+	
+	
+	public static float distance(float x1, float y1, float x2, float y2) {
+		float dist  = 0;
+		dist = (float) Math.sqrt(Math.pow(Math.abs(x2-x1), 2) + Math.pow(Math.abs(y2-y1), 2));
+//		dist = (float) Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+//		Math.sqrt(Math.pow(p1.x-p2.x, 2) + Math.pow(p1.y-p2.y, 2));
+		return dist;
 	}
 
 }

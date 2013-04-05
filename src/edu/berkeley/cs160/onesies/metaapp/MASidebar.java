@@ -112,6 +112,7 @@ public class MASidebar extends LinearLayout{
 	private void elementButtonTapped(View button) {
 //		pMenu = new PopupWindow(button);
 //		mActivity.sandbox();
+		mActivity.showElementsPopup(button);
 		mActivity.makeToast("Hello Elements!");
 	}
 

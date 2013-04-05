@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.PopupWindow;
@@ -29,12 +31,14 @@ public class DevelopmentActivity extends Activity {
 	private MASidebar			mSidebar;
 	private PopupWindow			mPopup;
 	private GridLayout			mShapesGridView;
+	private GridLayout			mElementsGridView;
 
-	private View mShapesContentView;
+	private View 				mShapesContentView;
+	private View 				mElementsContentView;
 	
 	
-	private LayoutInflater	mLayoutInflater;
-	private Resources		mResources;
+	private LayoutInflater		mLayoutInflater;
+	private Resources			mResources;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,43 +54,47 @@ public class DevelopmentActivity extends Activity {
 		
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
 		mScreen = (MAScreen) findViewById(R.id.maScreen);
-		mScreen.addView(new Button(getApplicationContext()));
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
-		
-		// Inflate shape popup and give its gridLayout a listener
-		
 		
 	}
 	
 	
-	private void elementTapped(View element) {
+	private void uiElementTapped(View element) {
 		// Take the view, and add it to the MAScreen object.
 		makeToast("Hello Image!");
-		ImageView clone = createImageViewWithBitmap(createBitmapOfView(element));
+		Bitmap map = createBitmapOfView(element);
+//		ImageView clone = createImageViewWithBitmap(map);
+		
+		MAScreenElement clone = createElement(map);
 		/*
 		 * FIND SOME WAY TO MAKE THE CLONE BE WRAP CONTENT. CURRENTLY ITS AT
 		 * FILL_PARENT OR SOMETHING.
 		 */
-		clone.setBackgroundColor(getResources().getColor(R.color.testingPurple));
-//		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-//				RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		
+//		clone.setBackgroundColor(getResources().getColor(R.color.testingPurple));
+		
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+		200, 100);
 //		params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
 //		params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-//		clone.setLayoutParams(params);
+		clone.setLayoutParams(params);
 		
-		clone.setScaleType(ScaleType.CENTER);
+//		clone.setScaleType(ScaleType.CENTER); //NOT COMPATIBLE WITH MASCREENELEMENT
+		/*
 		clone.setOnTouchListener(new View.OnTouchListener() {
 			
-				float dx = 0, dy = 0;
+			float dx = 0, dy = 0;
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				RelativeLayout.LayoutParams params;
 				switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						params = (RelativeLayout.LayoutParams) v.getLayoutParams();
-						params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-						params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;		
+//						params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+//						params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;		
+//						params.width = 200;
+//						params.height = 100;		
 						v.setLayoutParams(params);
 						dx = event.getX();
 						dy = event.getY();
@@ -108,6 +116,7 @@ public class DevelopmentActivity extends Activity {
 				return true;
 			}
 		});
+		*/
 		mScreen.addView(clone);
 	}
 	
@@ -133,13 +142,41 @@ public class DevelopmentActivity extends Activity {
 		mPopup.showAsDropDown(button, 0, 0);
 	}
 	
+	public void showElementsPopup(View button) {
+		mElementsContentView = mLayoutInflater.inflate(R.layout.elements_popup, null);
+		mPopup = new PopupWindow(mElementsContentView, (int) mResources.getDimension(R.dimen.elementsPopupWidth),
+				(int) mResources.getDimension(R.dimen.elementsPopupHeight), false);
+		/*
+		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
+		 * dismissed properly
+		 */
+		mElementsGridView = (GridLayout) mElementsContentView.findViewById(R.id.elementsGrid);
+		int numChildren = mElementsGridView.getChildCount();
+		View v;
+		for (int i=0; i<numChildren; i++) {
+			v = mElementsGridView.getChildAt(i);
+			v.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					uiElementTapped(v);
+				}
+			});
+		}
+		
+		mPopup.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
+		mPopup.setOutsideTouchable(true);
+		mPopup.showAsDropDown(button, 0, 0);
+	}
+	
 	
 //	private void sandbox() {
 //		ImageView image = createImageViewWithBitmap(createBitmapOfView(mSidebar));
 //		image.setOnClickListener(new View.OnClickListener() {
 //			@Override
 //			public void onClick(View v) {
-//				elementTapped(v);
+//				screenElementTapped(v);
 //			}
 //		});
 //		Dialog dia = new Dialog(this);
@@ -171,6 +208,13 @@ public class DevelopmentActivity extends Activity {
 		ImageView image = new ImageView(getApplicationContext());
 		image.setImageBitmap(bitmap);
 		return image;
+	}
+	//------------- Testing bitmap background ----------------
+	private MAScreenElement createElement(Bitmap back) {
+		MAScreenElement element = new MAScreenElement(getApplicationContext(), mScreen);
+		element.setBackgroundDrawable(new BitmapDrawable(back));
+		
+		return element;
 	}
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event) 
