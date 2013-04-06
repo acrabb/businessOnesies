@@ -13,13 +13,13 @@ import android.graphics.PorterDuff;
 public class MAScreenElement extends View {
 
 	private MAScreen		mMAScreen;
+	private boolean			mWasDragged = false;
+	private ElementType	type;
 	
 	private float 			dx = 0;
 	private float 			dy = 0;
-	private boolean			mWasDragged = false;
 	
-	
-	public MAScreenElement(Context context, MAScreen maScreen) {
+	public MAScreenElement(Context context, MAScreen maScreen, ElementType type) {
 		super(context);
 		this.mMAScreen = maScreen;
 	}
@@ -79,18 +79,20 @@ public class MAScreenElement extends View {
 	
 	boolean isSelected = false;
 	private void onTap() {
-		makeToast("HELLO!");
-		if(!isSelected) {
-	        this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
-	        		PorterDuff.Mode.SRC_ATOP);
-	        isSelected = true;
-		}
-		else {
-			this.getBackground().clearColorFilter();
-			isSelected = false;
-		}
-
+		mMAScreen.onElementTapped(this);
 	}
+	
+	public void select() {
+        isSelected = true;
+        this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
+        		PorterDuff.Mode.SRC_ATOP);
+	}
+	
+	public void deselect() {
+		isSelected = false;
+		this.getBackground().clearColorFilter();
+	}
+	
 
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getContext(),

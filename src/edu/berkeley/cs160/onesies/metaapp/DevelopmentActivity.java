@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +19,7 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -30,12 +32,12 @@ public class DevelopmentActivity extends Activity {
 	private RelativeLayout		mDevRelLayout;
 	private MASidebar			mSidebar;
 	private PopupWindow			mPopup;
-	private GridLayout			mShapesGridView;
+	private PopupMenu			mPopupMenu;
 	private GridLayout			mElementsGridView;
 
 	private View 				mShapesContentView;
 	private View 				mElementsContentView;
-	
+//	private View 				mLinkContentView;
 	
 	private LayoutInflater		mLayoutInflater;
 	private Resources			mResources;
@@ -44,7 +46,6 @@ public class DevelopmentActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.activity_main, menu);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.development_main);
 		
@@ -54,88 +55,26 @@ public class DevelopmentActivity extends Activity {
 		
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
 		mScreen = (MAScreen) findViewById(R.id.maScreen);
+		mScreen.setmDevelopmentActivity(this);
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
 		
 	}
 	
 	
-	private void uiElementTapped(View element) {
-		// Take the view, and add it to the MAScreen object.
-		makeToast("Hello Image!");
-		Bitmap map = createBitmapOfView(element);
-//		ImageView clone = createImageViewWithBitmap(map);
-		
-		MAScreenElement clone = createElement(map);
-		/*
-		 * FIND SOME WAY TO MAKE THE CLONE BE WRAP CONTENT. CURRENTLY ITS AT
-		 * FILL_PARENT OR SOMETHING.
-		 */
-		
-//		clone.setBackgroundColor(getResources().getColor(R.color.testingPurple));
-		
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-		200, 100);
-//		params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-//		params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-		clone.setLayoutParams(params);
-		
-//		clone.setScaleType(ScaleType.CENTER); //NOT COMPATIBLE WITH MASCREENELEMENT
-		/*
-		clone.setOnTouchListener(new View.OnTouchListener() {
-			
-			float dx = 0, dy = 0;
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				RelativeLayout.LayoutParams params;
-				switch(event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						params = (RelativeLayout.LayoutParams) v.getLayoutParams();
-//						params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-//						params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;		
-//						params.width = 200;
-//						params.height = 100;		
-						v.setLayoutParams(params);
-						dx = event.getX();
-						dy = event.getY();
-						break;
-					case MotionEvent.ACTION_MOVE:
-						float x = event.getX();
-						float y = event.getY();
-						params = (RelativeLayout.LayoutParams) v.getLayoutParams();
-						params.leftMargin = (int) (params.leftMargin + (x-dx));
-						params.topMargin = (int) (params.topMargin + (y-dy));
-						v.setLayoutParams(params);
-						break;
-					case MotionEvent.ACTION_UP:
-						break;
-					default:
-						break;
-				}
-				mScreen.invalidate();
-				return true;
-			}
-		});
-		*/
-		mScreen.addView(clone);
-	}
-	
-	
 	/*****************************************************************************
-	 * "Call Backs" for MASidebar
+	 * MASIDEBAR "CALLBACK" METHODS
 	 *****************************************************************************/
 	
 	public void showShapesPopup(View button) {
 		mShapesContentView = mLayoutInflater.inflate(R.layout.shape_popup, null);
-		mPopup = new PopupWindow(mShapesContentView, (int) mResources.getDimension(R.dimen.shapePopupWidth),
+		mPopup = new PopupWindow(mShapesContentView,
+				(int) mResources.getDimension(R.dimen.shapePopupWidth),
 				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
 		/*
 		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
 		 * dismissed properly
 		 */
-		mShapesGridView = (GridLayout) mShapesContentView.findViewById(R.id.shapesGrid);
-		
-//		mShapesGridView
 		
 		mPopup.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
 		mPopup.setOutsideTouchable(true);
@@ -144,7 +83,8 @@ public class DevelopmentActivity extends Activity {
 	
 	public void showElementsPopup(View button) {
 		mElementsContentView = mLayoutInflater.inflate(R.layout.elements_popup, null);
-		mPopup = new PopupWindow(mElementsContentView, (int) mResources.getDimension(R.dimen.elementsPopupWidth),
+		mPopup = new PopupWindow(mElementsContentView,
+				(int) mResources.getDimension(R.dimen.elementsPopupWidth),
 				(int) mResources.getDimension(R.dimen.elementsPopupHeight), false);
 		/*
 		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
@@ -156,11 +96,9 @@ public class DevelopmentActivity extends Activity {
 		for (int i=0; i<numChildren; i++) {
 			v = mElementsGridView.getChildAt(i);
 			v.setOnClickListener(new View.OnClickListener() {
-				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					uiElementTapped(v);
+					addUIElement(v);
 				}
 			});
 		}
@@ -170,36 +108,76 @@ public class DevelopmentActivity extends Activity {
 		mPopup.showAsDropDown(button, 0, 0);
 	}
 	
+	public void showLinkPopup(View button) {
+//		mLinkContentView = mLayoutInflater.inflate(R.layout.link_popup, null);
+		mPopupMenu = new PopupMenu(getApplicationContext(), button);
+		
+		mPopupMenu.inflate(R.menu.link_menu);
+		mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// TODO Auto-generated method stub
+				switch(item.getItemId()) {
+					case R.id.link_menu_new:
+						onLinkToNewScreenSelected();
+						break;
+					case R.id.link_menu_existing:
+						onLinkToExistingScreenSelected();
+						break;
+					default:
+				}
+				return false;
+			}
+		});
+		mPopupMenu.show();
+	}
 	
-//	private void sandbox() {
-//		ImageView image = createImageViewWithBitmap(createBitmapOfView(mSidebar));
-//		image.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				screenElementTapped(v);
-//			}
-//		});
-//		Dialog dia = new Dialog(this);
-//		dia.setContentView(image);
-//		dia.show();
-//	}
+	/*****************************************************************************
+	 * POPUP "CALLBACK" METHODS
+	 *****************************************************************************/
+	private void addUIElement(View element) {
+		// Take the view, and add it to the MAScreen object.
+		Bitmap map = createBitmapOfView(element);
+		ElementType type;
+		if (element instanceof Button) {
+			type = ElementType.BUTTON;
+		} else { //(element instanceof TextView) {
+			type = ElementType.TEXT_LABEL; 
+		}
+		MAScreenElement clone = createElement(type, map);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				200, 100);
+		clone.setLayoutParams(params);
+		mScreen.addView(clone);
+	}
+	private void onLinkToNewScreenSelected() {
+		makeToast("LINK TO NEW SCREEN");
+	}
+	private void onLinkToExistingScreenSelected() {
+		makeToast("LINK TO EXISTING SCREEN");
+		
+	}
 	
-	/*
-	 * THIS PROBABLY SHOULDN'T BE USED IN REALITY.
-	 * WE SHOULD CREATE AN ARRAYLIST<IMAGEVIEW> TO STORE IMAGES, THEN USE
-	 * AN ADAPTER TO FILL THE GRIDVIEW.
-	 */
-//	private void addImageViewToGridView(ImageView image, View gView) {
-//		gView.addView(image);
-//	}
 	
+	/*****************************************************************************
+	 * SIDEBAR RELAY METHODS
+	 *****************************************************************************/
+	public void showElementSidebar(View v) {
+		mSidebar.showElementContextBar();
+	}
+	public void hideElementSidebar() {
+		mSidebar.hideElementContextBar();
+	}
+		
 	
 	/*****************************************************************************
 	 * MISC METHODS
 	 *****************************************************************************/
 	
 	private Bitmap createBitmapOfView(View theView) {
-		Bitmap b = Bitmap.createBitmap(theView.getWidth(), theView.getHeight(), Bitmap.Config.ARGB_8888);
+		Bitmap b = Bitmap.createBitmap(theView.getWidth(),
+				theView.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(b);
 		theView.draw(c);
 		return b;
@@ -210,8 +188,8 @@ public class DevelopmentActivity extends Activity {
 		return image;
 	}
 	//------------- Testing bitmap background ----------------
-	private MAScreenElement createElement(Bitmap back) {
-		MAScreenElement element = new MAScreenElement(getApplicationContext(), mScreen);
+	private MAScreenElement createElement(ElementType type, Bitmap back) {
+		MAScreenElement element = new MAScreenElement(getApplicationContext(), mScreen, type);
 		element.setBackgroundDrawable(new BitmapDrawable(back));
 		
 		return element;

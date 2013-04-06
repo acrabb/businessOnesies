@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * 
@@ -25,6 +27,10 @@ public class MASidebar extends LinearLayout{
 	private Button mDrawButton;
 	private Button mShapesButton;
 	private Button mElementButton;
+	
+	private Button mLinkButton;
+	
+	private boolean mElementBarShowing = false;
 	
 	private int backColor = R.color.seagreen;
 	
@@ -54,6 +60,17 @@ public class MASidebar extends LinearLayout{
 		mDrawButton = (Button) findViewById(R.id.drawButton);
 		mShapesButton = (Button) findViewById(R.id.shapesButton);
 		mElementButton = (Button) findViewById(R.id.elementsButton);
+		
+		mLinkButton = (Button) findViewById(R.id.linkButton);
+		
+//		Button b = new Button(getContext());
+//		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//		b.setLayoutParams(params);
+//		addView(b);
+		mLinkButton = new Button(getContext());
+		mLinkButton.setText("Link"); 
+		mLinkButton.setLayoutParams(mElementButton.getLayoutParams());
 		
 		
 		mHomeButton.setOnClickListener(new View.OnClickListener() {
@@ -86,36 +103,54 @@ public class MASidebar extends LinearLayout{
 				elementButtonTapped(arg0);
 			}
 		});
+		mLinkButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				linkButtonTapped(arg0);
+			}
+		});
 	}
 	
 	private void homeButtonTapped(View button) {
-//		pMenu = new PopupWindow(button);
-//		pMenu = new PopupWindow(hoontentView, width, height, true);
-		
 		mActivity.makeToast("Hello Home!");
 	}
 	private void notesButtonTapped(View button) {
-//		pMenu = new PopupWindow(button);
-//		pMenu = new PopupWindow(shapesContentView, width, height, true);
 		mActivity.makeToast("Hello Notes!");
 	}
 	private void drawButtonTapped(View button) {
-//		pMenu = new PopupWindow(button);
 		mActivity.makeToast("Hello Draw!");
 	}	
 	private void shapesButtonTapped(View button) {
-//		mActivity.sandboxInflateShapesGridLayout();
-//		pMenu.showAsDropDown(button, 0, 0);
 		mActivity.showShapesPopup(button);
-		mActivity.makeToast("Hello Shapes!");
+//		mActivity.makeToast("Hello Shapes!");
 	}
 	private void elementButtonTapped(View button) {
-//		pMenu = new PopupWindow(button);
-//		mActivity.sandbox();
 		mActivity.showElementsPopup(button);
-		mActivity.makeToast("Hello Elements!");
+//		mActivity.makeToast("Hello Elements!");
+	}
+	private void linkButtonTapped(View button) {
+//		mActivity.makeToast("Hello Link!");
+		mActivity.showLinkPopup(button);
 	}
 
+	
+	public void showElementContextBar() {
+		if (!mElementBarShowing) {			
+//			makeToast("SHOW ELEMENT CONTEXT BAR");
+	//		mLinkButton.setVisibility(VISIBLE);
+			addView(mLinkButton);
+		}
+		mElementBarShowing = true;
+	}
+	public void hideElementContextBar() {
+//		makeToast("HIDE ELEMENT CONTEXT BAR");
+//		mLinkButton.setVisibility(GONE);
+		removeView(mLinkButton);
+		mElementBarShowing = false;
+	}
+	
+	
+	
 	public DevelopmentActivity getmActivity() {
 		return mActivity;
 	}
@@ -125,4 +160,8 @@ public class MASidebar extends LinearLayout{
 	}
 	
 	
+	public void makeToast(String format, Object... args) {
+		Toast.makeText(getContext(),
+				String.format(format, args), Toast.LENGTH_SHORT).show();
+	}
 }
