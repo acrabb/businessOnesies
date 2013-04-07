@@ -11,27 +11,26 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 
 public class DevelopmentActivity extends Activity {
 
+	// UI Objects-------------------------------
 	private MAScreen			mScreen;
 	private RelativeLayout		mDevRelLayout;
 	private MASidebar			mSidebar;
-	private PopupWindow			mPopup;
+	private PopupWindow			mPopupWindow;
 	private PopupMenu			mPopupMenu;
 	private GridLayout			mElementsGridView;
 
@@ -39,8 +38,10 @@ public class DevelopmentActivity extends Activity {
 	private View 				mElementsContentView;
 //	private View 				mLinkContentView;
 	
+	// Non-UI Objects--------------------------
 	private LayoutInflater		mLayoutInflater;
 	private Resources			mResources;
+	private MAProject			mProject;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +55,37 @@ public class DevelopmentActivity extends Activity {
 		mResources = getResources();
 		
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
-		mScreen = (MAScreen) findViewById(R.id.maScreen);
+		mScreen = (MAScreen) findViewById(R.id.screen);
 		mScreen.setmDevelopmentActivity(this);
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
 		
+		createNewProject();
 	}
+	
+	private void createNewProject() {
+		//TODO
+		mProject = new MAProject("Project1");
+		String name = mProject.getNextDefaultScreenName();
+		mProject.addScreenToProject(name, mScreen);
+		mScreen.setName(name);
+	}
+	
+	private void showScreenWithName(String name) {
+		MAScreenElement selected = mScreen.getSelectedElement();
+		if(selected != null) {
+			selected.deselect();
+		}
+		MAScreen newScreen = mProject.getScreenWithName(name);
+		mDevRelLayout.removeView(mScreen);
+		mDevRelLayout.addView(newScreen,mScreen.getLayoutParams());
+		showDefaultSidebar();
+//		String newName = mProject.getNextDefaultScreenName();
+//		newScreen.setName(newName);
+//		mProject.addScreenToProject(newName, newScreen);
+		mScreen = newScreen;
+	}
+	
 	
 	
 	/*****************************************************************************
@@ -68,7 +94,7 @@ public class DevelopmentActivity extends Activity {
 	
 	public void showShapesPopup(View button) {
 		mShapesContentView = mLayoutInflater.inflate(R.layout.shape_popup, null);
-		mPopup = new PopupWindow(mShapesContentView,
+		mPopupWindow = new PopupWindow(mShapesContentView,
 				(int) mResources.getDimension(R.dimen.shapePopupWidth),
 				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
 		/*
@@ -76,14 +102,14 @@ public class DevelopmentActivity extends Activity {
 		 * dismissed properly
 		 */
 		
-		mPopup.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
-		mPopup.setOutsideTouchable(true);
-		mPopup.showAsDropDown(button, 0, 0);
+		mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
+		mPopupWindow.setOutsideTouchable(true);
+		mPopupWindow.showAsDropDown(button, 0, 0);
 	}
 	
 	public void showElementsPopup(View button) {
 		mElementsContentView = mLayoutInflater.inflate(R.layout.elements_popup, null);
-		mPopup = new PopupWindow(mElementsContentView,
+		mPopupWindow = new PopupWindow(mElementsContentView,
 				(int) mResources.getDimension(R.dimen.elementsPopupWidth),
 				(int) mResources.getDimension(R.dimen.elementsPopupHeight), false);
 		/*
@@ -103,13 +129,12 @@ public class DevelopmentActivity extends Activity {
 			});
 		}
 		
-		mPopup.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
-		mPopup.setOutsideTouchable(true);
-		mPopup.showAsDropDown(button, 0, 0);
+		mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
+		mPopupWindow.setOutsideTouchable(true);
+		mPopupWindow.showAsDropDown(button, 0, 0);
 	}
 	
 	public void showLinkPopup(View button) {
-//		mLinkContentView = mLayoutInflater.inflate(R.layout.link_popup, null);
 		mPopupMenu = new PopupMenu(getApplicationContext(), button);
 		
 		mPopupMenu.inflate(R.menu.link_menu);
@@ -117,7 +142,6 @@ public class DevelopmentActivity extends Activity {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				// TODO Auto-generated method stub
 				switch(item.getItemId()) {
 					case R.id.link_menu_new:
 						onLinkToNewScreenSelected();
@@ -132,6 +156,67 @@ public class DevelopmentActivity extends Activity {
 		});
 		mPopupMenu.show();
 	}
+	public void showMenuPopup(View button) {
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		final Dialog dia = new Dialog(this);
+		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
+		ListView screenList = (ListView) v.findViewById(android.R.id.list);
+		
+//		ArrayList<MAScreen> sorted;
+//		Collections.sort(mProject.getScreens(), new Comparator<MAScreen>() {
+//			@Override
+//			public int compare(MAScreen one, MAScreen other) {
+//				// TODO Auto-generated method stub
+//				return one.getName().compareToIgnoreCase(other.getName());
+//			}
+//		});
+		
+		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
+		
+		screenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
+//				makeToast("Clicked item at %d", position);
+				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
+				dia.dismiss();
+			}
+		});
+		
+		
+		dia.setContentView(v);
+		dia.setTitle("Select Screen");
+		dia.show();
+		
+		/*/
+		mPopupMenu = new PopupMenu(getApplicationContext(), button);
+		
+		mPopupMenu.inflate(R.menu.dev_menu);
+		mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				switch(item.getItemId()) {
+//					case R.id.link_menu_new:
+//						onLinkToNewScreenSelected();
+//						break;
+//					case R.id.link_menu_existing:
+//						onLinkToExistingScreenSelected();
+//						break;
+					default:
+				}
+				return false;
+			}
+		});
+		mPopupMenu.show();
+		/**/
+	}
+	
+	
 	
 	/*****************************************************************************
 	 * POPUP "CALLBACK" METHODS
@@ -152,7 +237,22 @@ public class DevelopmentActivity extends Activity {
 		mScreen.addView(clone);
 	}
 	private void onLinkToNewScreenSelected() {
-		makeToast("LINK TO NEW SCREEN");
+		// TODO MODULARIZE
+		// Create new Screen
+		MAScreen newScreen = (MAScreen) mLayoutInflater.inflate(R.layout.ma_screen, null);
+		newScreen.setmDevelopmentActivity(this);
+		String newName = mProject.getNextDefaultScreenName();
+		newScreen.setName(newName);
+		mProject.addScreenToProject(newName, newScreen);
+		
+		showScreenWithName(newName);
+		
+		// Actually link the button to new screen
+		//TODO LINK BUTTON TO SCREEN
+		//TODO LINK BUTTON TO SCREEN
+		//TODO LINK BUTTON TO SCREEN
+		//TODO LINK BUTTON TO SCREEN
+		//TODO LINK BUTTON TO SCREEN
 	}
 	private void onLinkToExistingScreenSelected() {
 		makeToast("LINK TO EXISTING SCREEN");
@@ -163,6 +263,9 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * SIDEBAR RELAY METHODS
 	 *****************************************************************************/
+	public void showDefaultSidebar() {
+		hideElementSidebar();
+	}
 	public void showElementSidebar(View v) {
 		mSidebar.showElementContextBar();
 	}

@@ -27,6 +27,7 @@ public class MASidebar extends LinearLayout{
 	private Button mDrawButton;
 	private Button mShapesButton;
 	private Button mElementButton;
+	private Button mMenuButton;
 	
 	private Button mLinkButton;
 	
@@ -36,19 +37,16 @@ public class MASidebar extends LinearLayout{
 	
 	public MASidebar(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		this.setBackgroundColor(getResources().getColor(backColor));
 	}
 
 	public MASidebar(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 		this.setBackgroundColor(getResources().getColor(backColor));
 	}
 
 	public MASidebar(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
 		this.setBackgroundColor(getResources().getColor(backColor));
 	}
 	
@@ -60,6 +58,7 @@ public class MASidebar extends LinearLayout{
 		mDrawButton = (Button) findViewById(R.id.drawButton);
 		mShapesButton = (Button) findViewById(R.id.shapesButton);
 		mElementButton = (Button) findViewById(R.id.elementsButton);
+		mMenuButton = (Button) findViewById(R.id.menuButton);
 		
 		mLinkButton = (Button) findViewById(R.id.linkButton);
 		
@@ -103,6 +102,12 @@ public class MASidebar extends LinearLayout{
 				elementButtonTapped(arg0);
 			}
 		});
+		mMenuButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				menuButtonTapped(v);
+			}
+		});
 		mLinkButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -127,6 +132,9 @@ public class MASidebar extends LinearLayout{
 	private void elementButtonTapped(View button) {
 		mActivity.showElementsPopup(button);
 //		mActivity.makeToast("Hello Elements!");
+	}
+	private void menuButtonTapped(View button) {
+		mActivity.showMenuPopup(button);
 	}
 	private void linkButtonTapped(View button) {
 //		mActivity.makeToast("Hello Link!");

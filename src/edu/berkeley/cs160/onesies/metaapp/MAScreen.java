@@ -3,7 +3,6 @@ package edu.berkeley.cs160.onesies.metaapp;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.AbsoluteLayout;
 import android.widget.RelativeLayout;
 
 public class MAScreen extends RelativeLayout {
@@ -14,29 +13,26 @@ public class MAScreen extends RelativeLayout {
 	private int 				mChildCount;
 	private MAScreenElement 	mSelectedChild;
 	private DevelopmentActivity mDevelopmentActivity;
+	private String				mName;
 	
-	/*
-	public MAScreen(Context context) {
-		super(context);
-		// TODO Auto-generated constructor stub
-//		this.setBackgroundColor(getResources().getColor(backColor));
-	}
-	*/
-
 	public MAScreen(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 		this.setBackgroundColor(getResources().getColor(backColor));
+		this.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mSelectedChild != null) {
+					mSelectedChild.deselect();
+					mDevelopmentActivity.hideElementSidebar();
+					mSelectedChild = null;
+				}
+			}
+		});
+		
 	}
-	/*
-	public MAScreen(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
-//		this.setBackgroundColor(getResources().getColor(backColor));
-	}
-	*/
 	
 	public void onElementTapped(MAScreenElement e) {
+		// TODO Check what type (ElementType) e is, then act accordingly.
 		if (e == null) {
 			return;
 		}
@@ -55,16 +51,24 @@ public class MAScreen extends RelativeLayout {
 			mDevelopmentActivity.showElementSidebar(e);
 			mSelectedChild = e;
 		}
-		
 	}
 
 	public DevelopmentActivity getmDevelopmentActivity() {
 		return mDevelopmentActivity;
 	}
-
 	public void setmDevelopmentActivity(DevelopmentActivity mDevelopmentActivity) {
 		this.mDevelopmentActivity = mDevelopmentActivity;
 	}
+	public String getName() {
+		return mName;
+	}
+	public void setName(String name) {
+		mName = name;
+	}
+	public MAScreenElement getSelectedElement() {
+		return mSelectedChild;
+	}
+	
 	
 
 }
