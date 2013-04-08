@@ -12,7 +12,8 @@
     <color name="highlightColor">#885599ff</color>
     <color name="clearColor">#00000000</color>
     
-    <color name="sidebarColor">#ff000033</color>
+    <color name="sidebarColor">#ff000000</color>
+    <color name="mainBackgroundColor">#ff222244</color>
     
     
     <color name="separatorColor">#ff555555</color>

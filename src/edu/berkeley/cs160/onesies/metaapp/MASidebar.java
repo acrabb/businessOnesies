@@ -32,7 +32,6 @@ public class MASidebar extends LinearLayout{
 	private Button mMenuButton;
 	
 	private View mButtonOptionsView;
-//	private View mTextOptionsView;
 	private Button mLinkButton;
 	private Button mEditTextButton;
 	

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -20,7 +21,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
+		this.
 		getWindowManager().getDefaultDisplay().getMetrics(display);
 		RelativeLayout activityMain = (RelativeLayout)findViewById(R.id.background);
 		
@@ -29,8 +32,12 @@ public class MainActivity extends Activity {
 		final int width = (int) (iPhoneScalar * display.widthPixels);
 		final int leftOffset = (int) ((1- iPhoneScalar) * display.heightPixels / 3);
 		final int topOffset = (int) ((1- iPhoneScalar) * display.widthPixels / 2);
-		final int iPhoneID = this.getResources().getIdentifier("iphone4", "drawable", this.getPackageName());
+		
+//		final int iPhoneID = this.getResources().getIdentifier("iphone4", "drawable", this.getPackageName());
+		final int iPhoneID = this.getResources().getIdentifier("androidphone", "drawable", this.getPackageName());
+		
 		RelativeLayout.LayoutParams iPhoneParams = new RelativeLayout.LayoutParams(width, height);
+//				RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		iPhoneParams.leftMargin = leftOffset;
 		iPhoneParams.topMargin = topOffset;
 		

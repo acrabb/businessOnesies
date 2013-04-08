@@ -232,6 +232,9 @@ public class DevelopmentActivity extends Activity {
 	
 	String m_Text = "";
 	public void onEditTextTapped() {
+		if(mScreen.getSelectedElement() == null) { 
+			return;
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Title");
 

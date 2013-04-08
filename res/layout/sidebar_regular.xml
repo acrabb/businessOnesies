@@ -25,22 +25,21 @@
         android:id="@+id/text_options"
         android:visibility="invisible"
         />
-	<!-- Button 
-        android:id="@+id/linkButton"
-        style="@style/sidebarButtonStyle"
-        android:text="Link"
-        android:visibility="invisible"
-        /-->
     <Button 
         android:id="@+id/editTextButton"
         style="@style/sidebarButtonStyle"
-        android:text="Edit"
+        android:background="@drawable/text_editing"
         />
 	
 	<Button 
         android:id="@+id/menuButton"
         style="@style/sidebarButtonStyle"
-        android:text="Menu"
+        android:background="@drawable/menu"
+        />
+	<Button 
+        android:id="@+id/helpButton"
+        style="@style/sidebarButtonStyle"
+        android:background="@drawable/help"
         />
 </edu.berkeley.cs160.onesies.metaapp.MASidebar>
 <!--  /LinearLayout -->

@@ -13,12 +13,12 @@
 	<Button 
         android:id="@+id/drawButton"
         style="@style/sidebarButtonStyle"
-        android:text="pencil"
+        android:background="@drawable/pencil"
         />
 	<Button 
         android:id="@+id/shapesButton"
         style="@style/sidebarButtonStyle"
-        android:text="square"
+        android:background="@drawable/shapes"
         />
 	<Button 
         android:id="@+id/elementsButton"
