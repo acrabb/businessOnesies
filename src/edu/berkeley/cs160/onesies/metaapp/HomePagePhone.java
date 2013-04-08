@@ -64,7 +64,6 @@ public class HomePagePhone extends View {
 					}
 				}
 				if (clicked && modIndex == 0) {
-					System.out.println("Clicked");
 					Intent mIntent = new Intent(context, DevelopmentActivity.class);
 					context.startActivity(mIntent);
 				} 

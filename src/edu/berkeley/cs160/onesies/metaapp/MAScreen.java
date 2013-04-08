@@ -14,7 +14,9 @@ public class MAScreen extends RelativeLayout {
 	private int 				mChildCount;
 	private MAScreenElement 	mSelectedChild;
 	private DevelopmentActivity mDevelopmentActivity;
+	private TestingActivity 	mTestingActivity;
 	private String				mName;
+	protected boolean    		testMode = false;
 	
 	public MAScreen(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -70,11 +72,25 @@ public class MAScreen extends RelativeLayout {
 		}
 	}
 
+	public void setTestMode(final boolean mode) {
+		this.testMode = mode;
+	}
+	
+	public boolean getTestMode() {
+		return this.testMode;
+	}
+	
 	public DevelopmentActivity getmDevelopmentActivity() {
 		return mDevelopmentActivity;
 	}
 	public void setmDevelopmentActivity(DevelopmentActivity mDevelopmentActivity) {
 		this.mDevelopmentActivity = mDevelopmentActivity;
+	}
+	public void setmTestingActivity(TestingActivity mTestingActivity) {
+		this.mTestingActivity = mTestingActivity;
+	}
+	public TestingActivity getmTestingActivity() {
+		return mTestingActivity;
 	}
 	public String getName() {
 		return mName;

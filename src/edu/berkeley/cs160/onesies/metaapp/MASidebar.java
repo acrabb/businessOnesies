@@ -1,12 +1,14 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * 
@@ -52,6 +54,10 @@ public class MASidebar extends LinearLayout{
 		this.setBackgroundColor(getResources().getColor(backColor));
 	}
 	
+	public void setUp(TestingActivity activity) {
+		this.setBackgroundColor(Color.GRAY);
+	}
+	
 	public void setUp(DevelopmentActivity activity) {
 		mActivity = activity;
 		
@@ -72,7 +78,8 @@ public class MASidebar extends LinearLayout{
 		mHomeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				homeButtonTapped(arg0);
+				//homeButtonTapped(arg0);
+				mActivity.goTestMode();
 			}
 		});
 		mNotesButton.setOnClickListener(new View.OnClickListener() {

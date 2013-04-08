@@ -20,7 +20,7 @@ public class MAScreenElement extends View {
 	
 	private float 			dx = 0;
 	private float 			dy = 0;
-	
+	private String			screenLinkedTo = null;
 	public MAScreenElement(Context context, MAScreen maScreen, ElementType type) {
 		super(context);
 		this.mMAScreen = maScreen;
@@ -56,12 +56,14 @@ public class MAScreenElement extends View {
 				Log.i("ACACAC", String.format(" > DOWN > dx: %f, dy: %f", dx, dy));
 				break;
 			case MotionEvent.ACTION_MOVE:
-				Log.i("ACACAC", String.format(" > MOVE > x: %f, y: %f", x, y));
-				mWasDragged = true;
-				params = (RelativeLayout.LayoutParams) this.getLayoutParams();
-				params.leftMargin = (int) (params.leftMargin + (x-dx));
-				params.topMargin = (int) (params.topMargin + (y-dy));
-				this.setLayoutParams(params);
+				if (!mMAScreen.getTestMode()) {
+					Log.i("ACACAC", String.format(" > MOVE > x: %f, y: %f", x, y));
+					mWasDragged = true;
+					params = (RelativeLayout.LayoutParams) this.getLayoutParams();
+					params.leftMargin = (int) (params.leftMargin + (x-dx));
+					params.topMargin = (int) (params.topMargin + (y-dy));
+					this.setLayoutParams(params);
+				}
 				break;
 			case MotionEvent.ACTION_UP:
 				Log.i("ACACAC", String.format("> UP >dx: %f, dy: %f", dx, dy));
@@ -72,6 +74,11 @@ public class MAScreenElement extends View {
 					onTap();
 				}
 				mWasDragged = false;
+				if (mMAScreen.getTestMode()) {
+					if (screenLinkedTo != null && x == dx && y == dy) {
+						mMAScreen.getmTestingActivity().showScreenWithName(screenLinkedTo);
+					}
+				}
 				break;
 			default:
 				break;
@@ -95,7 +102,14 @@ public class MAScreenElement extends View {
 		this.getBackground().clearColorFilter();
 	}
 	
-
+	public void setScreenLinkedTo(final String screenName) {
+		this.screenLinkedTo = screenName;
+	}
+	
+	public String getScreenLinkedTo() {
+		return screenLinkedTo;
+	}
+	
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getContext(),
 				String.format(format, args), Toast.LENGTH_SHORT).show();

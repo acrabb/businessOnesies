@@ -22,16 +22,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
+        <activity
             android:name="edu.berkeley.cs160.onesies.metaapp.DevelopmentActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="edu.berkeley.cs160.onesies.metaapp.UIPopupAdapter"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            >
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="edu.berkeley.cs160.onesies.metaapp.TestingActivity"
+            android:label="@string/title_activity_testing" >
         </activity>
     </application>
 
