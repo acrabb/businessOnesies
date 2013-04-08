@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 
 public class MAScreen extends RelativeLayout {
 
-	private int backColor = R.color.lightseagreen;
+	private int backColor = R.color.white;
 	private float mRatio = 1.60f;
 	
 	private int 				mChildCount;
@@ -26,8 +26,9 @@ public class MAScreen extends RelativeLayout {
 			public void onClick(View v) {
 				if (mSelectedChild != null) {
 					mSelectedChild.deselect();
-					mDevelopmentActivity.hideElementSidebar();
 					mSelectedChild = null;
+//					mDevelopmentActivity.hideElementSidebar();
+					determineSidebarState();
 				}
 			}
 		});
@@ -57,8 +58,9 @@ public class MAScreen extends RelativeLayout {
 		}
 	}
 	private void determineSidebarState() {
+		mDevelopmentActivity.showDefaultSidebar();
 		if(mSelectedChild == null) {
-			mDevelopmentActivity.showDefaultSidebar();
+//			mDevelopmentActivity.showDefaultSidebar();
 			return;
 		}
 		switch (mSelectedChild.getmType()) {
@@ -66,6 +68,8 @@ public class MAScreen extends RelativeLayout {
 				mDevelopmentActivity.showElementSidebar(mSelectedChild);
 				break;
 			case TEXT_LABEL:
+				mDevelopmentActivity.showDefaultSidebar();
+//				mDevelopmentActivity.showTextLabelSidebar(mSelectedChild);
 				break;
 			default:
 				//Things;	

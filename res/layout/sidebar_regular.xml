@@ -8,7 +8,7 @@
     <Button 
         android:id="@+id/homeButton"
         style="@style/sidebarButtonStyle"
-        android:text="house"
+        android:background="@drawable/home"
         /> 
    <View
        style="@style/sidebarSpacerStyle"
@@ -21,13 +21,21 @@
         android:id="@+id/button_options"
         android:visibility="invisible"
         />
-    
+    <include layout="@layout/sidebar_text_context_buttons"    
+        android:id="@+id/text_options"
+        android:visibility="invisible"
+        />
 	<!-- Button 
         android:id="@+id/linkButton"
         style="@style/sidebarButtonStyle"
         android:text="Link"
         android:visibility="invisible"
         /-->
+    <Button 
+        android:id="@+id/editTextButton"
+        style="@style/sidebarButtonStyle"
+        android:text="Edit"
+        />
 	
 	<Button 
         android:id="@+id/menuButton"

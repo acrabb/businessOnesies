@@ -32,12 +32,13 @@ public class MASidebar extends LinearLayout{
 	private Button mMenuButton;
 	
 	private View mButtonOptionsView;
+//	private View mTextOptionsView;
 	private Button mLinkButton;
 	private Button mEditTextButton;
 	
-	private boolean mElementBarShowing = false;
+	private View mCurrentContextOptions = null;
 	
-	private int backColor = R.color.seagreen;
+	private int backColor = R.color.sidebarColor;
 	
 	public MASidebar(Context context) {
 		super(context);
@@ -70,6 +71,7 @@ public class MASidebar extends LinearLayout{
 		mMenuButton = (Button) findViewById(R.id.menuButton);
 		
 		mButtonOptionsView = (View) findViewById(R.id.button_options);
+//		mTextOptionsView = (View) findViewById(R.id.text_options);
 		mLinkButton = (Button) findViewById(R.id.linkButton);
 		
 		mEditTextButton = (Button) findViewById(R.id.editTextButton);
@@ -78,98 +80,66 @@ public class MASidebar extends LinearLayout{
 		mHomeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				//homeButtonTapped(arg0);
-				mActivity.goTestMode();
+				mActivity.makeToast("Hello Home!");
 			}
 		});
 		mNotesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				notesButtonTapped(arg0);
+				mActivity.makeToast("Hello Notes!");
 			}
 		});
 		mDrawButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				drawButtonTapped(arg0);
+				mActivity.makeToast("Hello Draw!");
 			}
 		});
 		mShapesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				shapesButtonTapped(arg0);
+				mActivity.showShapesPopup(arg0);
 			}
 		});
 		mElementButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				elementButtonTapped(arg0);
+				mActivity.showElementsPopup(arg0);
 			}
 		});
 		mMenuButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				menuButtonTapped(v);
+				mActivity.showMenuPopup(v);
 			}
 		});
 		mLinkButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				linkButtonTapped(arg0);
+				mActivity.showLinkPopup(arg0);
 			}
 		});
 		mEditTextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				editTextButtonTapped(arg0);
+				mActivity.onEditTextTapped();
 			}
 		});
 	}
-	
-	private void homeButtonTapped(View button) {
-		mActivity.makeToast("Hello Home!");
-	}
-	private void notesButtonTapped(View button) {
-		mActivity.makeToast("Hello Notes!");
-	}
-	private void drawButtonTapped(View button) {
-		mActivity.makeToast("Hello Draw!");
-	}	
-	private void shapesButtonTapped(View button) {
-		mActivity.showShapesPopup(button);
-//		mActivity.makeToast("Hello Shapes!");
-	}
-	private void elementButtonTapped(View button) {
-		mActivity.showElementsPopup(button);
-//		mActivity.makeToast("Hello Elements!");
-	}
-	private void menuButtonTapped(View button) {
-		mActivity.showMenuPopup(button);
-	}
-	private void linkButtonTapped(View button) {
-//		mActivity.makeToast("Hello Link!");
-		mActivity.showLinkPopup(button);
-	}
-	private void editTextButtonTapped(View button) {
-		mActivity.makeToast("HELLO EDIT TEXT!");
-		mActivity.onEditTextTapped();
-//		mActivity.showEditTextPopup(button);
-	}
 
-	
+	public void showDefaultSidebar() {
+		if (mCurrentContextOptions != null) {
+			mCurrentContextOptions.setVisibility(INVISIBLE);
+			mCurrentContextOptions = null;
+		}
+	}
 	public void showElementContextBar() {
-		if (!mElementBarShowing) {			
+		if (mCurrentContextOptions != mButtonOptionsView) {			
 			mButtonOptionsView.setVisibility(VISIBLE);
 		}
-		mElementBarShowing = true;
+		mCurrentContextOptions = mButtonOptionsView;
 	}
-	public void hideElementContextBar() {
-		mButtonOptionsView.setVisibility(INVISIBLE);
-		mElementBarShowing = false;
-	}
-	
-	
-	
+
 	public DevelopmentActivity getmActivity() {
 		return mActivity;
 	}

@@ -8,7 +8,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 
 public class MAScreenElement extends View {
 
@@ -16,7 +20,8 @@ public class MAScreenElement extends View {
 	private boolean			mWasDragged = false;
 	private ElementType		mType;
 	protected boolean		mIsLinkable = false;
-	private boolean 		isSelected = false;
+	protected boolean 		isSelected = false;
+	protected String		mLabel;
 	
 	private float 			dx = 0;
 	private float 			dy = 0;
@@ -53,11 +58,11 @@ public class MAScreenElement extends View {
 			case MotionEvent.ACTION_DOWN:
 				dx = x;
 				dy = y;
-				Log.i("ACACAC", String.format(" > DOWN > dx: %f, dy: %f", dx, dy));
+//				Log.i("ACACAC", String.format(" > DOWN > dx: %f, dy: %f", dx, dy));
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (!mMAScreen.getTestMode()) {
-					Log.i("ACACAC", String.format(" > MOVE > x: %f, y: %f", x, y));
+//					Log.i("ACACAC", String.format(" > MOVE > x: %f, y: %f", x, y));
 					mWasDragged = true;
 					params = (RelativeLayout.LayoutParams) this.getLayoutParams();
 					params.leftMargin = (int) (params.leftMargin + (x-dx));
@@ -66,9 +71,9 @@ public class MAScreenElement extends View {
 				}
 				break;
 			case MotionEvent.ACTION_UP:
-				Log.i("ACACAC", String.format("> UP >dx: %f, dy: %f", dx, dy));
-				Log.i("ACACAC", String.format("Distance calced: %f", distance));
-				Log.i("ACACAC", String.format("Was Dragged %b", mWasDragged));
+//				Log.i("ACACAC", String.format("> UP >dx: %f, dy: %f", dx, dy));
+//				Log.i("ACACAC", String.format("Distance calced: %f", distance));
+//				Log.i("ACACAC", String.format("Was Dragged %b", mWasDragged));
 				if (!mWasDragged) {
 					// Element tapped!
 					onTap();
@@ -94,13 +99,17 @@ public class MAScreenElement extends View {
 	
 	public void select() {
         isSelected = true;
-        this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
-        		PorterDuff.Mode.SRC_ATOP);
+        this.invalidate();
+        // Its up to the subclasses to highlight themselves when selected.
+        //        this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
+        //        		PorterDuff.Mode.DST_OVER);
 	}
+
 	
 	public void deselect() {
 		isSelected = false;
 		this.getBackground().clearColorFilter();
+		this.invalidate();
 	}
 	
 	public void setScreenLinkedTo(final String screenName) {
@@ -122,5 +131,9 @@ public class MAScreenElement extends View {
 
 	public void setmType(ElementType mType) {
 		this.mType = mType;
+	}
+	
+	public void setLabel(String lbl) {
+		this.mLabel = lbl;
 	}
 }

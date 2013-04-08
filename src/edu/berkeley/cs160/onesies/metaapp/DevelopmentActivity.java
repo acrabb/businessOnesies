@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -79,6 +80,7 @@ public class DevelopmentActivity extends Activity {
 		String name = mProject.getNextDefaultScreenName();
 		mProject.addScreenToProject(name, mScreen);
 		mScreen.setName(name);
+		makeToast("Screen '%s' Created.", name);
 	}
 	
 	private void showScreenWithName(String name) {
@@ -91,9 +93,6 @@ public class DevelopmentActivity extends Activity {
 		mDevRelLayout.removeView(mScreen);
 		mDevRelLayout.addView(newScreen,mScreen.getLayoutParams());
 		showDefaultSidebar();
-//		String newName = mProject.getNextDefaultScreenName();
-//		newScreen.setName(newName);
-//		mProject.addScreenToProject(newName, newScreen);
 		mScreen = newScreen;
 	}
 	
@@ -183,44 +182,25 @@ public class DevelopmentActivity extends Activity {
 		mPopupMenu.show();
 	}
 	public void showMenuPopup(View button) {
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		final Dialog dia = new Dialog(this);
-		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
-		ListView screenList = (ListView) v.findViewById(android.R.id.list);
-		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
-		screenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
-//				makeToast("Clicked item at %d", position);
-				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
-				dia.dismiss();
-			}
-		});
-		
-		dia.setContentView(v);
-		dia.setTitle("Select Screen");
-		dia.show();
-		
-		/*/
 		mPopupMenu = new PopupMenu(getApplicationContext(), button);
-		
 		mPopupMenu.inflate(R.menu.dev_menu);
 		mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				switch(item.getItemId()) {
-//					case R.id.link_menu_new:
+					case R.id.link_menu_new:
 //						onLinkToNewScreenSelected();
-//						break;
-//					case R.id.link_menu_existing:
+						break;
+					case R.id.link_menu_existing:
 //						onLinkToExistingScreenSelected();
-//						break;
+						break;
+					case R.id.dev_menu_big_picture:
+						onBigPictureSelected();
+						break;
+					case R.id.dev_menu_test:
+						goTestMode();
+						break;
 					default:
 				}
 				return false;
@@ -230,14 +210,34 @@ public class DevelopmentActivity extends Activity {
 		/**/
 	}
 	
-		String m_Text = "";
+	private void onBigPictureSelected() {
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		final Dialog dia = new Dialog(this);
+		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
+		ListView screenList = (ListView) v.findViewById(android.R.id.list);
+		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
+		screenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
+				dia.dismiss();
+			}
+		});
+		
+		dia.setContentView(v);
+		dia.setTitle("Go To Screen:");
+		dia.show();
+	}
+	
+	String m_Text = "";
 	public void onEditTextTapped() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Title");
 
 		// Set up the input
 		final EditText input = new EditText(this);
-		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+		// Specify the type of input expected
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
 		builder.setView(input);
 
@@ -246,7 +246,7 @@ public class DevelopmentActivity extends Activity {
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
 		        m_Text = input.getText().toString();
-		        ((MAButton) mScreen.getSelectedElement()).setLabel(m_Text);
+		        ((MAScreenElement) mScreen.getSelectedElement()).setLabel(m_Text);
 		    }
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -257,10 +257,6 @@ public class DevelopmentActivity extends Activity {
 		});
 
 		builder.show();
-		
-//		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//	    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
 	}
 	
 	
@@ -276,9 +272,12 @@ public class DevelopmentActivity extends Activity {
 		if (element instanceof Button) {
 			type = ElementType.BUTTON;
 			clone = new MAButton(getApplicationContext(), mScreen);
-		} else { //(element instanceof TextView) {
+		} else if(element instanceof TextView) {
 			type = ElementType.TEXT_LABEL; 
-			clone = createElement(type, map);
+//			clone = createElement(type, map);
+			clone = new MATextLabel(getApplicationContext(), mScreen, "Text Label");
+		} else {
+			return;
 		}
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				200, 100);
@@ -297,12 +296,15 @@ public class DevelopmentActivity extends Activity {
 		String newName = mProject.getNextDefaultScreenName();
 		newScreen.setName(newName);
 		mProject.addScreenToProject(newName, newScreen);
-		button.setDestinationScreen(newScreen);
+		if(button != null) {
+			button.setDestinationScreen(newScreen);			
+		}
 		
 		showScreenWithName(newName);
 		
 		// Actually link the button to new screen
 		button.setDestinationScreen(newScreen);
+		makeToast("Screen '%s' Created.", newName);
 	}
 	private void onLinkToExistingScreenSelected(MAButton button) {
 		makeToast("LINK TO EXISTING SCREEN");
@@ -315,14 +317,11 @@ public class DevelopmentActivity extends Activity {
 	 *****************************************************************************/
 	public void showDefaultSidebar() {
 		//TODO PROPERLY SHOW THE DEFAULT STATE.
-		//mSidebar.showDefaultBar();
-		hideElementSidebar();
+		mSidebar.showDefaultSidebar();
+//		hideElementSidebar();
 	}
 	public void showElementSidebar(View v) {
 		mSidebar.showElementContextBar();
-	}
-	public void hideElementSidebar() {
-		mSidebar.hideElementContextBar();
 	}
 		
 	
@@ -365,4 +364,5 @@ public class DevelopmentActivity extends Activity {
 		Toast.makeText(getApplicationContext(),
 				String.format(format, args), Toast.LENGTH_SHORT).show();
 	}
+
 }

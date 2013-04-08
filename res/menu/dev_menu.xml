@@ -4,7 +4,7 @@
         android:id="@+id/dev_menu_big_picture"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="App Overview"
+        android:title="Prototype Overview"
         />
     <item
         android:id="@+id/dev_menu_delete_screen"
@@ -17,6 +17,12 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Add New Screen"
+        />
+    <item
+        android:id="@+id/dev_menu_test"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Test Prototype"
         />
 
 </menu>
