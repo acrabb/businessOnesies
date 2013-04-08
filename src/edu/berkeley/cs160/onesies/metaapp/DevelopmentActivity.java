@@ -1,20 +1,25 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -134,24 +139,28 @@ public class DevelopmentActivity extends Activity {
 		mPopupWindow.showAsDropDown(button, 0, 0);
 	}
 	
-	public void showLinkPopup(View button) {
-		mPopupMenu = new PopupMenu(getApplicationContext(), button);
-		
+	public void showLinkPopup(View linkButton) {
+		mPopupMenu = new PopupMenu(getApplicationContext(), linkButton);
 		mPopupMenu.inflate(R.menu.link_menu);
 		mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
+				//Make sure they're linking an MAButton
+				if (!(mScreen.getSelectedElement() instanceof MAButton)) {
+					makeToast("CAN ONLY LINK BUTTONS.");
+					return true;
+				}
+				MAButton button = (MAButton) mScreen.getSelectedElement();
 				switch(item.getItemId()) {
 					case R.id.link_menu_new:
-						onLinkToNewScreenSelected();
+						onLinkToNewScreenSelected(button);
 						break;
 					case R.id.link_menu_existing:
-						onLinkToExistingScreenSelected();
+						onLinkToExistingScreenSelected(button);
 						break;
 					default:
 				}
-				return false;
+				return true;
 			}
 		});
 		mPopupMenu.show();
@@ -165,18 +174,7 @@ public class DevelopmentActivity extends Activity {
 		final Dialog dia = new Dialog(this);
 		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
 		ListView screenList = (ListView) v.findViewById(android.R.id.list);
-		
-//		ArrayList<MAScreen> sorted;
-//		Collections.sort(mProject.getScreens(), new Comparator<MAScreen>() {
-//			@Override
-//			public int compare(MAScreen one, MAScreen other) {
-//				// TODO Auto-generated method stub
-//				return one.getName().compareToIgnoreCase(other.getName());
-//			}
-//		});
-		
 		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
-		
 		screenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -186,7 +184,6 @@ public class DevelopmentActivity extends Activity {
 				dia.dismiss();
 			}
 		});
-		
 		
 		dia.setContentView(v);
 		dia.setTitle("Select Screen");
@@ -216,6 +213,39 @@ public class DevelopmentActivity extends Activity {
 		/**/
 	}
 	
+		String m_Text = "";
+	public void onEditTextTapped() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Title");
+
+		// Set up the input
+		final EditText input = new EditText(this);
+		// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+		builder.setView(input);
+
+		// Set up the buttons
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() { 
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        m_Text = input.getText().toString();
+		        ((MAButton) mScreen.getSelectedElement()).setLabel(m_Text);
+		    }
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        dialog.cancel();
+		    }
+		});
+
+		builder.show();
+		
+//		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//	    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+	}
+	
 	
 	
 	/*****************************************************************************
@@ -225,18 +255,21 @@ public class DevelopmentActivity extends Activity {
 		// Take the view, and add it to the MAScreen object.
 		Bitmap map = createBitmapOfView(element);
 		ElementType type;
+		MAScreenElement clone;
 		if (element instanceof Button) {
 			type = ElementType.BUTTON;
+			clone = new MAButton(getApplicationContext(), mScreen);
 		} else { //(element instanceof TextView) {
 			type = ElementType.TEXT_LABEL; 
+			clone = createElement(type, map);
 		}
-		MAScreenElement clone = createElement(type, map);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				200, 100);
 		clone.setLayoutParams(params);
 		mScreen.addView(clone);
 	}
-	private void onLinkToNewScreenSelected() {
+	
+	private void onLinkToNewScreenSelected(MAButton button) {
 		// TODO MODULARIZE
 		// Create new Screen
 		MAScreen newScreen = (MAScreen) mLayoutInflater.inflate(R.layout.ma_screen, null);
@@ -244,17 +277,14 @@ public class DevelopmentActivity extends Activity {
 		String newName = mProject.getNextDefaultScreenName();
 		newScreen.setName(newName);
 		mProject.addScreenToProject(newName, newScreen);
+		button.setDestinationScreen(newScreen);
 		
 		showScreenWithName(newName);
 		
 		// Actually link the button to new screen
-		//TODO LINK BUTTON TO SCREEN
-		//TODO LINK BUTTON TO SCREEN
-		//TODO LINK BUTTON TO SCREEN
-		//TODO LINK BUTTON TO SCREEN
-		//TODO LINK BUTTON TO SCREEN
+		button.setDestinationScreen(newScreen);
 	}
-	private void onLinkToExistingScreenSelected() {
+	private void onLinkToExistingScreenSelected(MAButton button) {
 		makeToast("LINK TO EXISTING SCREEN");
 		
 	}
@@ -264,6 +294,8 @@ public class DevelopmentActivity extends Activity {
 	 * SIDEBAR RELAY METHODS
 	 *****************************************************************************/
 	public void showDefaultSidebar() {
+		//TODO PROPERLY SHOW THE DEFAULT STATE.
+		//mSidebar.showDefaultBar();
 		hideElementSidebar();
 	}
 	public void showElementSidebar(View v) {

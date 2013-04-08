@@ -22,9 +22,12 @@
     <style name="sidebarButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/sidebarButtonHeight</item>
-       <item name="android:padding">@dimen/sidebarButtonPadding</item> 
-        
-        
+        <item name="android:padding">@dimen/sidebarButtonPadding</item> 
+    </style>
+    <style name="sidebarSpacerStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:background">@color/testingPurple</item>
     </style>
 
 </resources>

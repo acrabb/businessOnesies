@@ -12,9 +12,11 @@ import android.graphics.PorterDuff;
 
 public class MAScreenElement extends View {
 
-	private MAScreen		mMAScreen;
+	protected MAScreen		mMAScreen;
 	private boolean			mWasDragged = false;
-	private ElementType	type;
+	private ElementType		mType;
+	protected boolean		mIsLinkable = false;
+	private boolean 		isSelected = false;
 	
 	private float 			dx = 0;
 	private float 			dy = 0;
@@ -22,6 +24,7 @@ public class MAScreenElement extends View {
 	public MAScreenElement(Context context, MAScreen maScreen, ElementType type) {
 		super(context);
 		this.mMAScreen = maScreen;
+		this.mType = type;
 	}
 	
 	public MAScreenElement(Context context) {
@@ -77,7 +80,6 @@ public class MAScreenElement extends View {
 		return true;
 	}
 	
-	boolean isSelected = false;
 	private void onTap() {
 		mMAScreen.onElementTapped(this);
 	}
@@ -97,5 +99,13 @@ public class MAScreenElement extends View {
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getContext(),
 				String.format(format, args), Toast.LENGTH_SHORT).show();
+	}
+
+	public ElementType getmType() {
+		return mType;
+	}
+
+	public void setmType(ElementType mType) {
+		this.mType = mType;
 	}
 }

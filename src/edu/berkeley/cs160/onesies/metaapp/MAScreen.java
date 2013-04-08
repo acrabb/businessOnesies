@@ -1,6 +1,7 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -32,7 +33,10 @@ public class MAScreen extends RelativeLayout {
 	}
 	
 	public void onElementTapped(MAScreenElement e) {
-		// TODO Check what type (ElementType) e is, then act accordingly.
+		determineSelectionState(e);
+		determineSidebarState();
+	}
+	private void determineSelectionState(MAScreenElement e) {
 		if (e == null) {
 			return;
 		}
@@ -40,16 +44,29 @@ public class MAScreen extends RelativeLayout {
 		if (e == mSelectedChild) {
 			e.deselect();
 			mSelectedChild = null;
-			mDevelopmentActivity.hideElementSidebar();
 		} else {
+		// ...deselect any current selected element...
 			if(mSelectedChild != null) {
-		// ...then deselect the current selected element...
 				mSelectedChild.deselect();
 			}
 		// ...then select the tapped element.
 			e.select();
-			mDevelopmentActivity.showElementSidebar(e);
 			mSelectedChild = e;
+		}
+	}
+	private void determineSidebarState() {
+		if(mSelectedChild == null) {
+			mDevelopmentActivity.showDefaultSidebar();
+			return;
+		}
+		switch (mSelectedChild.getmType()) {
+			case BUTTON:
+				mDevelopmentActivity.showElementSidebar(mSelectedChild);
+				break;
+			case TEXT_LABEL:
+				break;
+			default:
+				//Things;	
 		}
 	}
 

@@ -29,7 +29,9 @@ public class MASidebar extends LinearLayout{
 	private Button mElementButton;
 	private Button mMenuButton;
 	
+	private View mButtonOptionsView;
 	private Button mLinkButton;
+	private Button mEditTextButton;
 	
 	private boolean mElementBarShowing = false;
 	
@@ -53,6 +55,7 @@ public class MASidebar extends LinearLayout{
 	public void setUp(DevelopmentActivity activity) {
 		mActivity = activity;
 		
+		//---Main Dev Buttons ---------------------------------
 		mHomeButton = (Button) findViewById(R.id.homeButton);
 		mNotesButton = (Button) findViewById(R.id.notesButton);
 		mDrawButton = (Button) findViewById(R.id.drawButton);
@@ -60,16 +63,10 @@ public class MASidebar extends LinearLayout{
 		mElementButton = (Button) findViewById(R.id.elementsButton);
 		mMenuButton = (Button) findViewById(R.id.menuButton);
 		
+		mButtonOptionsView = (View) findViewById(R.id.button_options);
 		mLinkButton = (Button) findViewById(R.id.linkButton);
 		
-//		Button b = new Button(getContext());
-//		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//		b.setLayoutParams(params);
-//		addView(b);
-		mLinkButton = new Button(getContext());
-		mLinkButton.setText("Link"); 
-		mLinkButton.setLayoutParams(mElementButton.getLayoutParams());
+		mEditTextButton = (Button) findViewById(R.id.editTextButton);
 		
 		
 		mHomeButton.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +111,12 @@ public class MASidebar extends LinearLayout{
 				linkButtonTapped(arg0);
 			}
 		});
+		mEditTextButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				editTextButtonTapped(arg0);
+			}
+		});
 	}
 	
 	private void homeButtonTapped(View button) {
@@ -140,20 +143,21 @@ public class MASidebar extends LinearLayout{
 //		mActivity.makeToast("Hello Link!");
 		mActivity.showLinkPopup(button);
 	}
+	private void editTextButtonTapped(View button) {
+		mActivity.makeToast("HELLO EDIT TEXT!");
+		mActivity.onEditTextTapped();
+//		mActivity.showEditTextPopup(button);
+	}
 
 	
 	public void showElementContextBar() {
 		if (!mElementBarShowing) {			
-//			makeToast("SHOW ELEMENT CONTEXT BAR");
-	//		mLinkButton.setVisibility(VISIBLE);
-			addView(mLinkButton);
+			mButtonOptionsView.setVisibility(VISIBLE);
 		}
 		mElementBarShowing = true;
 	}
 	public void hideElementContextBar() {
-//		makeToast("HIDE ELEMENT CONTEXT BAR");
-//		mLinkButton.setVisibility(GONE);
-		removeView(mLinkButton);
+		mButtonOptionsView.setVisibility(INVISIBLE);
 		mElementBarShowing = false;
 	}
 	

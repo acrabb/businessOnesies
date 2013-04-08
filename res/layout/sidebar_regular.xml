@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  edu.berkeley.cs160.onesies.MASidebar -->
 <edu.berkeley.cs160.onesies.metaapp.MASidebar
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="50dp"
@@ -10,34 +9,25 @@
         android:id="@+id/homeButton"
         style="@style/sidebarButtonStyle"
         android:text="house"
+        /> 
+   <View
+       style="@style/sidebarSpacerStyle"
+       />
+   
+    <include layout="@layout/sidebar_main_dev_buttons"
+        android:id="@+id/main_buttons"
         />
-    <Button 
-        android:id="@+id/notesButton"
-        style="@style/sidebarButtonStyle"
-        android:text="notes"
+    <include layout="@layout/sidebar_button_context_buttons"
+        android:id="@+id/button_options"
+        android:visibility="invisible"
         />
-	<Button 
-        android:id="@+id/drawButton"
-        style="@style/sidebarButtonStyle"
-        android:text="pencil"
-        />
-	<Button 
-        android:id="@+id/shapesButton"
-        style="@style/sidebarButtonStyle"
-        android:text="square"
-        />
-	<Button 
-        android:id="@+id/elementsButton"
-        style="@style/sidebarButtonStyle"
-        android:text="UI"
-        />
-	
-	<Button 
+    
+	<!-- Button 
         android:id="@+id/linkButton"
         style="@style/sidebarButtonStyle"
         android:text="Link"
-        android:visibility="gone"
-        />
+        android:visibility="invisible"
+        /-->
 	
 	<Button 
         android:id="@+id/menuButton"
