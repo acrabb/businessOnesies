@@ -74,7 +74,21 @@ public class TestingActivity extends Activity {
 		
 	}
 	
+	/*****************************************************************************
+	* TESTINGACTIVITY SPECIFIC METHODS
+	 *****************************************************************************/
 	
+//	@Override
+//	public void onBackPressed() {
+//		makeToast("BACK PRESSED");
+//		
+//		finish();
+//	}
+	
+	
+	/*****************************************************************************
+	 * DIRECTLY COPIED FROM DEVELOPMENTACTIVITY
+	 *****************************************************************************/
 	protected void showScreenWithName(String name) {
 		MAScreenElement selected = mScreen.getSelectedElement();
 		if(selected != null) {
@@ -88,10 +102,7 @@ public class TestingActivity extends Activity {
 		newScreen.setmTestingActivity(this);
 		mTestRelLayout.removeView(mScreen);
 		mTestRelLayout.addView(newScreen,mScreen.getLayoutParams());
-		showDefaultSidebar();
-//		String newName = mProject.getNextDefaultScreenName();
-//		newScreen.setName(newName);
-//		mProject.addScreenToProject(newName, newScreen);
+//		showDefaultSidebar();
 		mScreen = newScreen;
 	}
 	
@@ -276,15 +287,15 @@ public class TestingActivity extends Activity {
 	/*****************************************************************************
 	 * SIDEBAR RELAY METHODS
 	 *****************************************************************************/
-	public void showDefaultSidebar() {
-		hideElementSidebar();
-	}
-	public void showElementSidebar(View v) {
-		mSidebar.showElementContextBar();
-	}
-	public void hideElementSidebar() {
-		mSidebar.hideElementContextBar();
-	}
+//	public void showDefaultSidebar() {
+//		hideElementSidebar();
+//	}
+//	public void showElementSidebar(View v) {
+//		mSidebar.showElementContextBar();
+//	}
+//	public void hideElementSidebar() {
+//		mSidebar.hideElementContextBar();
+//	}
 		
 	
 	/*****************************************************************************

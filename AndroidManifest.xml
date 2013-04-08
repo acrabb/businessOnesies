@@ -33,7 +33,8 @@
         </activity>
         <activity
             android:name="edu.berkeley.cs160.onesies.metaapp.TestingActivity"
-            android:label="@string/title_activity_testing" >
+            >
+    <!--         android:label="@string/title_activity_testing" -->
         </activity>
     </application>
 

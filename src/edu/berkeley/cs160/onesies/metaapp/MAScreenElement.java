@@ -74,11 +74,6 @@ public class MAScreenElement extends View {
 					onTap();
 				}
 				mWasDragged = false;
-				if (mMAScreen.getTestMode()) {
-					if (screenLinkedTo != null && x == dx && y == dy) {
-						mMAScreen.getmTestingActivity().showScreenWithName(screenLinkedTo);
-					}
-				}
 				break;
 			default:
 				break;
@@ -88,7 +83,13 @@ public class MAScreenElement extends View {
 	}
 	
 	private void onTap() {
-		mMAScreen.onElementTapped(this);
+		if (mMAScreen.getTestMode()) {
+			if (screenLinkedTo != null) {
+				mMAScreen.getmTestingActivity().showScreenWithName(screenLinkedTo);
+			}
+		} else {
+			mMAScreen.onElementTapped(this);
+		}
 	}
 	
 	public void select() {
