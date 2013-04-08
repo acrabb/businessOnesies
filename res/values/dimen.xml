@@ -11,7 +11,7 @@
     <dimen name="shapePopupHeight">100dp</dimen>
     
     <dimen name="elementsPopupWidth">400dp</dimen>
-    <dimen name="elementsPopupHeight">200dp</dimen>
+    <dimen name="elementsPopupHeight">120dp</dimen>
     
     <dimen name="linkPopupWidth">400dp</dimen>
     <dimen name="linkPopupHeight">200dp</dimen>

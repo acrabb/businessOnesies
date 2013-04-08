@@ -14,6 +14,7 @@
     
     <color name="sidebarColor">#ff000000</color>
     <color name="mainBackgroundColor">#ff222244</color>
+    <color name="achalRed">#ff600000</color>
     
     
     <color name="separatorColor">#ff555555</color>

@@ -11,7 +11,7 @@ import android.view.View;
 
 public class HomePagePhone extends View {
 	
-	final int[] colours = {Color.GRAY, Color.BLUE, Color.CYAN};
+	final int[] colours = {Color.WHITE, Color.BLUE, Color.CYAN};
 	final float minSwipeDist = 80;
 	final ArrayList<Screen> screens = new ArrayList<Screen>();
 	private int index, modIndex;
@@ -24,13 +24,14 @@ public class HomePagePhone extends View {
 		modIndex = index;
 		final Element e = new Element(215, 250);
 		e.setText("Create New");
-		Screen s = new Screen();
+		Screen s = new Screen(context);
 		s.addElementToScreen(e);
 		screens.add(s);
 		
+		
 		final Element e1 = new Element(215, 160);
 		e1.setText("DUMMY BUTTON");
-		Screen s1 = new Screen();
+		Screen s1 = new Screen(context);
 		s1.addElementToScreen(e1);
 		screens.add(s1);
 	}

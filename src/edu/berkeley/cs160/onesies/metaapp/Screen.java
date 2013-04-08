@@ -2,6 +2,7 @@ package edu.berkeley.cs160.onesies.metaapp;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,11 +12,13 @@ public class Screen {
 
 	private final ArrayList<Element> elements = new ArrayList<Element>();
 	private final Paint paint = new Paint();
-	private int backgroundColor = Color.GRAY;
+	private int backgroundColor = Color.WHITE;
+	private Context mContext;
 	
-	public Screen() {
+	public Screen(Context context) {
+		mContext = context;
 		paint.setStrokeWidth(20);
-		paint.setColor(Color.RED);
+		paint.setColor(context.getResources().getColor(R.color.achalRed));
 	}
 	
 	public void addElementToScreen(Element e) {
