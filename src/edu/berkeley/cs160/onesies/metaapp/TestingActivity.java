@@ -3,7 +3,6 @@ package edu.berkeley.cs160.onesies.metaapp;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,13 +24,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-
-public class DevelopmentActivity extends Activity {
+public class TestingActivity extends Activity {
 
 	// UI Objects-------------------------------
 	private MAScreen			mScreen;
-	private MAScreen            testScreen;
-	private RelativeLayout		mDevRelLayout;
+	private RelativeLayout		mTestRelLayout;
 	private MASidebar			mSidebar;
 	private PopupWindow			mPopupWindow;
 	private PopupMenu			mPopupMenu;
@@ -43,48 +41,53 @@ public class DevelopmentActivity extends Activity {
 	// Non-UI Objects--------------------------
 	private LayoutInflater		mLayoutInflater;
 	private Resources			mResources;
-	protected static MAProject	mProject;
+	private MAProject			mProject;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Inflate the menu; this adds items to the action bar if it is present.
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.development_main);
+		setContentView(R.layout.activity_testing);
 		
+		mTestRelLayout = (RelativeLayout) findViewById(R.id.testingRelative);
 		mLayoutInflater = (LayoutInflater)getApplicationContext().
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mResources = getResources();
+		mProject = DevelopmentActivity.mProject;
 		
-		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
-		mScreen = (MAScreen) findViewById(R.id.screen);
-		mScreen.setmDevelopmentActivity(this);
+		mScreen = (MAScreen) mTestRelLayout.findViewById(R.id.screen);
+		
+		MAScreen first = mProject.getFirstScreen();
+		
+		((RelativeLayout) mScreen.getParent()).removeView(mScreen);
+		if (first.getParent() != null) {
+			((RelativeLayout) first.getParent()).removeView(first);
+		}
+		first.setTestMode(true);
+		first.setmTestingActivity(this);
+		mTestRelLayout.addView(mProject.getFirstScreen(), mScreen.getLayoutParams());
+		
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
 		
-		testScreen = (MAScreen) mLayoutInflater.inflate(R.layout.ma_screen, null);
 		
-		createNewProject();
-		mProject.addFirstScreen(mScreen);
 	}
 	
-	private void createNewProject() {
-		//TODO
-		mProject = new MAProject("Project1");
-		String name = mProject.getNextDefaultScreenName();
-		mProject.addScreenToProject(name, mScreen);
-		mScreen.setName(name);
-	}
 	
-	private void showScreenWithName(String name) {
+	protected void showScreenWithName(String name) {
 		MAScreenElement selected = mScreen.getSelectedElement();
 		if(selected != null) {
-			selected.setScreenLinkedTo(name);
 			selected.deselect();
 		}
 		MAScreen newScreen = mProject.getScreenWithName(name);
-		mDevRelLayout.removeView(mScreen);
-		mDevRelLayout.addView(newScreen,mScreen.getLayoutParams());
+		if (newScreen.getParent() != null) {
+			((RelativeLayout) newScreen.getParent()).removeView(newScreen);
+		}
+		newScreen.setTestMode(true);
+		newScreen.setmTestingActivity(this);
+		mTestRelLayout.removeView(mScreen);
+		mTestRelLayout.addView(newScreen,mScreen.getLayoutParams());
 		showDefaultSidebar();
 //		String newName = mProject.getNextDefaultScreenName();
 //		newScreen.setName(newName);
@@ -93,20 +96,13 @@ public class DevelopmentActivity extends Activity {
 	}
 	
 	
+	
 	/*****************************************************************************
 	 * MASIDEBAR "CALLBACK" METHODS
 	 *****************************************************************************/
 	
-	
-	public void goTestMode() {
-		Intent mIntent = new Intent(this, TestingActivity.class);
-		startActivity(mIntent);		
-	}
-	/** 
-	 * Test for passing custom objects through intents using serializable bundles
-	 */
 	public String getActivityString() {
-		return "Development";
+		return "Testing";
 	}
 	
 	public void showShapesPopup(View button) {
@@ -251,16 +247,13 @@ public class DevelopmentActivity extends Activity {
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				200, 100);
 		clone.setLayoutParams(params);
-		MAScreenElement clone2 = createElement(type, map);
-		clone.setLayoutParams(params);
-		testScreen.addView(clone2);
 		mScreen.addView(clone);
 	}
 	private void onLinkToNewScreenSelected() {
 		// TODO MODULARIZE
 		// Create new Screen
 		MAScreen newScreen = (MAScreen) mLayoutInflater.inflate(R.layout.ma_screen, null);
-		newScreen.setmDevelopmentActivity(this);
+		//newScreen.setmDevelopmentActivity(this);
 		String newName = mProject.getNextDefaultScreenName();
 		newScreen.setName(newName);
 		mProject.addScreenToProject(newName, newScreen);
@@ -333,4 +326,5 @@ public class DevelopmentActivity extends Activity {
 		Toast.makeText(getApplicationContext(),
 				String.format(format, args), Toast.LENGTH_SHORT).show();
 	}
+
 }

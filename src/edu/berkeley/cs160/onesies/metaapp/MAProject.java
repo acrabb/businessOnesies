@@ -3,6 +3,7 @@
  */
 package edu.berkeley.cs160.onesies.metaapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,14 +17,20 @@ public class MAProject {
 	
 	private Hashtable<String, MAScreen> mScreens;
 	private String 						mName;
+	private boolean                     first;
+	private MAScreen                    firstScreen;
 	/**
 	 * 
 	 */
 	public MAProject(String name) {
+		first = true;
 		mName = name;
 		mScreens = new Hashtable<String, MAScreen>();
 	}
 	
+	public void addFirstScreen(MAScreen screen) {
+		this.firstScreen = screen;
+	}
 	
 	public void addScreenToProject(String name, MAScreen screen) {
 		mScreens.put(name, screen);
@@ -65,5 +72,7 @@ public class MAProject {
 		Collections.sort(retVal);
 		return retVal;
 	}
-
+	public MAScreen getFirstScreen() {
+		return firstScreen;
+	}
 }

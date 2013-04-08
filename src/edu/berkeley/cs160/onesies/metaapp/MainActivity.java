@@ -45,12 +45,6 @@ public class MainActivity extends Activity {
 		
 		iPhone.addView(screen);
 		activityMain.addView(iPhone);
-		System.out.println("height" + height
-							+ " width" + width 
-							+ " leftOffset" + leftOffset
-							+ " topOffset" + topOffset
-							+ " iPhoneID" + iPhoneID);
-		
 	
 		/*
 		mNewProjectButton = (Button) findViewById(R.id.newProjectButton);
