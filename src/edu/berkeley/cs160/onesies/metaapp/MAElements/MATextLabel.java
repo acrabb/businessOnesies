@@ -1,5 +1,10 @@
-package edu.berkeley.cs160.onesies.metaapp;
+package edu.berkeley.cs160.onesies.metaapp.MAElements;
 
+import edu.berkeley.cs160.onesies.metaapp.ElementType;
+import edu.berkeley.cs160.onesies.metaapp.MAScreen;
+import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
+import edu.berkeley.cs160.onesies.metaapp.R;
+import edu.berkeley.cs160.onesies.metaapp.R.color;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
