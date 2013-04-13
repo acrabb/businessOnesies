@@ -106,6 +106,4 @@ public class MAScreen extends RelativeLayout {
 		return mSelectedChild;
 	}
 	
-	
-
 }

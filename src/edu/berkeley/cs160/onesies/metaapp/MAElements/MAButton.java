@@ -1,21 +1,19 @@
 package edu.berkeley.cs160.onesies.metaapp.MAElements;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.DrawFilter;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.widget.RelativeLayout;
 import edu.berkeley.cs160.onesies.metaapp.ElementType;
 import edu.berkeley.cs160.onesies.metaapp.MAScreen;
 import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
 import edu.berkeley.cs160.onesies.metaapp.R;
-import edu.berkeley.cs160.onesies.metaapp.R.drawable;
-import android.R.color;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.DrawFilter;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.Typeface;
-import android.util.AttributeSet;
 
 public class MAButton extends MAScreenElement {
 
@@ -24,9 +22,7 @@ public class MAButton extends MAScreenElement {
 	
 	public MAButton(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.BUTTON);
-		// TODO Auto-generated constructor stub
 		// Set background to be some image
-	
 		this.mIsLinkable = true;
 		this.setBackgroundResource(R.drawable.btn_default_normal);
 	}
@@ -48,24 +44,25 @@ public class MAButton extends MAScreenElement {
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		
-		/**/
-		if(isSelected){
-            this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
-            		PorterDuff.Mode.SRC_ATOP);
-            /*
-			paint.setColorFilter(
-					new PorterDuffColorFilter(getResources().getColor(R.color.highlightColor),
-							PorterDuff.Mode.DST_ATOP));
-			
-			canvas.drawColor(getResources().getColor(R.color.highlightColor), PorterDuff.Mode.MULTIPLY);
-			canvas.setDrawFilter(mDrawFilter);
-			*/
-		} else {
-			
-		}
-		
 		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
 		
+	}
+	
+	public void select() {
+		if (isSelected) return;
+		
+		this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
+				PorterDuff.Mode.SRC_ATOP);
+		setSize(this.getWidth()*2, this.getHeight()*2);
+		isSelected = true;
+	}
+	
+	public void deselect() {
+		if (!isSelected) return;
+		
+		this.getBackground().clearColorFilter();
+		setSize(this.getWidth() / 2, this.getHeight() / 2);
+		isSelected = false;
 	}
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
@@ -83,4 +80,10 @@ public class MAButton extends MAScreenElement {
 		this.invalidate();
 	}
 	
+	public void setSize(int width, int height) {
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.getLayoutParams(); 
+		params.height = height;
+		params.width = width;
+		this.setLayoutParams(params);
+	}
 }

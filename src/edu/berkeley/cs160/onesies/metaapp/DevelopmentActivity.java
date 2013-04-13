@@ -1,5 +1,7 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
