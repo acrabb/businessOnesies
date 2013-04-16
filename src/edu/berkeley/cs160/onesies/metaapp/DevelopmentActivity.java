@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -48,10 +49,13 @@ public class DevelopmentActivity extends Activity {
 	private View 				mElementsContentView;
 //	private View 				mLinkContentView;
 	
+	private MACanvas			mSketchCanvas;
+	
 	// Non-UI Objects--------------------------
 	private LayoutInflater		mLayoutInflater;
 	private Resources			mResources;
 	protected static MAProject	mProject;
+	private boolean				mInSketchZone = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,10 @@ public class DevelopmentActivity extends Activity {
 		
 		createNewProject();
 		mProject.addFirstScreen(mScreen);
+		
+		//TESTING BADGING
+//		MAScreenElement v = (MAScreenElement) mLayoutInflater.inflate(R.layout.ma_element, null);
+//		mScreen.addView(v);
 	}
 	
 	private void createNewProject() {
@@ -113,6 +121,28 @@ public class DevelopmentActivity extends Activity {
 	 */
 	public String getActivityString() {
 		return "Development";
+	}
+	
+	
+	public void showSketchZone(View sketchButton) {
+		if (!mInSketchZone) {
+			mSketchCanvas = new MACanvas(getApplicationContext());
+//			mSketchCanvas.setLayoutParams(mScreen.getLayoutParams());
+			mDevRelLayout.addView(mSketchCanvas, mScreen.getLayoutParams());			
+			mSidebar.showSketchZoneBar();
+			mInSketchZone = true;
+		} else {
+			mDevRelLayout.removeView(mSketchCanvas);
+			mSidebar.showDefaultSidebar();
+			mInSketchZone = false;
+		}
+	}
+	public void onAddSketchTapped() {
+		Bitmap map = mSketchCanvas.getSketch();
+		Log.i("ACACACAC", String.format("Map h: %d, w:%d", map.getHeight(), map.getWidth()));
+		MAScreenElement custom = createElement(ElementType.CUSTOM, map); 
+		mScreen.addView(custom);
+		mSketchCanvas.clear();
 	}
 	
 	public void showShapesPopup(View button) {
@@ -232,6 +262,11 @@ public class DevelopmentActivity extends Activity {
 		dia.show();
 	}
 	
+	public void onDeleteButtonTapped(View deleteButton) {
+		mScreen.deleteSelected();
+		mSidebar.showDefaultSidebar();
+	}
+	
 	String m_Text = "";
 	public void onEditTextTapped() {
 		if(mScreen.getSelectedElement() == null) { 
@@ -279,7 +314,6 @@ public class DevelopmentActivity extends Activity {
 			clone = new MAButton(getApplicationContext(), mScreen);
 		} else if(element instanceof TextView) {
 			type = ElementType.TEXT_LABEL; 
-//			clone = createElement(type, map);
 			clone = new MATextLabel(getApplicationContext(), mScreen, "Text Label");
 		} else {
 			return;
@@ -326,7 +360,10 @@ public class DevelopmentActivity extends Activity {
 //		hideElementSidebar();
 	}
 	public void showElementSidebar(View v) {
-		mSidebar.showElementContextBar();
+		mSidebar.showElementContextBar(mScreen.getSelectedElement());
+	}
+	public void showCustomElementSidebar(){
+		mSidebar.showCustomElementBar();
 	}
 		
 	

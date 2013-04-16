@@ -32,7 +32,6 @@ public class MAScreen extends RelativeLayout {
 				}
 			}
 		});
-		
 	}
 	
 	public void onElementTapped(MAScreenElement e) {
@@ -65,11 +64,11 @@ public class MAScreen extends RelativeLayout {
 		}
 		switch (mSelectedChild.getmType()) {
 			case BUTTON:
+			case TEXT_LABEL:
 				mDevelopmentActivity.showElementSidebar(mSelectedChild);
 				break;
-			case TEXT_LABEL:
-				mDevelopmentActivity.showDefaultSidebar();
-//				mDevelopmentActivity.showTextLabelSidebar(mSelectedChild);
+			case CUSTOM:
+				mDevelopmentActivity.showCustomElementSidebar();
 				break;
 			default:
 				//Things;	
@@ -104,6 +103,12 @@ public class MAScreen extends RelativeLayout {
 	}
 	public MAScreenElement getSelectedElement() {
 		return mSelectedChild;
+	}
+	public void deleteSelected() {
+		if (mSelectedChild != null) {
+			this.removeView(mSelectedChild);
+			mSelectedChild = null;
+		}
 	}
 	
 }

@@ -10,5 +10,6 @@ package edu.berkeley.cs160.onesies.metaapp;
 public enum ElementType {
 	BUTTON,
 	TEXT_LABEL,
+	CUSTOM,
 	OTHER;
 }

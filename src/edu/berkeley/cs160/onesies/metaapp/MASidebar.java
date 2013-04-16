@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /**
@@ -20,25 +21,30 @@ import android.widget.Toast;
  * @author andre
  *
  */
-public class MASidebar extends LinearLayout{
+public class MASidebar extends RelativeLayout{
 
 	private DevelopmentActivity mActivity;
+	private int backColor = R.color.sidebarColor;
 	
 	private Button mHomeButton;
 	private Button mNotesButton;
-	private Button mDrawButton;
+	private Button mSketchButton;
 	private Button mShapesButton;
 	private Button mElementButton;
+	private Button mDeleteButton;
 	private Button mMenuButton;
 	
-	private View mButtonOptionsView;
-	private Button mLinkButton;
-	private Button mEditTextButton;
+//	private View	mSketchOptionsView;
+//	private View 	mButtonOptionsView;
+//	private View	mCurrentContextOptions = null;
+	//---- SKETCH ZONE CONTEXT BUTTONS ----
+	private Button	mAddButton;
+	//---- MABUTTON CONTEXT BUTTONS ----
+	private Button	mLinkButton;
+	//---- ______ CONTEXT BUTTONS ----
+	private Button	mEditTextButton;
 	
-	private View mCurrentContextOptions = null;
-	
-	private int backColor = R.color.sidebarColor;
-	
+
 	public MASidebar(Context context) {
 		super(context);
 		this.setBackgroundColor(getResources().getColor(backColor));
@@ -64,17 +70,19 @@ public class MASidebar extends LinearLayout{
 		//---Main Dev Buttons ---------------------------------
 		mHomeButton = (Button) findViewById(R.id.homeButton);
 		mNotesButton = (Button) findViewById(R.id.notesButton);
-		mDrawButton = (Button) findViewById(R.id.drawButton);
+		mSketchButton = (Button) findViewById(R.id.sketchButton);
 		mShapesButton = (Button) findViewById(R.id.shapesButton);
 		mElementButton = (Button) findViewById(R.id.elementsButton);
 		mMenuButton = (Button) findViewById(R.id.menuButton);
 		
-		mButtonOptionsView = (View) findViewById(R.id.button_options);
+		//---Contextual Buttons ---------------------------------
+//		mSketchOptionsView = (View) findViewById(R.id.sketch_options);
+//		mButtonOptionsView = (View) findViewById(R.id.button_options);
 //		mTextOptionsView = (View) findViewById(R.id.text_options);
 		mLinkButton = (Button) findViewById(R.id.linkButton);
-		
 		mEditTextButton = (Button) findViewById(R.id.editTextButton);
-		
+		mDeleteButton = (Button) findViewById(R.id.deleteElementButton);
+		mAddButton = (Button) findViewById(R.id.addButton);
 		
 		mHomeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -88,10 +96,10 @@ public class MASidebar extends LinearLayout{
 				mActivity.makeToast("Hello Notes!");
 			}
 		});
-		mDrawButton.setOnClickListener(new View.OnClickListener() {
+		mSketchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				mActivity.makeToast("Hello Draw!");
+				mActivity.showSketchZone(arg0);
 			}
 		});
 		mShapesButton.setOnClickListener(new View.OnClickListener() {
@@ -106,37 +114,89 @@ public class MASidebar extends LinearLayout{
 				mActivity.showElementsPopup(arg0);
 			}
 		});
+		mDeleteButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mActivity.onDeleteButtonTapped(v);
+			}
+		});
 		mMenuButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mActivity.showMenuPopup(v);
 			}
 		});
+		
+		
+	//---- SKETCH ZONE CONTEXT BUTTONS ----
+		mAddButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				makeToast("ADD ME");
+				mActivity.onAddSketchTapped();
+			}
+		});
+	//---- MABUTTON CONTEXT BUTTONS ----
 		mLinkButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				mActivity.showLinkPopup(arg0);
 			}
 		});
+	//---- _______ CONTEXT BUTTONS ----
 		mEditTextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				mActivity.onEditTextTapped();
 			}
 		});
+		
+		showDefaultSidebar();
 	}
 
 	public void showDefaultSidebar() {
-		if (mCurrentContextOptions != null) {
-			mCurrentContextOptions.setVisibility(INVISIBLE);
-			mCurrentContextOptions = null;
-		}
+		mLinkButton.setVisibility(INVISIBLE);
+		mEditTextButton.setVisibility(INVISIBLE);
+		mDeleteButton.setVisibility(INVISIBLE);
+		mAddButton.setVisibility(INVISIBLE);
+//		if (mCurrentContextOptions != null) {
+//			mCurrentContextOptions.setVisibility(INVISIBLE);
+//			mCurrentContextOptions = null;
+//		}
 	}
-	public void showElementContextBar() {
-		if (mCurrentContextOptions != mButtonOptionsView) {			
-			mButtonOptionsView.setVisibility(VISIBLE);
+	public void showSketchZoneBar() {
+		mLinkButton.setVisibility(INVISIBLE);
+		mEditTextButton.setVisibility(INVISIBLE);
+		mDeleteButton.setVisibility(INVISIBLE);
+		mAddButton.setVisibility(VISIBLE);
+//		if(mCurrentContextOptions != mSketchOptionsView) {
+//			mSketchOptionsView.setVisibility(VISIBLE);
+//			mCurrentContextOptions = mSketchOptionsView;
+//		}
+	}
+	public void showElementContextBar(MAScreenElement element) {
+		if (element == null)
+			return;
+		if(element.getmType() == ElementType.BUTTON) {
+			mLinkButton.setVisibility(VISIBLE);
+		} else {
+			mLinkButton.setVisibility(INVISIBLE);
 		}
-		mCurrentContextOptions = mButtonOptionsView;
+		mEditTextButton.setVisibility(VISIBLE);
+		mDeleteButton.setVisibility(VISIBLE);
+		mAddButton.setVisibility(INVISIBLE);
+//		if (mCurrentContextOptions != mButtonOptionsView) {			
+//			mButtonOptionsView.setVisibility(VISIBLE);
+//			mCurrentContextOptions = mButtonOptionsView;
+//		}
+	}
+	public void showCustomElementBar() {
+		mLinkButton.setVisibility(VISIBLE);
+		mEditTextButton.setVisibility(INVISIBLE);
+		mDeleteButton.setVisibility(VISIBLE);
+		mAddButton.setVisibility(INVISIBLE);
 	}
 
 	public DevelopmentActivity getmActivity() {

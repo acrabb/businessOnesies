@@ -9,37 +9,125 @@
         android:id="@+id/homeButton"
         style="@style/sidebarButtonStyle"
         android:background="@drawable/home"
+        android:layout_alignParentTop="true"
         /> 
    <View
+       android:id="@+id/spacer1"
        style="@style/sidebarSpacerStyle"
+       android:layout_below="@id/homeButton"
        />
-   
-    <include layout="@layout/sidebar_main_dev_buttons"
-        android:id="@+id/main_buttons"
-        />
-    <include layout="@layout/sidebar_button_context_buttons"
-        android:id="@+id/button_options"
-        android:visibility="invisible"
-        />
-    <include layout="@layout/sidebar_text_context_buttons"    
-        android:id="@+id/text_options"
-        android:visibility="invisible"
-        />
-    <Button 
-        android:id="@+id/editTextButton"
+   <Button 
+        android:id="@+id/notesButton"
         style="@style/sidebarButtonStyle"
-        android:background="@drawable/text_editing"
+        android:background="@drawable/notes"
+        android:layout_below="@id/spacer1"
         />
-	
 	<Button 
-        android:id="@+id/menuButton"
+        android:id="@+id/sketchButton"
         style="@style/sidebarButtonStyle"
-        android:background="@drawable/menu"
+        android:background="@drawable/pencil"
+        android:layout_below="@id/notesButton"
         />
+	<Button 
+        android:id="@+id/shapesButton"
+        style="@style/sidebarButtonStyle"
+        android:background="@drawable/shapes"
+        android:layout_below="@id/sketchButton"
+        />
+	<Button 
+        android:id="@+id/elementsButton"
+        style="@style/sidebarButtonStyle"
+        android:background="@drawable/ui"
+        android:layout_below="@id/shapesButton"
+        />
+	 <View
+	     android:id="@+id/spacer2"
+	     style="@style/sidebarSpacerStyle"
+	     android:layout_below="@id/elementsButton"
+	     />
+
+    <!-- include layout="@layout/sidebar_main_dev_buttons"
+        android:id="@+id/main_buttons"
+        android:layout_below="@id/spacer1"
+        /-->
+        
+    
+    
+    <!-- MABUTTON CONTEXT -->
+    <Button 
+	    android:id="@+id/linkButton"
+	    style="@style/sidebarButtonStyle"
+	    android:background="@drawable/link"
+	    android:layout_below="@id/spacer2"
+	    />
+
+    <!-- include layout="@layout/sidebar_button_context_buttons"
+        android:id="@+id/button_options"
+        android:layout_below="@id/elementsButton"
+        android:visibility="invisible"
+        /-->
+    <!-- include layout="@layout/sidebar_text_context_buttons"    
+        android:id="@+id/text_options"
+        android:layout_below="@id/elementsButton"
+        android:visibility="invisible"
+        /-->
+    <!-- include layout="@layout/sidebar_sketch_context"
+        android:id="@+id/sketch_options"
+        android:layout_below="@id/elementsButton"
+        android:visibility="invisible"        
+        /-->
+    
+    
+    <!-- ELEMENT BUTTONS -->
+    <Button 
+	    android:id="@+id/editTextButton"
+	    style="@style/sidebarButtonStyle"
+	    android:background="@drawable/text_editing"
+	    android:layout_below="@id/linkButton"
+	    />
+    <Button
+        android:id="@+id/deleteElementButton"
+        style="@style/sidebarButtonStyle"
+        android:layout_below="@id/editTextButton"
+        android:text="X"
+        />
+
+    
+	<!-- SKETCH ZONE CONTEXT -->
+    <Button 
+        android:id="@+id/addButton"
+        style="@style/sidebarButtonStyle"
+        android:text="+"
+        android:layout_below="@id/deleteElementButton"
+        />
+    <!-- NumberPicker 
+        android:id="@+id/brushSize"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="@color/lightseagreen"
+        android:padding="@dimen/sidebarButtonPadding"
+        /-->
+    
+    
+    
+    <!-- BASE BUTTONS (In upside-down order for access to buttons below)-->
 	<Button 
         android:id="@+id/helpButton"
         style="@style/sidebarButtonStyle"
         android:background="@drawable/help"
+        android:layout_alignParentBottom="true"
+        />
+	<Button 
+        android:id="@+id/menuButton"
+        style="@style/sidebarButtonStyle"
+        android:background="@drawable/menu"
+        android:layout_above="@id/helpButton"
+        />
+    <Button 
+        android:id="@+id/undoButton"
+        style="@style/sidebarButtonStyle"
+        android:text="Undo"
+        android:layout_above="@id/menuButton"
         />
 </edu.berkeley.cs160.onesies.metaapp.MASidebar>
 <!--  /LinearLayout -->

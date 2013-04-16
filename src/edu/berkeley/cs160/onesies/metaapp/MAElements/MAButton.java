@@ -19,12 +19,15 @@ public class MAButton extends MAScreenElement {
 
 	private MAScreen	mDestinationScreen;
 	private String		mLabel = "Button";	
+	private DrawFilter mDrawFilter;
+	private Paint paint;
 	
 	public MAButton(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.BUTTON);
 		// Set background to be some image
 		this.mIsLinkable = true;
 		this.setBackgroundResource(R.drawable.btn_default_normal);
+		paint = new Paint();
 	}
 
 	public MAButton(Context context, AttributeSet attrs) {
@@ -33,37 +36,34 @@ public class MAButton extends MAScreenElement {
 	}
 
 	
-	DrawFilter mDrawFilter;
-	
 	@Override
 	public void onDraw(Canvas canvas) {
-		Paint paint = new Paint();	
+//		super.onDraw(canvas);
+//		canvas.save();
+//		canvas.scale(mScaleFactor, mScaleFactor);
 		
 		paint.setColor(Color.BLACK);
 		paint.setTextSize(40); 
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
-		
 		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
 		
+//		canvas.restore();
 	}
 	
+	@Override
 	public void select() {
-		if (isSelected) return;
-		
+		super.select();
 		this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
-				PorterDuff.Mode.SRC_ATOP);
-		setSize(this.getWidth()*2, this.getHeight()*2);
+				PorterDuff.Mode.DARKEN);
 		isSelected = true;
 	}
-	
+	@Override
 	public void deselect() {
-		if (!isSelected) return;
-		
+		super.deselect();
 		this.getBackground().clearColorFilter();
-		setSize(this.getWidth() / 2, this.getHeight() / 2);
-		isSelected = false;
 	}
+	
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
 	public MAScreen getDestinationScreen() {

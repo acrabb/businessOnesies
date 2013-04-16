@@ -13,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.widget.TextView;
 
 public class MATextLabel extends MAScreenElement {
 
@@ -24,6 +25,11 @@ public class MATextLabel extends MAScreenElement {
 		this.mIsLinkable = false;
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		mLabel = text;
+//		TextView mTextView = new TextView(context);
+//		mTextView.setTextColor(getResources().getColor(R.color.black));
+//		mTextView.setTextSize(30);
+//		mTextView.setText("HELLO");
+//		this.addView(mTextView);
 	}
 
 	public MATextLabel(Context context) {
@@ -43,28 +49,31 @@ public class MATextLabel extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
+		/**/
+		if(isSelected){
+			this.setBackgroundColor(getResources().getColor(R.color.highlightColor));			
+		} else {
+			this.setBackgroundColor(getResources().getColor(R.color.clearColor));			
+		}
+		/**/
 		Paint paint = new Paint();
 		paint.setColor(Color.BLACK);
 		paint.setTextSize(40); 
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		
-		/**/
-		if(isSelected){
-            this.setBackgroundColor(getResources().getColor(R.color.highlightColor));			
-//			paint.setColorFilter(
-//					new PorterDuffColorFilter(getResources().getColor(R.color.highlightColor),
-//							PorterDuff.Mode.DST_ATOP));
-			
-//			canvas.drawColor(getResources().getColor(R.color.highlightColor), PorterDuff.Mode.MULTIPLY);
-//			canvas.setDrawFilter(mDrawFilter);
-		} else {
-            this.setBackgroundColor(getResources().getColor(R.color.clearColor));			
-			
-		}
-		/**/
 		
 		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
 	}
 
+	@Override
+	public void select() {
+		super.select();
+//		makeToast("MATextlabel select");
+	}
+	@Override
+	public void deselect() {
+		super.deselect();
+//		makeToast("MATextlabel deselect");
+	}
 }

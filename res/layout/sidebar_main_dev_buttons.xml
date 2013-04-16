@@ -11,7 +11,7 @@
         android:background="@drawable/notes"
         />
 	<Button 
-        android:id="@+id/drawButton"
+        android:id="@+id/sketchButton"
         style="@style/sidebarButtonStyle"
         android:background="@drawable/pencil"
         />
