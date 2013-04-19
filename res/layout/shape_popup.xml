@@ -2,38 +2,19 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/shapesLayout"
     android:layout_width="0dp"
-    android:layout_height="0dp"
-    >
+    android:layout_height="0dp" >
+
     <GridLayout
         android:id="@+id/shapesGrid"
         android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:columnCount="1"
-        >
-        <TextView 
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="test1"
-		    />
-		<TextView 
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="test2"
-		    />
-		<TextView 
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="test3"
-		    />
-		<TextView 
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="test4"
-		    />
-		<TextView 
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="test5"
-		    />
+        android:layout_height="wrap_content"
+        android:columnCount="1" >
+
+        <ImageView
+            android:id="@+id/rectangle"
+            android:layout_gravity="left"
+            android:src="@drawable/rectangle" />
+
     </GridLayout>
+
 </ScrollView>

@@ -11,5 +11,6 @@ public enum ElementType {
 	BUTTON,
 	TEXT_LABEL,
 	CUSTOM,
+	SHAPE,
 	OTHER;
 }

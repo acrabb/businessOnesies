@@ -1,7 +1,5 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
-import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
-import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +29,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
+import edu.berkeley.cs160.onesies.metaapp.MAShapes.MARectangle;
 
 
 public class DevelopmentActivity extends Activity {
@@ -44,6 +44,7 @@ public class DevelopmentActivity extends Activity {
 	private PopupWindow			mPopupWindow;
 	private PopupMenu			mPopupMenu;
 	private GridLayout			mElementsGridView;
+	private GridLayout			mShapesGridView;
 
 	private View 				mShapesContentView;
 	private View 				mElementsContentView;
@@ -154,6 +155,19 @@ public class DevelopmentActivity extends Activity {
 		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
 		 * dismissed properly
 		 */
+		mShapesGridView = (GridLayout) mShapesContentView.findViewById(R.id.shapesGrid);
+		View v;
+		int numChildren = mShapesGridView.getChildCount();
+		for (int i = 0; i < numChildren; i++) {
+			v = mShapesGridView.getChildAt(i);
+			v.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Log.d("meta", "Clicked on a shape");
+					addShapeElement(v);
+				}
+			});
+		}
 		
 		mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
 		mPopupWindow.setOutsideTouchable(true);
@@ -318,13 +332,27 @@ public class DevelopmentActivity extends Activity {
 		} else {
 			return;
 		}
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				200, 100);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);
 		MAScreenElement clone2 = createElement(type, map);
-		clone.setLayoutParams(params);
 		testScreen.addView(clone2);
 		mScreen.addView(clone);
+	}
+	
+	private void addShapeElement(View element) {
+		Bitmap map = createBitmapOfView(element);
+		ElementType type = ElementType.SHAPE;
+		MARectangle clone = new MARectangle(getApplicationContext(), mScreen);
+		
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
+		clone.setLayoutParams(params);
+
+		MARectangle clone2 = new MARectangle(getApplicationContext(), mScreen);
+	
+		testScreen.addView(clone2);
+		mScreen.addView(clone);
+		clone.redraw(0,0,200,100);
+		clone2.redraw(0,0,200,100);
 	}
 	
 	private void onLinkToNewScreenSelected(MAButton button) {
@@ -359,7 +387,7 @@ public class DevelopmentActivity extends Activity {
 		mSidebar.showDefaultSidebar();
 //		hideElementSidebar();
 	}
-	public void showElementSidebar(View v) {
+	public void showElementSidebar() {
 		mSidebar.showElementContextBar(mScreen.getSelectedElement());
 	}
 	public void showCustomElementSidebar(){
