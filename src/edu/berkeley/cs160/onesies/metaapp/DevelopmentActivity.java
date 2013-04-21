@@ -85,6 +85,7 @@ public class DevelopmentActivity extends Activity {
 //		mScreen.addView(v);
 	}
 	
+	//-------------------------------------------------------------------------
 	private void createNewProject() {
 		//TODO
 		mProject = new MAProject("Project1");
@@ -94,6 +95,7 @@ public class DevelopmentActivity extends Activity {
 		makeToast("Screen '%s' Created.", name);
 	}
 	
+	//-------------------------------------------------------------------------
 	private void showScreenWithName(String name) {
 		MAScreenElement selected = mScreen.getSelectedElement();
 		if(selected != null) {
@@ -112,23 +114,9 @@ public class DevelopmentActivity extends Activity {
 	 * MASIDEBAR "CALLBACK" METHODS
 	 *****************************************************************************/
 	
-	
-	public void goTestMode() {
-		Intent mIntent = new Intent(this, TestingActivity.class);
-		startActivity(mIntent);		
-	}
-	/** 
-	 * Test for passing custom objects through intents using serializable bundles
-	 */
-	public String getActivityString() {
-		return "Development";
-	}
-	
-	
 	public void showSketchZone(View sketchButton) {
 		if (!mInSketchZone) {
 			mSketchCanvas = new MACanvas(getApplicationContext());
-//			mSketchCanvas.setLayoutParams(mScreen.getLayoutParams());
 			mDevRelLayout.addView(mSketchCanvas, mScreen.getLayoutParams());			
 			mSidebar.showSketchZoneBar();
 			mInSketchZone = true;
@@ -138,6 +126,7 @@ public class DevelopmentActivity extends Activity {
 			mInSketchZone = false;
 		}
 	}
+	//-------------------------------------------------------------------------
 	public void onAddSketchTapped() {
 		Bitmap map = mSketchCanvas.getSketch();
 		Log.i("ACACACAC", String.format("Map h: %d, w:%d", map.getHeight(), map.getWidth()));
@@ -146,6 +135,7 @@ public class DevelopmentActivity extends Activity {
 		mSketchCanvas.clear();
 	}
 	
+	//-------------------------------------------------------------------------
 	public void showShapesPopup(View button) {
 		mShapesContentView = mLayoutInflater.inflate(R.layout.shape_popup, null);
 		mPopupWindow = new PopupWindow(mShapesContentView,
@@ -174,6 +164,7 @@ public class DevelopmentActivity extends Activity {
 		mPopupWindow.showAsDropDown(button, 0, 0);
 	}
 	
+	//-------------------------------------------------------------------------
 	public void showElementsPopup(View button) {
 		mElementsContentView = mLayoutInflater.inflate(R.layout.elements_popup, null);
 		mPopupWindow = new PopupWindow(mElementsContentView,
@@ -201,6 +192,7 @@ public class DevelopmentActivity extends Activity {
 		mPopupWindow.showAsDropDown(button, 0, 0);
 	}
 	
+	//-------------------------------------------------------------------------
 	public void showLinkPopup(View linkButton) {
 		mPopupMenu = new PopupMenu(getApplicationContext(), linkButton);
 		mPopupMenu.inflate(R.menu.link_menu);
@@ -227,6 +219,7 @@ public class DevelopmentActivity extends Activity {
 		});
 		mPopupMenu.show();
 	}
+	//-------------------------------------------------------------------------
 	public void showMenuPopup(View button) {
 		mPopupMenu = new PopupMenu(getApplicationContext(), button);
 		mPopupMenu.inflate(R.menu.dev_menu);
@@ -236,16 +229,18 @@ public class DevelopmentActivity extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				switch(item.getItemId()) {
 					case R.id.link_menu_new:
+						// Create a new screen that is not linked to by anything.
 //						onLinkToNewScreenSelected();
 						break;
 					case R.id.link_menu_existing:
+						// Show Big Picture for the selection of a screen.
 //						onLinkToExistingScreenSelected();
 						break;
 					case R.id.dev_menu_big_picture:
 						onBigPictureSelected();
 						break;
 					case R.id.dev_menu_test:
-						goTestMode();
+						onTestModeTapped();
 						break;
 					default:
 				}
@@ -256,31 +251,14 @@ public class DevelopmentActivity extends Activity {
 		/**/
 	}
 	
-	private void onBigPictureSelected() {
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		final Dialog dia = new Dialog(this);
-		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
-		ListView screenList = (ListView) v.findViewById(android.R.id.list);
-		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
-		screenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
-				dia.dismiss();
-			}
-		});
-		
-		dia.setContentView(v);
-		dia.setTitle("Go To Screen:");
-		dia.show();
-	}
 	
+	//-------------------------------------------------------------------------
 	public void onDeleteButtonTapped(View deleteButton) {
 		mScreen.deleteSelected();
 		mSidebar.showDefaultSidebar();
 	}
 	
+	//-------------------------------------------------------------------------
 	String m_Text = "";
 	public void onEditTextTapped() {
 		if(mScreen.getSelectedElement() == null) { 
@@ -338,7 +316,7 @@ public class DevelopmentActivity extends Activity {
 		testScreen.addView(clone2);
 		mScreen.addView(clone);
 	}
-	
+	//-------------------------------------------------------------------------
 	private void addShapeElement(View element) {
 		Bitmap map = createBitmapOfView(element);
 		ElementType type = ElementType.SHAPE;
@@ -355,6 +333,7 @@ public class DevelopmentActivity extends Activity {
 		clone2.redraw(0,0,200,100);
 	}
 	
+	//-------------------------------------------------------------------------
 	private void onLinkToNewScreenSelected(MAButton button) {
 		// TODO MODULARIZE
 		// Create new Screen
@@ -373,12 +352,46 @@ public class DevelopmentActivity extends Activity {
 		button.setDestinationScreen(newScreen);
 		makeToast("Screen '%s' Created.", newName);
 	}
+	//-------------------------------------------------------------------------
 	private void onLinkToExistingScreenSelected(MAButton button) {
 		makeToast("LINK TO EXISTING SCREEN");
 		
 	}
 	
 	
+	
+	/*****************************************************************************
+	 * MENU "CALLBACK" METHODS
+	 *****************************************************************************/
+	public void onTestModeTapped() {
+		Intent mIntent = new Intent(this, TestingActivity.class);
+		startActivity(mIntent);		
+	}
+	/** 
+	 * Test for passing custom objects through intents using serializable bundles
+	 */
+	public String getActivityString() {
+		return "Development";
+	}
+	private void onBigPictureSelected() {
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
+		final Dialog dia = new Dialog(this);
+		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
+		ListView screenList = (ListView) v.findViewById(android.R.id.list);
+		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
+		screenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
+				dia.dismiss();
+			}
+		});
+		
+		dia.setContentView(v);
+		dia.setTitle("Go To Screen:");
+		dia.show();
+	}
 	/*****************************************************************************
 	 * SIDEBAR RELAY METHODS
 	 *****************************************************************************/
