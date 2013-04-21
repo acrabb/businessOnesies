@@ -11,10 +11,14 @@
         android:columnCount="1" >
 
         <ImageView
-            android:id="@+id/rectangle"
+            android:id="@+id/ma_rectangle"
             android:layout_gravity="left"
-            android:src="@drawable/rectangle" />
+            android:src="@drawable/ma_rectangle" />
 
+        <ImageView
+            android:id="@+id/ma_oval"
+            android:layout_gravity="left"
+            android:src="@drawable/ma_oval" />
     </GridLayout>
 
 </ScrollView>

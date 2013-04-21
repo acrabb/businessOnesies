@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
+import edu.berkeley.cs160.onesies.metaapp.MAShapes.MAOval;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MARectangle;
 
 
@@ -342,17 +343,24 @@ public class DevelopmentActivity extends Activity {
 	private void addShapeElement(View element) {
 		Bitmap map = createBitmapOfView(element);
 		ElementType type = ElementType.SHAPE;
-		MARectangle clone = new MARectangle(getApplicationContext(), mScreen);
+		MAScreenElement clone;
+		MAScreenElement clone2;
+		if (element.getId() == R.id.ma_rectangle) {
+			clone = new MARectangle(getApplicationContext(), mScreen);
+			clone2 = new MARectangle(getApplicationContext(), mScreen);
+		} else {
+			clone = new MAOval(getApplicationContext(), mScreen);
+			clone2 = new MAOval(getApplicationContext(), mScreen);
+		}
 		
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);
 
-		MARectangle clone2 = new MARectangle(getApplicationContext(), mScreen);
 	
 		testScreen.addView(clone2);
 		mScreen.addView(clone);
-		clone.redraw(0,0,200,100);
-		clone2.redraw(0,0,200,100);
+		// clone.redraw(0,0,200,100);
+		// clone2.redraw(0,0,200,100);
 	}
 	
 	private void onLinkToNewScreenSelected(MAButton button) {
