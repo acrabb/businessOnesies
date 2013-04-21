@@ -108,7 +108,7 @@ public class MAScreenElement extends FrameLayout {
 				mLastY = y;
 				break;
 			case MotionEvent.ACTION_MOVE:
-				if (!mMAScreen.getTestMode()) {
+				if (!mMAScreen.isTesting()) {
 					params = (RelativeLayout.LayoutParams) this.getLayoutParams();
 					mWasDragged = true;
 					if (mResizing){
@@ -126,7 +126,7 @@ public class MAScreenElement extends FrameLayout {
 			case MotionEvent.ACTION_UP:
 				if (!mWasDragged) {
 					// Element tapped!
-					onTap();
+					elementWasTapped();
 				}
 				mResizing = false;
 				mWasDragged = false;
@@ -138,11 +138,9 @@ public class MAScreenElement extends FrameLayout {
 		return true;
 	}
 	
-	private void onTap() {
-		if (mMAScreen.getTestMode()) {
-			if (screenLinkedTo != null) {
-				mMAScreen.getmTestingActivity().showScreenWithName(screenLinkedTo);
-			}
+	private void elementWasTapped() {
+		if (mMAScreen.isTesting()) {
+			mMAScreen.onElementTappedInTest(this);
 		} else {
 			mMAScreen.onElementTapped(this);
 		}

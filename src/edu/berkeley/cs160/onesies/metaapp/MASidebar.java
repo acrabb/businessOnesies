@@ -24,24 +24,21 @@ import android.widget.Toast;
 public class MASidebar extends RelativeLayout{
 
 	private DevelopmentActivity mActivity;
-	private int backColor = R.color.sidebarColor;
+	private int 	backColor = R.color.sidebarColor;
 	
-	private Button mHomeButton;
-	private Button mNotesButton;
-	private Button mSketchButton;
-	private Button mShapesButton;
-	private Button mElementButton;
-	private Button mDeleteButton;
-	private Button mMenuButton;
+	private Button 	mHomeButton;
+	private Button 	mNotesButton;
+	private Button 	mSketchButton;
+	private Button 	mShapesButton;
+	private Button 	mElementButton;
+	private Button 	mMenuButton;
 	
 //	private View	mSketchOptionsView;
 //	private View 	mButtonOptionsView;
 //	private View	mCurrentContextOptions = null;
-	//---- SKETCH ZONE CONTEXT BUTTONS ----
 	private Button	mAddButton;
-	//---- MABUTTON CONTEXT BUTTONS ----
+	private Button	mDeleteButton;
 	private Button	mLinkButton;
-	//---- ______ CONTEXT BUTTONS ----
 	private Button	mEditTextButton;
 	
 
@@ -60,10 +57,12 @@ public class MASidebar extends RelativeLayout{
 		this.setBackgroundColor(getResources().getColor(backColor));
 	}
 	
+	//-------------------------------------------------------------------------
 	public void setUp(TestingActivity activity) {
 		this.setBackgroundColor(Color.GRAY);
 	}
 	
+	//-------------------------------------------------------------------------
 	public void setUp(DevelopmentActivity activity) {
 		mActivity = activity;
 		
@@ -156,7 +155,16 @@ public class MASidebar extends RelativeLayout{
 		showDefaultSidebar();
 	}
 
+	//-------------------------------------------------------------------------
 	public void showDefaultSidebar() {
+		mHomeButton.setVisibility(VISIBLE);
+		mNotesButton.setVisibility(VISIBLE);
+		mSketchButton.setVisibility(VISIBLE);
+		mShapesButton.setVisibility(VISIBLE);
+		mElementButton.setVisibility(VISIBLE);
+		mMenuButton.setVisibility(VISIBLE);
+		
+		
 		mLinkButton.setVisibility(INVISIBLE);
 		mEditTextButton.setVisibility(INVISIBLE);
 		mDeleteButton.setVisibility(INVISIBLE);
@@ -198,7 +206,27 @@ public class MASidebar extends RelativeLayout{
 		mDeleteButton.setVisibility(VISIBLE);
 		mAddButton.setVisibility(INVISIBLE);
 	}
+	
+	public void showTestBar() {
+		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+		
+		mHomeButton.setVisibility(VISIBLE);
+		mNotesButton.setVisibility(INVISIBLE);
+		mSketchButton.setVisibility(INVISIBLE);
+		mShapesButton.setVisibility(INVISIBLE);
+		mElementButton.setVisibility(INVISIBLE);
+		mMenuButton.setVisibility(VISIBLE);
+		
+		mLinkButton.setVisibility(INVISIBLE);
+		mEditTextButton.setVisibility(INVISIBLE);
+		mDeleteButton.setVisibility(INVISIBLE);
+		mAddButton.setVisibility(INVISIBLE);
+	}
 
+	//-------------------------------------------------------------------------
 	public DevelopmentActivity getmActivity() {
 		return mActivity;
 	}
@@ -208,6 +236,7 @@ public class MASidebar extends RelativeLayout{
 	}
 	
 	
+	//-------------------------------------------------------------------------
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getContext(),
 				String.format(format, args), Toast.LENGTH_SHORT).show();

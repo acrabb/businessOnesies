@@ -1,5 +1,6 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -14,9 +15,9 @@ public class MAScreen extends RelativeLayout {
 	private int 				mChildCount;
 	private MAScreenElement 	mSelectedChild;
 	private DevelopmentActivity mDevelopmentActivity;
-	private TestingActivity 	mTestingActivity;
+//	private TestingActivity 	mTestingActivity;
 	private String				mName;
-	protected boolean    		testMode = false;
+//	protected boolean    		testMode = false;
 	
 	public MAScreen(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -24,19 +25,31 @@ public class MAScreen extends RelativeLayout {
 		this.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (mSelectedChild != null) {
-					mSelectedChild.deselect();
-					mSelectedChild = null;
-//					mDevelopmentActivity.hideElementSidebar();
-					determineSidebarState();
-				}
+				deselectAll();
 			}
 		});
 	}
 	
+	public void deselectAll() {
+		if (mSelectedChild != null) {
+			mSelectedChild.deselect();
+			mSelectedChild = null;
+			determineSidebarState();
+		}
+		
+	}
 	public void onElementTapped(MAScreenElement e) {
 		determineSelectionState(e);
 		determineSidebarState();
+	}
+	public void onElementTappedInTest(MAScreenElement e) {
+		switch (e.getmType()) {
+			case BUTTON:
+				mDevelopmentActivity.onButtonTappedInTest((MAButton) e);
+				break;
+			default:
+				break;
+		}
 	}
 	private void determineSelectionState(MAScreenElement e) {
 		if (e == null) {
@@ -75,13 +88,13 @@ public class MAScreen extends RelativeLayout {
 		}
 	}
 
-	public void setTestMode(final boolean mode) {
-		this.testMode = mode;
-	}
-	
-	public boolean getTestMode() {
-		return this.testMode;
-	}
+//	public void setTestMode(final boolean mode) {
+//		this.testMode = mode;
+//	}
+//	
+//	public boolean getTestMode() {
+//		return this.testMode;
+//	}
 	
 	public DevelopmentActivity getmDevelopmentActivity() {
 		return mDevelopmentActivity;
@@ -89,11 +102,14 @@ public class MAScreen extends RelativeLayout {
 	public void setmDevelopmentActivity(DevelopmentActivity mDevelopmentActivity) {
 		this.mDevelopmentActivity = mDevelopmentActivity;
 	}
-	public void setmTestingActivity(TestingActivity mTestingActivity) {
-		this.mTestingActivity = mTestingActivity;
-	}
-	public TestingActivity getmTestingActivity() {
-		return mTestingActivity;
+//	public void setmTestingActivity(TestingActivity mTestingActivity) {
+//		this.mTestingActivity = mTestingActivity;
+//	}
+//	public TestingActivity getmTestingActivity() {
+//		return mTestingActivity;
+//	}
+	public boolean isTesting() {
+		return mDevelopmentActivity.isTesting();
 	}
 	public String getName() {
 		return mName;

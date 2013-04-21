@@ -30,6 +30,10 @@ public class MACanvas extends View {
 	private float			mTopMost=Float.MAX_VALUE;
 	private float			mBottomMost=0;
 	
+	// ----- Top and Left margins of drawn bitmap. Essentially: (x,y)
+	private int			t = 0;
+	private int			l= 0;
+	
 	public MACanvas(Context context) {
 		super(context);
 		this.setBackgroundColor(getResources().getColor(mBackgroundColor));
@@ -86,18 +90,18 @@ public class MACanvas extends View {
 	}
 	
 	public Bitmap getSketch() {
-//		return mBitmap;
-//		mBackgroundColor = Color.WHITE;
 		int buffer = 5;
-		int t = Math.max(0, (int) mTopMost-buffer);
-		int l = Math.max(0, (int) mLeftMost-buffer);
+		t = Math.max(0, (int) mTopMost-buffer);
+		l = Math.max(0, (int) mLeftMost-buffer);
 		int b = (int) mBottomMost+buffer;
 		int r = (int) mRightMost+buffer;
-//		invalidate(l, t, r, b);
-		Bitmap bit = Bitmap.createBitmap(mBitmap, l, t, r-l, b-t);
-		Log.i("ACACACAC", String.format("Bit h: %d, w:%d", bit.getHeight(), bit.getWidth()));
-//		mBackgroundColor = R.color.canvasColor;
-//		invalidate();
+		int height = b-t;
+		int width = r-l;
+		if(width < 0 || height < 0) {
+			return null;
+		}
+		Log.i("ACACACAC", String.format(">>> Bit with h: %d, w:%d", height, width));
+		Bitmap bit = Bitmap.createBitmap(mBitmap, l, t, width, height);
 		return bit;
 	}
 	public void clear() {
@@ -128,6 +132,14 @@ public class MACanvas extends View {
 		// Set the width back to what's been selected.
 		canvas.drawBitmap(mBitmap, 0, 0, null);
 		mPaint.setStrokeWidth(mBrushSize);
+	}
+
+	public int getTopMargin() {
+		return t;
+	}
+
+	public int getLeftMargin() {
+		return l;
 	}
 
 }
