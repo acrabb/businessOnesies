@@ -38,11 +38,12 @@ public class DevelopmentActivity extends Activity {
 
 	// UI Objects-------------------------------
 	private MAScreen			mScreen;
-	private MAScreen            testScreen;
+//	private MAScreen            testScreen;
 	private RelativeLayout		mDevRelLayout;
 	private MASidebar			mSidebar;
 	private PopupWindow			mPopupWindow;
-	private PopupMenu			mPopupMenu;
+	private PopupMenu			mMenuPopupMenu;
+	private PopupMenu			mLinkPopupMenu;
 	private GridLayout			mElementsGridView;
 	private GridLayout			mShapesGridView;
 
@@ -57,6 +58,7 @@ public class DevelopmentActivity extends Activity {
 	private Resources			mResources;
 	protected static MAProject	mProject;
 	private boolean				mInSketchZone = false;
+	private boolean				mIsTesting = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,7 @@ public class DevelopmentActivity extends Activity {
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
 		
-		testScreen = (MAScreen) mLayoutInflater.inflate(R.layout.ma_screen, null);
+//		testScreen = (MAScreen) mLayoutInflater.inflate(R.layout.ma_screen, null);
 		
 		createNewProject();
 		mProject.addFirstScreen(mScreen);
@@ -97,6 +99,7 @@ public class DevelopmentActivity extends Activity {
 	
 	//-------------------------------------------------------------------------
 	private void showScreenWithName(String name) {
+		// Deselect any current selection.
 		MAScreenElement selected = mScreen.getSelectedElement();
 		if(selected != null) {
 			selected.setScreenLinkedTo(name);
@@ -110,10 +113,10 @@ public class DevelopmentActivity extends Activity {
 	}
 	
 	
+	
 	/*****************************************************************************
 	 * MASIDEBAR "CALLBACK" METHODS
 	 *****************************************************************************/
-	
 	public void showSketchZone(View sketchButton) {
 		if (!mInSketchZone) {
 			mSketchCanvas = new MACanvas(getApplicationContext());
@@ -121,18 +124,30 @@ public class DevelopmentActivity extends Activity {
 			mSidebar.showSketchZoneBar();
 			mInSketchZone = true;
 		} else {
-			mDevRelLayout.removeView(mSketchCanvas);
-			mSidebar.showDefaultSidebar();
-			mInSketchZone = false;
+			onAddSketchTapped();
+			hideSketchZone();
 		}
+	}
+	//-------------------------------------------------------------------------
+	private void hideSketchZone() {
+			mDevRelLayout.removeView(mSketchCanvas);
+			showDefaultSidebar();
+			mInSketchZone = false;
 	}
 	//-------------------------------------------------------------------------
 	public void onAddSketchTapped() {
 		Bitmap map = mSketchCanvas.getSketch();
-		Log.i("ACACACAC", String.format("Map h: %d, w:%d", map.getHeight(), map.getWidth()));
-		MAScreenElement custom = createElement(ElementType.CUSTOM, map); 
-		mScreen.addView(custom);
-		mSketchCanvas.clear();
+		if (map != null) {
+			Log.i("ACACACAC", String.format("Map h: %d, w:%d", map.getHeight(), map.getWidth()));
+			MAScreenElement custom = createElement(ElementType.CUSTOM, map);
+			RelativeLayout.LayoutParams p = 
+					new RelativeLayout.LayoutParams(map.getWidth(), map.getHeight());
+			p.leftMargin = mSketchCanvas.getLeftMargin();
+			p.topMargin = mSketchCanvas.getTopMargin();
+			custom.setLayoutParams(p);
+			mScreen.addView(custom);
+		}
+		hideSketchZone();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -194,9 +209,9 @@ public class DevelopmentActivity extends Activity {
 	
 	//-------------------------------------------------------------------------
 	public void showLinkPopup(View linkButton) {
-		mPopupMenu = new PopupMenu(getApplicationContext(), linkButton);
-		mPopupMenu.inflate(R.menu.link_menu);
-		mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+		mLinkPopupMenu = new PopupMenu(getApplicationContext(), linkButton);
+		mLinkPopupMenu.inflate(R.menu.link_menu);
+		mLinkPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				//Make sure they're linking an MAButton
@@ -217,16 +232,23 @@ public class DevelopmentActivity extends Activity {
 				return true;
 			}
 		});
-		mPopupMenu.show();
+		mLinkPopupMenu.show();
 	}
 	//-------------------------------------------------------------------------
 	public void showMenuPopup(View button) {
-		mPopupMenu = new PopupMenu(getApplicationContext(), button);
-		mPopupMenu.inflate(R.menu.dev_menu);
-		mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+		mMenuPopupMenu = new PopupMenu(getApplicationContext(), button);
+		mMenuPopupMenu.inflate(R.menu.dev_menu);
+		mMenuPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
+				if(mIsTesting) {
+					mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
+					mMenuPopupMenu.getMenu().getItem(4).setVisible(true);				
+				} else {
+					mMenuPopupMenu.getMenu().getItem(3).setVisible(true);
+					mMenuPopupMenu.getMenu().getItem(4).setVisible(false);
+				}
 				switch(item.getItemId()) {
 					case R.id.link_menu_new:
 						// Create a new screen that is not linked to by anything.
@@ -242,12 +264,15 @@ public class DevelopmentActivity extends Activity {
 					case R.id.dev_menu_test:
 						onTestModeTapped();
 						break;
+					case R.id.dev_menu_test_exit:
+						onExitTestModeTapped();
+						break;
 					default:
 				}
 				return false;
 			}
 		});
-		mPopupMenu.show();
+		mMenuPopupMenu.show();
 		/**/
 	}
 	
@@ -255,7 +280,7 @@ public class DevelopmentActivity extends Activity {
 	//-------------------------------------------------------------------------
 	public void onDeleteButtonTapped(View deleteButton) {
 		mScreen.deleteSelected();
-		mSidebar.showDefaultSidebar();
+		showDefaultSidebar();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -312,8 +337,8 @@ public class DevelopmentActivity extends Activity {
 		}
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);
-		MAScreenElement clone2 = createElement(type, map);
-		testScreen.addView(clone2);
+//		MAScreenElement clone2 = createElement(type, map);
+//		testScreen.addView(clone2);
 		mScreen.addView(clone);
 	}
 	//-------------------------------------------------------------------------
@@ -325,12 +350,12 @@ public class DevelopmentActivity extends Activity {
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);
 
-		MARectangle clone2 = new MARectangle(getApplicationContext(), mScreen);
+//		MARectangle clone2 = new MARectangle(getApplicationContext(), mScreen);
 	
-		testScreen.addView(clone2);
+//		testScreen.addView(clone2);
 		mScreen.addView(clone);
 		clone.redraw(0,0,200,100);
-		clone2.redraw(0,0,200,100);
+//		clone2.redraw(0,0,200,100);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -364,15 +389,40 @@ public class DevelopmentActivity extends Activity {
 	 * MENU "CALLBACK" METHODS
 	 *****************************************************************************/
 	public void onTestModeTapped() {
-		Intent mIntent = new Intent(this, TestingActivity.class);
-		startActivity(mIntent);		
+		if (!mIsTesting) {
+			mIsTesting = true;
+			makeLogI(">>> Test mode tapped");
+			showScreenWithName(mProject.getFirstScreen().getName());
+			showTestSidebar();
+			// update menu
+			mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
+			mMenuPopupMenu.getMenu().getItem(4).setVisible(true);
+		}
+		
+		// ------ OLD ------
+//		Intent mIntent = new Intent(this, TestingActivity.class);
+//		startActivity(mIntent);		
 	}
+	//-------------------------------------------------------------------------
+	public void onExitTestModeTapped() {
+		if (mIsTesting) {
+			mIsTesting = false;
+			makeLogI(">>> Exit test mode tapped");
+			showScreenWithName(mScreen.getName());
+			showDefaultSidebar();
+			// update menu
+			mMenuPopupMenu.getMenu().getItem(3).setVisible(true);
+			mMenuPopupMenu.getMenu().getItem(4).setVisible(false);
+		}
+	}
+	
 	/** 
 	 * Test for passing custom objects through intents using serializable bundles
 	 */
 	public String getActivityString() {
 		return "Development";
 	}
+	//-------------------------------------------------------------------------
 	private void onBigPictureSelected() {
 		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
 		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
@@ -392,19 +442,36 @@ public class DevelopmentActivity extends Activity {
 		dia.setTitle("Go To Screen:");
 		dia.show();
 	}
+	
+	
+	/*****************************************************************************
+	 * TESTING MODE METHODS
+	 *****************************************************************************/
+	public void onButtonTappedInTest(MAButton button) {
+		if (button.getDestinationScreen() != null) {
+			showScreenWithName(button.getDestinationScreen().getName());
+			showTestSidebar();			// HANDLED IN ONTESTBUTTONTAPPED
+		}
+	}
+	
 	/*****************************************************************************
 	 * SIDEBAR RELAY METHODS
 	 *****************************************************************************/
 	public void showDefaultSidebar() {
-		//TODO PROPERLY SHOW THE DEFAULT STATE.
 		mSidebar.showDefaultSidebar();
-//		hideElementSidebar();
 	}
 	public void showElementSidebar() {
 		mSidebar.showElementContextBar(mScreen.getSelectedElement());
 	}
 	public void showCustomElementSidebar(){
 		mSidebar.showCustomElementBar();
+	}
+	public void showTestSidebar() {
+		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+		mSidebar.showTestBar();
 	}
 		
 	
@@ -419,6 +486,7 @@ public class DevelopmentActivity extends Activity {
 		theView.draw(c);
 		return b;
 	}
+	//-------------------------------------------------------------------------
 	private ImageView createImageViewWithBitmap(Bitmap bitmap) {
 		ImageView image = new ImageView(getApplicationContext());
 		image.setImageBitmap(bitmap);
@@ -432,6 +500,7 @@ public class DevelopmentActivity extends Activity {
 		return element;
 	}
 	
+	//-------------------------------------------------------------------------
 	public boolean onKeyDown(int keyCode, KeyEvent event) 
 	{ 
 	   if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) { 
@@ -443,6 +512,18 @@ public class DevelopmentActivity extends Activity {
 	   }
 	}
 	
+	
+	//-------------------------------------------------------------------------
+	public boolean isTesting() {
+		return mIsTesting;
+	}
+	
+	
+	
+	//-------------------------------------------------------------------------
+	public void makeLogI(String format, Object... args) {
+		Log.i("ACACAC", String.format(format, args));
+	}
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getApplicationContext(),
 				String.format(format, args), Toast.LENGTH_SHORT).show();

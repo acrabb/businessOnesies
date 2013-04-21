@@ -23,7 +23,7 @@ public class HomePagePhone extends View {
 		index = 0;
 		modIndex = index;
 		final Element e = new Element(215, 250);
-		e.setText("Create New");
+		e.setText("Create New Prototype");
 		Screen s = new Screen(context);
 		s.addElementToScreen(e);
 		screens.add(s);

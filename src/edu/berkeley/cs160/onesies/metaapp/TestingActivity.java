@@ -64,8 +64,8 @@ public class TestingActivity extends Activity {
 		if (first.getParent() != null) {
 			((RelativeLayout) first.getParent()).removeView(first);
 		}
-		first.setTestMode(true);
-		first.setmTestingActivity(this);
+//		first.setTestMode(true);			ANDRE COMMENTED FOR NEW TESTMODE
+//		first.setmTestingActivity(this);
 		mTestRelLayout.addView(mProject.getFirstScreen(), mScreen.getLayoutParams());
 		
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
@@ -98,8 +98,8 @@ public class TestingActivity extends Activity {
 		if (newScreen.getParent() != null) {
 			((RelativeLayout) newScreen.getParent()).removeView(newScreen);
 		}
-		newScreen.setTestMode(true);
-		newScreen.setmTestingActivity(this);
+//		newScreen.setTestMode(true);			ANDRE COMMENTED FOR NEW TESTMODE
+//		newScreen.setmTestingActivity(this);
 		mTestRelLayout.removeView(mScreen);
 		mTestRelLayout.addView(newScreen,mScreen.getLayoutParams());
 //		showDefaultSidebar();

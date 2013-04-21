@@ -24,5 +24,12 @@
         android:showAsAction="never"
         android:title="Test Prototype"
         />
+    <item 
+        android:id="@+id/dev_menu_test_exit"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Exit Testing"
+        android:visible="true"
+        />
 
 </menu>
