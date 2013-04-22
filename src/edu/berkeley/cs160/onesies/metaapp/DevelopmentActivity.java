@@ -5,10 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -33,6 +33,7 @@ import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MAOval;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MARectangle;
+import edu.berkeley.cs160.onesies.metaapp.MAShapes.MATriangle;
 
 
 public class DevelopmentActivity extends Activity {
@@ -157,6 +158,19 @@ public class DevelopmentActivity extends Activity {
 		mPopupWindow = new PopupWindow(mShapesContentView,
 				(int) mResources.getDimension(R.dimen.shapePopupWidth),
 				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
+		ImageView triangle = (ImageView) mShapesContentView.findViewById(R.id.ma_triangle);
+		Log.d("meta", "Triangle: w: " +triangle.getWidth() +";h:"+triangle.getHeight());
+		Bitmap triBitmap = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
+		Canvas triCanvas = new Canvas(triBitmap);
+		Paint paint = new Paint();
+		paint.setColor(getResources().getColor(R.color.achalRed));
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeWidth(5);
+		triCanvas.drawLine(50, 50, 25, 0, paint);
+		triCanvas.drawLine(25, 0, 0, 50, paint);
+		triCanvas.drawLine(0,50,50,50,paint);
+		triangle.setImageDrawable(new BitmapDrawable(getResources(), triBitmap));
+		
 		/*
 		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
 		 * dismissed properly
@@ -324,36 +338,34 @@ public class DevelopmentActivity extends Activity {
 	 *****************************************************************************/
 	private void addUIElement(View element) {
 		// Take the view, and add it to the MAScreen object.
-		Bitmap map = createBitmapOfView(element);
-		ElementType type;
 		MAScreenElement clone;
 		if (element instanceof Button) {
-			type = ElementType.BUTTON;
 			clone = new MAButton(getApplicationContext(), mScreen);
 		} else if(element instanceof TextView) {
-			type = ElementType.TEXT_LABEL; 
 			clone = new MATextLabel(getApplicationContext(), mScreen, "Text Label");
 		} else {
 			return;
 		}
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);
-//		MAScreenElement clone2 = createElement(type, map);
-//		testScreen.addView(clone2);
 		mScreen.addView(clone);
 	}
 	//-------------------------------------------------------------------------
 	private void addShapeElement(View element) {
-		Bitmap map = createBitmapOfView(element);
-		ElementType type = ElementType.SHAPE;
 		MAScreenElement clone;
-		MAScreenElement clone2;
-		if (element.getId() == R.id.ma_rectangle) {
+		switch (element.getId()) {
+		case R.id.ma_rectangle:
 			clone = new MARectangle(getApplicationContext(), mScreen);
-			// clone2 = new MARectangle(getApplicationContext(), mScreen);
-		} else {
+			break;
+		case R.id.ma_oval:
 			clone = new MAOval(getApplicationContext(), mScreen);
-			// clone2 = new MAOval(getApplicationContext(), mScreen);
+			break;
+		case R.id.ma_triangle:
+			clone = new MATriangle(getApplicationContext(), mScreen);
+			break;
+		default:
+			clone = new MARectangle(getApplicationContext(), mScreen);
+			break;
 		}
 		
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
@@ -524,10 +536,9 @@ public class DevelopmentActivity extends Activity {
 	}
 	
 	
-	
 	//-------------------------------------------------------------------------
 	public void makeLogI(String format, Object... args) {
-		Log.i("ACACAC", String.format(format, args));
+		Log.i("meta", String.format(format, args));
 	}
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getApplicationContext(),
