@@ -90,7 +90,7 @@ public class MACanvas extends View {
 	}
 	
 	public Bitmap getSketch() {
-		int buffer = 5;
+		int buffer = 8;
 		t = Math.max(0, (int) mTopMost-buffer);
 		l = Math.max(0, (int) mLeftMost-buffer);
 		int b = (int) mBottomMost+buffer;

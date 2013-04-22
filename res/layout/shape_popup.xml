@@ -8,16 +8,18 @@
         android:id="@+id/shapesGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="1" >
+        android:columnCount="4" >
 
         <ImageView
             android:id="@+id/ma_rectangle"
             android:layout_gravity="left"
+            style="@style/sidebarButtonStyle"
             android:src="@drawable/ma_rectangle" />
 
         <ImageView
             android:id="@+id/ma_oval"
             android:layout_gravity="left"
+            style="@style/sidebarButtonStyle"
             android:src="@drawable/ma_oval" />
     </GridLayout>
 

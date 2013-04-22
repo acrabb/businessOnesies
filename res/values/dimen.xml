@@ -4,6 +4,8 @@
     <!-- SIDEBAR DIMENS -->
     <dimen name="sidebarButtonHeight">50dp</dimen>
     <dimen name="sidebarButtonPadding">5dp</dimen>
+    <dimen name="sidebarButtonTopBottomMargin">5dp</dimen>
+    
     
     
     <!-- POPUP WINDOW DIMENS -->

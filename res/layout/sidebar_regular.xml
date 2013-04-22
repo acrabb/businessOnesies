@@ -89,7 +89,7 @@
         android:id="@+id/deleteElementButton"
         style="@style/sidebarButtonStyle"
         android:layout_below="@id/editTextButton"
-        android:text="X"
+	    android:background="@drawable/trash"
         />
 
     
@@ -97,7 +97,7 @@
     <Button 
         android:id="@+id/addButton"
         style="@style/sidebarButtonStyle"
-        android:text="+"
+        android:background="@drawable/check"
         android:layout_below="@id/deleteElementButton"
         />
     <!-- NumberPicker 
@@ -126,7 +126,7 @@
     <Button 
         android:id="@+id/undoButton"
         style="@style/sidebarButtonStyle"
-        android:text="Undo"
+        android:background="@drawable/undo"
         android:layout_above="@id/menuButton"
         />
 </edu.berkeley.cs160.onesies.metaapp.MASidebar>
