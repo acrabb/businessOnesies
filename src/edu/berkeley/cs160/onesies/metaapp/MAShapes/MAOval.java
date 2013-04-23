@@ -22,7 +22,6 @@ public class MAOval extends MAScreenElement {
 	public MAOval(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.SHAPE);
 		// Set background to be some image
-		this.mIsLinkable = true;
 		paint = new Paint();
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 	}

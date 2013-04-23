@@ -2,24 +2,14 @@ package edu.berkeley.cs160.onesies.metaapp;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
-
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 
 public class MAScreenElement extends FrameLayout {
 
@@ -27,7 +17,6 @@ public class MAScreenElement extends FrameLayout {
 	private boolean			mWasDragged = false;
 	private boolean			mResizing = false;
 	private ElementType		mType;
-	protected boolean		mIsLinkable = false;
 	protected boolean 		isSelected = false;
 	protected String		mLabel;
 	

@@ -20,7 +20,6 @@ public class MARectangle extends MAScreenElement {
 	public MARectangle(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.SHAPE);
 		// Set background to be some image
-		this.mIsLinkable = true;
 		paint = new Paint();
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 	}

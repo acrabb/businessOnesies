@@ -25,7 +25,6 @@ public class MAButton extends MAScreenElement {
 	public MAButton(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.BUTTON);
 		// Set background to be some image
-		this.mIsLinkable = true;
 		this.setBackgroundResource(R.drawable.btn_default_normal);
 		paint = new Paint();
 	}
