@@ -1,13 +1,10 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -209,12 +206,22 @@ public class MASidebar extends RelativeLayout{
 	public void showElementContextBar(MAScreenElement element) {
 		if (element == null)
 			return;
-		if(element.getmType() == ElementType.BUTTON) {
+		switch (element.getmType()) {
+		case BUTTON:
 			mLinkButton.setVisibility(VISIBLE);
-		} else {
-			mLinkButton.setVisibility(INVISIBLE);
+			mEditTextButton.setVisibility(VISIBLE);
+			break;
+		case TEXT_LABEL:
+			mEditTextButton.setVisibility(VISIBLE);
+			mLinkButton.setVisibility(VISIBLE);
+			break;
+		case SHAPE:
+			mLinkButton.setVisibility(VISIBLE);
+			break;
+		default:
+			break;
 		}
-		mEditTextButton.setVisibility(VISIBLE);
+
 		mDeleteButton.setVisibility(VISIBLE);
 		mElementForwardButton.setVisibility(VISIBLE);
 		mElementBackwardButton.setVisibility(VISIBLE);

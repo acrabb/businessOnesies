@@ -3,8 +3,11 @@ package edu.berkeley.cs160.onesies.metaapp.MAElements;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.DrawFilter;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Path.FillType;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -15,21 +18,23 @@ import edu.berkeley.cs160.onesies.metaapp.MAScreen;
 import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
 import edu.berkeley.cs160.onesies.metaapp.R;
 
-public class MAButton extends MAScreenElement {
+public class MASlider extends MAScreenElement {
 
 	private MAScreen	mDestinationScreen;
-	private String		mLabel = "Button";	
 	private DrawFilter mDrawFilter;
-	private Paint paint;
+	private Paint      paint;
 	
-	public MAButton(Context context, MAScreen maScreen) {
+	public MASlider(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.BUTTON);
 		// Set background to be some image
-		this.setBackgroundResource(R.drawable.btn_default_normal);
+		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		paint = new Paint();
+		paint.setDither(true);
+		paint.setColor(Color.BLACK);
+
 	}
 
-	public MAButton(Context context, AttributeSet attrs) {
+	public MASlider(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
@@ -40,14 +45,32 @@ public class MAButton extends MAScreenElement {
 //		super.onDraw(canvas);
 //		canvas.save();
 //		canvas.scale(mScaleFactor, mScaleFactor);
+		// lol arbitrary hard coded values
+		float xleft = 0,
+			  xright = this.getWidth(),
+			  xcenter = (xright - xleft)/2,
+			  ytop = 0,
+			  ybottom = this.getHeight(),
+			  ycenter = (ybottom - ytop)/2;
 		
-		paint.setColor(Color.BLACK);
-		paint.setTextSize(40); 
-		paint.setTextAlign(Paint.Align.CENTER);
-		paint.setTypeface(Typeface.DEFAULT_BOLD);
-		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
+		paint.setColor(getResources().getColor(R.color.achalRed));
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeWidth(5);
+
+		// slider line
+		canvas.drawLine(xleft,ycenter,xcenter,ycenter,paint);
+
+		// slider unfilled line
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(Color.GRAY);
+		canvas.drawLine(xcenter,ycenter,xright,ycenter,paint);
 		
-//		canvas.restore();
+		// slider active point (thumb)
+		paint.setColor(getResources().getColor(R.color.achalRed));
+		paint.setStrokeWidth(2);
+		canvas.drawCircle(xcenter, ycenter, 15, paint);
+		paint.setStyle(Paint.Style.FILL);
+		canvas.drawCircle(xcenter, ycenter, 10, paint);
 	}
 	
 	@Override

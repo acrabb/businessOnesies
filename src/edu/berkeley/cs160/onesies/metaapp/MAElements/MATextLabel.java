@@ -1,28 +1,30 @@
 package edu.berkeley.cs160.onesies.metaapp.MAElements;
 
-import edu.berkeley.cs160.onesies.metaapp.ElementType;
-import edu.berkeley.cs160.onesies.metaapp.MAScreen;
-import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
-import edu.berkeley.cs160.onesies.metaapp.R;
-import edu.berkeley.cs160.onesies.metaapp.R.color;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import edu.berkeley.cs160.onesies.metaapp.ElementType;
+import edu.berkeley.cs160.onesies.metaapp.MAScreen;
+import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
+import edu.berkeley.cs160.onesies.metaapp.R;
 
 public class MATextLabel extends MAScreenElement {
 
 //	private String		mLabel = "TextLabel";	
+	private Paint paint;
 	
 	public MATextLabel(Context context, MAScreen maScreen, String text) {
 		super(context, maScreen, ElementType.TEXT_LABEL);
+		paint = new Paint();
+		paint.setColor(Color.BLACK);
+		paint.setTextSize(40); 
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.setTypeface(Typeface.DEFAULT_BOLD);
+		
 		// TODO Auto-generated constructor stub
-		this.mIsLinkable = false;
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		mLabel = text;
 //		TextView mTextView = new TextView(context);
@@ -56,12 +58,6 @@ public class MATextLabel extends MAScreenElement {
 			this.setBackgroundColor(getResources().getColor(R.color.clearColor));			
 		}
 		/**/
-		Paint paint = new Paint();
-		paint.setColor(Color.BLACK);
-		paint.setTextSize(40); 
-		paint.setTextAlign(Paint.Align.CENTER);
-		paint.setTypeface(Typeface.DEFAULT_BOLD);
-		
 		
 //		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
 		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()-10, paint);

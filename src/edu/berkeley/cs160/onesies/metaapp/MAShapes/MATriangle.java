@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.RelativeLayout;
 import edu.berkeley.cs160.onesies.metaapp.ElementType;
 import edu.berkeley.cs160.onesies.metaapp.MAScreen;
@@ -20,7 +19,6 @@ public class MATriangle extends MAScreenElement {
 	public MATriangle(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.SHAPE);
 		// Set background to be some image
-		this.mIsLinkable = true;
 		paint = new Paint();
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 	}
@@ -43,7 +41,6 @@ public class MATriangle extends MAScreenElement {
 
 	@Override
 	public void onDraw(Canvas canvas) {
-		Log.d("meta", "OnDraw called");
 		paint.setColor(Color.BLACK);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(6);
@@ -54,12 +51,4 @@ public class MATriangle extends MAScreenElement {
 		canvas.drawLine(this.width / 2, 0, this.width, this.height, paint);
 		canvas.drawLine(this.width, this.height, 0, this.height, paint);
 	}
-	
-	/*
-	public void redraw(int left, int top, int width, int height) {
-		this.left = left;
-		this.top = top;
-		this.width = width;
-	}
-	*/
 }
