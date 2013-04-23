@@ -78,6 +78,7 @@ public class MAScreen extends RelativeLayout {
 		switch (mSelectedChild.getmType()) {
 			case BUTTON:
 			case TEXT_LABEL:
+			case SHAPE:
 				mDevelopmentActivity.showElementSidebar();
 				break;
 			case CUSTOM:
