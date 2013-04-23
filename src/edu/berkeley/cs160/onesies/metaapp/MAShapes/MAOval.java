@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.RelativeLayout;
 import edu.berkeley.cs160.onesies.metaapp.ElementType;
 import edu.berkeley.cs160.onesies.metaapp.MAScreen;
@@ -45,11 +44,9 @@ public class MAOval extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
-		Log.d("meta", "OnDraw called");
 		paint.setColor(Color.BLACK);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(3);
-		Log.d("meta", "W: " + this.width + "; h: " + this.height);
 		ovalRect.right = this.width - 3;
 		ovalRect.bottom = this.height - 3;
 		canvas.drawOval(ovalRect, paint);
