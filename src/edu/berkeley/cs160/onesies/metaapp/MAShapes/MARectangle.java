@@ -48,12 +48,4 @@ public class MARectangle extends MAScreenElement {
 		paint.setStrokeWidth(3);
 		canvas.drawRect(0,0, this.width, this.height, paint);
 	}
-	
-	/*
-	public void redraw(int left, int top, int width, int height) {
-		this.left = left;
-		this.top = top;
-		this.width = width;
-	}
-	*/
 }
