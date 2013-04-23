@@ -28,6 +28,12 @@ public class MAScreenElement extends FrameLayout {
 	private int 			mLastW = 0;
 	private int				mLastH = 0;
 	
+	/****
+	 * WRITE A GETTER FUNCTION TO GET MIN WIDTH / HEIGHT
+	 * OVERWRITE GETTERS IN SUBCLASSES SO THAT EACH CAN RETURN A 
+	 * UNIQUE VALUE.
+	 * IE...SO THAT TEXT LABELS CAN CALCULATE W&H FOR ITSELF.
+	 */
 	private int 			MIN_WIDTH = 60;
 	private int				MIN_HEIGHT = 60;
 	

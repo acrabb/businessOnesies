@@ -224,7 +224,8 @@ public class MASidebar extends RelativeLayout{
 
 		mDeleteButton.setVisibility(VISIBLE);
 		mElementForwardButton.setVisibility(VISIBLE);
-		mElementBackwardButton.setVisibility(VISIBLE);
+		// IMPLEMENT FIRST
+//		mElementBackwardButton.setVisibility(VISIBLE);
 		mAddButton.setVisibility(INVISIBLE);
 //		if (mCurrentContextOptions != mButtonOptionsView) {			
 //			mButtonOptionsView.setVisibility(VISIBLE);

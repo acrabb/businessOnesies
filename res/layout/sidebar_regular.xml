@@ -95,7 +95,7 @@
         android:id="@+id/elementForward"
         style="@style/sidebarButtonStyle"
         android:layout_below="@id/deleteElementButton"
-        android:text="Up"
+        android:background="@drawable/forward"
         />
     <Button
         android:id="@+id/elementBackward"

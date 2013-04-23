@@ -111,7 +111,9 @@ public class DevelopmentActivity extends Activity {
 		MAScreen newScreen = mProject.getScreenWithName(name);
 		mDevRelLayout.removeView(mScreen);
 		mDevRelLayout.addView(newScreen,mScreen.getLayoutParams());
-		showDefaultSidebar();
+		if (!mIsTesting) {
+			showDefaultSidebar();
+		}
 		mScreen = newScreen;
 	}
 	
@@ -326,7 +328,8 @@ public class DevelopmentActivity extends Activity {
 	
 	//-------------------------------------------------------------------------
 	public void onElementForwardTapped() {
-		
+		mScreen.getSelectedElement().bringToFront();
+		mScreen.invalidate();
 	}
 	//-------------------------------------------------------------------------
 	public void onElementBackwardTapped() {
@@ -390,7 +393,8 @@ public class DevelopmentActivity extends Activity {
 			clone = new MAButton(getApplicationContext(), mScreen);
 			break;
 		}
-		clone.setLayoutParams(params);
+		//NEEDED FROM MERGE?
+//		clone.setLayoutParams(params);
 		mScreen.addView(clone);
 	}
 	//-------------------------------------------------------------------------
