@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -119,6 +121,31 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * MASIDEBAR "CALLBACK" METHODS
 	 *****************************************************************************/
+	public void onHomeButtonTapped() {
+		makeToast("IMPLEMENT HOME!!!");
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle("Unsaved changes will be set aflame!");
+		adb
+//			.setMessage("Go Home")
+			.setCancelable(true)
+			.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			})
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+		adb.create().show();
+		
+	}
+	public void onNotesButtonTapped() {
+		makeToast("IMPLEMENT NOTES!!!");
+	}
 	public void showSketchZone(View sketchButton) {
 		if (!mInSketchZone) {
 			mSketchCanvas = new MACanvas(getApplicationContext());
@@ -299,6 +326,15 @@ public class DevelopmentActivity extends Activity {
 	}
 	
 	//-------------------------------------------------------------------------
+	public void onElementForwardTapped() {
+		
+	}
+	//-------------------------------------------------------------------------
+	public void onElementBackwardTapped() {
+		
+	}
+	
+	//-------------------------------------------------------------------------
 	String m_Text = "";
 	public void onEditTextTapped() {
 		if(mScreen.getSelectedElement() == null) { 
@@ -338,15 +374,20 @@ public class DevelopmentActivity extends Activity {
 	 *****************************************************************************/
 	private void addUIElement(View element) {
 		// Take the view, and add it to the MAScreen object.
+		// TODO HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK
 		MAScreenElement clone;
+		RelativeLayout.LayoutParams params;
 		if (element instanceof Button) {
 			clone = new MAButton(getApplicationContext(), mScreen);
+			params = new RelativeLayout.LayoutParams(200, 100);
 		} else if(element instanceof TextView) {
 			clone = new MATextLabel(getApplicationContext(), mScreen, "Text Label");
+			params = new RelativeLayout.LayoutParams(200, 40);
 		} else {
 			return;
 		}
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);
 		mScreen.addView(clone);
 	}

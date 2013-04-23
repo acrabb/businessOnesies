@@ -38,6 +38,8 @@ public class MASidebar extends RelativeLayout{
 //	private View	mCurrentContextOptions = null;
 	private Button	mAddButton;
 	private Button	mDeleteButton;
+	private Button	mElementForwardButton;
+	private Button	mElementBackwardButton;
 	private Button	mLinkButton;
 	private Button	mEditTextButton;
 	
@@ -82,17 +84,21 @@ public class MASidebar extends RelativeLayout{
 		mEditTextButton = (Button) findViewById(R.id.editTextButton);
 		mDeleteButton = (Button) findViewById(R.id.deleteElementButton);
 		mAddButton = (Button) findViewById(R.id.addButton);
+		mElementForwardButton = (Button) findViewById(R.id.elementForward);
+		mElementBackwardButton = (Button) findViewById(R.id.elementBackward); 
 		
 		mHomeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				mActivity.makeToast("Hello Home!");
+				mActivity.onHomeButtonTapped();
 			}
 		});
 		mNotesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				mActivity.makeToast("Hello Notes!");
+				mActivity.onNotesButtonTapped();
 			}
 		});
 		mSketchButton.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +157,18 @@ public class MASidebar extends RelativeLayout{
 				mActivity.onEditTextTapped();
 			}
 		});
+		mElementForwardButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				mActivity.onElementForwardTapped();
+			}
+		});
+		mElementBackwardButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				mActivity.onElementBackwardTapped();
+			}
+		});
 		
 		showDefaultSidebar();
 	}
@@ -168,6 +186,8 @@ public class MASidebar extends RelativeLayout{
 		mLinkButton.setVisibility(INVISIBLE);
 		mEditTextButton.setVisibility(INVISIBLE);
 		mDeleteButton.setVisibility(INVISIBLE);
+		mElementForwardButton.setVisibility(INVISIBLE);
+		mElementBackwardButton.setVisibility(INVISIBLE);
 		mAddButton.setVisibility(INVISIBLE);
 //		if (mCurrentContextOptions != null) {
 //			mCurrentContextOptions.setVisibility(INVISIBLE);
@@ -178,6 +198,8 @@ public class MASidebar extends RelativeLayout{
 		mLinkButton.setVisibility(INVISIBLE);
 		mEditTextButton.setVisibility(INVISIBLE);
 		mDeleteButton.setVisibility(INVISIBLE);
+		mElementForwardButton.setVisibility(INVISIBLE);
+		mElementBackwardButton.setVisibility(INVISIBLE);
 		mAddButton.setVisibility(VISIBLE);
 //		if(mCurrentContextOptions != mSketchOptionsView) {
 //			mSketchOptionsView.setVisibility(VISIBLE);
@@ -194,6 +216,8 @@ public class MASidebar extends RelativeLayout{
 		}
 		mEditTextButton.setVisibility(VISIBLE);
 		mDeleteButton.setVisibility(VISIBLE);
+		mElementForwardButton.setVisibility(VISIBLE);
+		mElementBackwardButton.setVisibility(VISIBLE);
 		mAddButton.setVisibility(INVISIBLE);
 //		if (mCurrentContextOptions != mButtonOptionsView) {			
 //			mButtonOptionsView.setVisibility(VISIBLE);
@@ -204,6 +228,8 @@ public class MASidebar extends RelativeLayout{
 		mLinkButton.setVisibility(VISIBLE);
 		mEditTextButton.setVisibility(INVISIBLE);
 		mDeleteButton.setVisibility(VISIBLE);
+		mElementForwardButton.setVisibility(VISIBLE);
+		mElementBackwardButton.setVisibility(VISIBLE);
 		mAddButton.setVisibility(INVISIBLE);
 	}
 	
@@ -223,6 +249,8 @@ public class MASidebar extends RelativeLayout{
 		mLinkButton.setVisibility(INVISIBLE);
 		mEditTextButton.setVisibility(INVISIBLE);
 		mDeleteButton.setVisibility(INVISIBLE);
+		mElementForwardButton.setVisibility(INVISIBLE);
+		mElementBackwardButton.setVisibility(INVISIBLE);
 		mAddButton.setVisibility(INVISIBLE);
 	}
 

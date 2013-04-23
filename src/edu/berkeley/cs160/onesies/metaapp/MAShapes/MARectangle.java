@@ -46,7 +46,9 @@ public class MARectangle extends MAScreenElement {
 		Log.d("meta", "OnDraw called");
 		paint.setColor(Color.BLACK);
 		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(3);
+		paint.setStrokeWidth(6);
+		this.width = getWidth();
+		this.height = getHeight();
 		canvas.drawRect(0,0, this.width, this.height, paint);
 	}
 	

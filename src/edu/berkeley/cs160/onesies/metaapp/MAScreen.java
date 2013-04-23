@@ -1,5 +1,7 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
+import java.util.ArrayList;
+
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,6 +20,7 @@ public class MAScreen extends RelativeLayout {
 //	private TestingActivity 	mTestingActivity;
 	private String				mName;
 //	protected boolean    		testMode = false;
+	private ArrayList<MAScreenElement> children;
 	
 	public MAScreen(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -28,6 +31,7 @@ public class MAScreen extends RelativeLayout {
 				deselectAll();
 			}
 		});
+		
 	}
 	
 	public void deselectAll() {

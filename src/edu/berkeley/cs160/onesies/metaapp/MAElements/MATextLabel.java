@@ -63,7 +63,8 @@ public class MATextLabel extends MAScreenElement {
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		
 		
-		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
+//		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
+		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()-10, paint);
 	}
 
 	@Override

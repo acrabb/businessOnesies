@@ -24,20 +24,23 @@ import android.graphics.Typeface;
 public class MAScreenElement extends FrameLayout {
 
 	protected MAScreen		mMAScreen;
-	private boolean			mWasDragged = false;
-	private boolean			mResizing = false;
+	private ImageView		mDragTarget;
+	
 	private ElementType		mType;
 	protected boolean		mIsLinkable = false;
 	protected boolean 		isSelected = false;
 	protected String		mLabel;
+	private String			screenLinkedTo = null;
 	
-	private ImageView		mDragTarget;
-//	private ScaleGestureDetector mScaleDetector;
-//	protected float 			mScaleFactor = 1.f;
-	
+	private boolean			mWasDragged = false;
+	private boolean			mResizing = false;
 	private float 			mLastX = 0;
 	private float 			mLastY = 0;
-	private String			screenLinkedTo = null;
+	private int 			mLastW = 0;
+	private int				mLastH = 0;
+	
+	private int 			MIN_WIDTH = 60;
+	private int				MIN_HEIGHT = 60;
 	
 	
 	public MAScreenElement(Context context, MAScreen maScreen, ElementType type) {
@@ -62,15 +65,14 @@ public class MAScreenElement extends FrameLayout {
 		mDragTarget.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
-					case MotionEvent.ACTION_MOVE:
 						mResizing = true;
+						break;
+					case MotionEvent.ACTION_MOVE:
 						break;
 					case MotionEvent.ACTION_UP:
 						mResizing = false;
-						makeToast("ARROW UP");
 						break;
 					default:
 						
@@ -99,26 +101,27 @@ public class MAScreenElement extends FrameLayout {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		RelativeLayout.LayoutParams params;
+		params = (RelativeLayout.LayoutParams) this.getLayoutParams();
 		float x = event.getX();
 		float y = event.getY();
-//		float distance = MainActivity.distance(x, y, mLastX, mLastY);
 		switch(event.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
 				mLastX = x;
 				mLastY = y;
+				mLastW = params.width;
+				mLastH = params.height;
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (!mMAScreen.isTesting()) {
-					params = (RelativeLayout.LayoutParams) this.getLayoutParams();
 					mWasDragged = true;
-					if (mResizing){
-						this.setScaleX(x/mLastX);
-						this.setScaleY(y/mLastY);
-//						params.width = (int) (params.width + Math.pow((x-mLastX), 3/4));
-//						params.height = (int) (params.height + Math.pow((y-mLastY), 3/4));
+					int horizDiff = (int)(x-mLastX);
+					int vertDiff = (int)(y-mLastY);
+					if (mResizing) {
+						params.width = Math.max(MIN_WIDTH, mLastW + horizDiff);
+						params.height = Math.max(MIN_HEIGHT, mLastH + vertDiff);
 					} else {
-						params.leftMargin = (params.leftMargin + (int)(x-mLastX));
-						params.topMargin = (params.topMargin + (int)(y-mLastY));
+						params.leftMargin += horizDiff;
+						params.topMargin += vertDiff;
 					}
 					this.setLayoutParams(params);
 				}
@@ -168,7 +171,6 @@ public class MAScreenElement extends FrameLayout {
 	public void deselect() {
 		isSelected = false;
 		hideBadge();
-//		this.onDeselect();
 		this.invalidate();
 	}
 	
