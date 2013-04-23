@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -27,9 +26,9 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MASlider;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MAOval;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MARectangle;
@@ -339,12 +338,18 @@ public class DevelopmentActivity extends Activity {
 	private void addUIElement(View element) {
 		// Take the view, and add it to the MAScreen object.
 		MAScreenElement clone;
-		if (element instanceof Button) {
-			clone = new MAButton(getApplicationContext(), mScreen);
-		} else if(element instanceof TextView) {
+		switch (element.getId()) {
+		case R.id.ma_text_label:
 			clone = new MATextLabel(getApplicationContext(), mScreen, "Text Label");
-		} else {
-			return;
+			break;
+		case R.id.ma_slider:
+			clone = new MASlider(getApplicationContext(), mScreen);
+			break;
+		case R.id.ma_button:
+		default:
+			// lolol just make random buttons man
+			clone = new MAButton(getApplicationContext(), mScreen);
+			break;
 		}
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);

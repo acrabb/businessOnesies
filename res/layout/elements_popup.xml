@@ -11,6 +11,7 @@
         android:columnCount="4" >
 
         <Button
+            android:id="@+id/ma_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_default_normal"
@@ -18,10 +19,17 @@
             android:textColor="@color/black" />
 
         <TextView
+            android:id="@+id/ma_text_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Text Label"
             android:textSize="50sp" />
+        
+        <ImageView
+            android:id="@+id/ma_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/arrow_dr" />
     </GridLayout>
 
 </ScrollView>
