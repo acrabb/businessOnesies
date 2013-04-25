@@ -349,6 +349,7 @@ public class DevelopmentActivity extends Activity {
 		final EditText input = new EditText(this);
 		// Specify the type of input expected
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+		input.setText(mScreen.getSelectedElement().getText());
 		builder.setView(input);
 
 		// Set up the buttons
@@ -356,7 +357,7 @@ public class DevelopmentActivity extends Activity {
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
 		        m_Text = input.getText().toString();
-		        ((MAScreenElement) mScreen.getSelectedElement()).setLabel(m_Text);
+		        ((MAScreenElement) mScreen.getSelectedElement()).setText(m_Text);
 		    }
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -379,6 +380,9 @@ public class DevelopmentActivity extends Activity {
 		// TODO HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK
+		
+//		LayoutInflater mInflater = new LayoutInflater();
+		
 		MAScreenElement clone;
 		switch (element.getId()) {
 		case R.id.ma_text_label:

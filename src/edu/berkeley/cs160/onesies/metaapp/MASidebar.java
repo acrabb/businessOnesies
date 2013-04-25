@@ -173,7 +173,7 @@ public class MASidebar extends RelativeLayout{
 	//-------------------------------------------------------------------------
 	public void showDefaultSidebar() {
 		mHomeButton.setVisibility(VISIBLE);
-		mNotesButton.setVisibility(VISIBLE);
+		mNotesButton.setVisibility(GONE);
 		mSketchButton.setVisibility(VISIBLE);
 		mShapesButton.setVisibility(VISIBLE);
 		mElementButton.setVisibility(VISIBLE);

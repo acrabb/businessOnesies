@@ -13,20 +13,24 @@ import edu.berkeley.cs160.onesies.metaapp.R;
 
 public class MATextLabel extends MAScreenElement {
 
-//	private String		mLabel = "TextLabel";	
+//	private String		mText = "TextLabel";	
 	private Paint paint;
+	private int				textSize = 40;
+	private int 			MIN_WIDTH = 60;
+	private int				MIN_HEIGHT = 60;
+	private int				MAX_HEIGHT = MIN_HEIGHT;
 	
 	public MATextLabel(Context context, MAScreen maScreen, String text) {
 		super(context, maScreen, ElementType.TEXT_LABEL);
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
-		paint.setTextSize(40); 
+		paint.setTextSize(textSize); 
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		
 		// TODO Auto-generated constructor stub
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
-		mLabel = text;
+		mText = text;
 //		TextView mTextView = new TextView(context);
 //		mTextView.setTextColor(getResources().getColor(R.color.black));
 //		mTextView.setTextSize(30);
@@ -51,26 +55,29 @@ public class MATextLabel extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
-		/**/
-		if(isSelected){
-			this.setBackgroundColor(getResources().getColor(R.color.highlightColor));			
-		} else {
-			this.setBackgroundColor(getResources().getColor(R.color.clearColor));			
-		}
-		/**/
-		
-//		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
-		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()-10, paint);
+		canvas.drawText(mText, this.getWidth()/2, this.getHeight()-10, paint);
 	}
 
-	@Override
-	public void select() {
-		super.select();
-//		makeToast("MATextlabel select");
+//	@Override
+//	public void select() {
+//		super.select();
+////		makeToast("MATextlabel select");
+//	}
+//	@Override
+//	public void deselect() {
+//		super.deselect();
+////		makeToast("MATextlabel deselect");
+//	}
+	
+	
+	public int getMinWidth() {
+		return this.MIN_WIDTH;
 	}
-	@Override
-	public void deselect() {
-		super.deselect();
-//		makeToast("MATextlabel deselect");
+	public int getMinHeight() {
+		return this.MIN_HEIGHT;
 	}
+	public int getMaxHeight() {
+		return this.MAX_HEIGHT;
+	}
+	
 }

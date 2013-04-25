@@ -16,7 +16,7 @@
     <!-- <color name="mainBackgroundColor">#ff222244</color>-->
     <color name="mainBackgroundColor">#000</color>
     <color name="achalRed">#ff600000</color>
-    <color name="canvasColor">#99777777</color>
+    <color name="canvasColor">#99000000</color>
     
     
     <color name="separatorColor">#ff555555</color>

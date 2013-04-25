@@ -24,6 +24,11 @@ public class MASlider extends MAScreenElement {
 	private DrawFilter mDrawFilter;
 	private Paint      paint;
 	
+	private int 			MIN_WIDTH = 60;
+	private int				MIN_HEIGHT = 40;
+	private int				MAX_HEIGHT = MIN_HEIGHT;
+	
+	
 	public MASlider(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.BUTTON);
 		// Set background to be some image
@@ -73,18 +78,15 @@ public class MASlider extends MAScreenElement {
 		canvas.drawCircle(xcenter, ycenter, 10, paint);
 	}
 	
-	@Override
-	public void select() {
-		super.select();
-		this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
-				PorterDuff.Mode.DARKEN);
-		isSelected = true;
-	}
-	@Override
-	public void deselect() {
-		super.deselect();
-		this.getBackground().clearColorFilter();
-	}
+//	@Override
+//	public void select() {
+//		super.select();
+//		isSelected = true;
+//	}
+//	@Override
+//	public void deselect() {
+//		super.deselect();
+//	}
 	
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
@@ -96,8 +98,8 @@ public class MASlider extends MAScreenElement {
 		this.mDestinationScreen = mDestinationScreen;
 	}
 	
-	public void setLabel(String lbl) {
-		mLabel = lbl;
+	public void setText(String lbl) {
+		mText = lbl;
 		
 		this.invalidate();
 	}
@@ -108,4 +110,16 @@ public class MASlider extends MAScreenElement {
 		params.width = width;
 		this.setLayoutParams(params);
 	}
+	
+	
+	public int getMinWidth() {
+		return this.MIN_WIDTH;
+	}
+	public int getMinHeight() {
+		return this.MIN_HEIGHT;
+	}
+	public int getMaxHeight() {
+		return this.MAX_HEIGHT;
+	}
+	
 }
