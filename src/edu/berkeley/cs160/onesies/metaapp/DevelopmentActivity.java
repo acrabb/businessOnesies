@@ -557,7 +557,7 @@ public class DevelopmentActivity extends Activity {
 	 * MISC METHODS
 	 *****************************************************************************/
 	
-	private Bitmap createBitmapOfView(View theView) {
+	public static Bitmap createBitmapOfView(View theView) {
 		Bitmap b = Bitmap.createBitmap(theView.getWidth(),
 				theView.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(b);
@@ -565,8 +565,8 @@ public class DevelopmentActivity extends Activity {
 		return b;
 	}
 	//-------------------------------------------------------------------------
-	private ImageView createImageViewWithBitmap(Bitmap bitmap) {
-		ImageView image = new ImageView(getApplicationContext());
+	public static ImageView createImageViewWithBitmapForContext(Bitmap bitmap, Context context) {
+		ImageView image = new ImageView(context);
 		image.setImageBitmap(bitmap);
 		return image;
 	}
