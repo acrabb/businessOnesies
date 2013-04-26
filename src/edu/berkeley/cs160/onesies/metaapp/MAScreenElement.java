@@ -127,10 +127,12 @@ public class MAScreenElement extends FrameLayout {
 		// Set width and height
 //		this.height = 200;
 //		this.width = 200;
-		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.getLayoutParams(); 
-		params.height = 100;
-		params.width = 200;
-		setLayoutParams(params);
+		if(mType != ElementType.CUSTOM) {
+			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.getLayoutParams(); 
+			params.height = 100;
+			params.width = 200;
+			setLayoutParams(params);
+		}
 		// get mResizeTarget
 		// get mHighlightOverlay
 			// The following will only work if we inflate from ma_element.xml,
