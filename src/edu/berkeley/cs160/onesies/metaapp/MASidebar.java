@@ -29,6 +29,7 @@ public class MASidebar extends RelativeLayout{
 	private Button 	mShapesButton;
 	private Button 	mElementButton;
 	private Button 	mMenuButton;
+	private Button  mUndoButton;
 	
 //	private View	mSketchOptionsView;
 //	private View 	mButtonOptionsView;
@@ -39,6 +40,7 @@ public class MASidebar extends RelativeLayout{
 	private Button	mElementBackwardButton;
 	private Button	mLinkButton;
 	private Button	mEditTextButton;
+	
 	
 
 	public MASidebar(Context context) {
@@ -72,6 +74,7 @@ public class MASidebar extends RelativeLayout{
 		mShapesButton = (Button) findViewById(R.id.shapesButton);
 		mElementButton = (Button) findViewById(R.id.elementsButton);
 		mMenuButton = (Button) findViewById(R.id.menuButton);
+		mUndoButton = (Button) findViewById(R.id.undoButton);
 		
 		//---Contextual Buttons ---------------------------------
 //		mSketchOptionsView = (View) findViewById(R.id.sketch_options);
@@ -127,6 +130,14 @@ public class MASidebar extends RelativeLayout{
 			@Override
 			public void onClick(View v) {
 				mActivity.showMenuPopup(v);
+			}
+		});
+		
+		mUndoButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mActivity.onUndoTapped();
 			}
 		});
 		

@@ -175,6 +175,7 @@ public class DevelopmentActivity extends Activity {
 			p.leftMargin = mSketchCanvas.getLeftMargin();
 			p.topMargin = mSketchCanvas.getTopMargin();
 			custom.setLayoutParams(p);
+			mScreen.updateModel(custom, UndoStatus.ADD);
 			mScreen.addView(custom);
 		}
 		hideSketchZone();
@@ -350,6 +351,7 @@ public class DevelopmentActivity extends Activity {
 		// Specify the type of input expected
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
 		input.setText(mScreen.getSelectedElement().getText());
+		mScreen.getSelectedElement().invalidate();
 		builder.setView(input);
 
 		// Set up the buttons
@@ -357,7 +359,9 @@ public class DevelopmentActivity extends Activity {
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
 		        m_Text = input.getText().toString();
+		        mScreen.updateModel(mScreen.getSelectedElement(), UndoStatus.TEXT, mScreen.getSelectedElement().getText());
 		        ((MAScreenElement) mScreen.getSelectedElement()).setText(m_Text);
+		        mScreen.getSelectedElement().invalidate();
 		    }
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -370,7 +374,11 @@ public class DevelopmentActivity extends Activity {
 		builder.show();
 	}
 	
+	//-------------------------------------------------------------------------
 	
+	public void onUndoTapped() {
+		mScreen.handleUndo();
+	}
 	
 	/*****************************************************************************
 	 * POPUP "CALLBACK" METHODS
@@ -399,6 +407,7 @@ public class DevelopmentActivity extends Activity {
 		}
 		//NEEDED FROM MERGE?
 //		clone.setLayoutParams(params);
+		mScreen.updateModel(clone, UndoStatus.ADD);
 		mScreen.addView(clone);
 	}
 	//-------------------------------------------------------------------------
@@ -422,7 +431,7 @@ public class DevelopmentActivity extends Activity {
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);
 
-	
+		mScreen.updateModel(clone, UndoStatus.ADD);
 		mScreen.addView(clone);
 	}
 	
@@ -546,7 +555,7 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * MISC METHODS
 	 *****************************************************************************/
-	
+
 	private Bitmap createBitmapOfView(View theView) {
 		Bitmap b = Bitmap.createBitmap(theView.getWidth(),
 				theView.getHeight(), Bitmap.Config.ARGB_8888);
