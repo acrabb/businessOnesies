@@ -43,6 +43,7 @@ public class MAScreenElement extends FrameLayout {
 	private int				MIN_HEIGHT = 60;
 	private int				MAX_HEIGHT = Integer.MAX_VALUE;
 	
+	private RelativeLayout.LayoutParams prev;
 	
 	public MAScreenElement(Context context, MAScreen maScreen, ElementType type) {
 		super(context);
@@ -151,6 +152,9 @@ public class MAScreenElement extends FrameLayout {
 		float y = event.getY();
 		switch(event.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
+				prev = new RelativeLayout.LayoutParams(params.width, params.height);
+				prev.leftMargin = params.leftMargin;
+				prev.topMargin = params.topMargin;
 				mLastX = x;
 				mLastY = y;
 				mLastW = params.width;
@@ -177,6 +181,11 @@ public class MAScreenElement extends FrameLayout {
 				if (!mWasDragged) {
 					// Element tapped!
 					elementWasTapped();
+				} else {
+					mMAScreen.updateModel(this, UndoStatus.MOVE, prev);
+				}
+				if (mResizing) {
+					mMAScreen.updateModel(this, UndoStatus.RESIZE, prev);
 				}
 				mResizing = false;
 				mWasDragged = false;
@@ -223,7 +232,22 @@ public class MAScreenElement extends FrameLayout {
 		this.invalidate();
 	}
 	
+	/* Reverts the label of this MAScreenElement to its previous text label, prevText. */
+	public void undoText(final String prevText) {
+		this.setText(prevText);
+		this.invalidate();
+	}
 	
+	/* Reverts both MOVES and RESIZES by setting the LayoutParams to prevState. */
+	public void undoState(final RelativeLayout.LayoutParams prevState) {
+		this.setLayoutParams(prevState);
+		this.invalidate();
+	}
+	
+	/* Returns the LayoutParams of this MAScreenElement. */
+	public RelativeLayout.LayoutParams getState() {
+		return (RelativeLayout.LayoutParams) this.getLayoutParams();
+	}
 	
 	public int getMinWidth() {
 		return this.MIN_WIDTH;
@@ -259,6 +283,7 @@ public class MAScreenElement extends FrameLayout {
 	public String getText() {
 		return this.mText;
 	}
+	
 	public void setText(String lbl) {
 		this.mText = lbl;
 	}
