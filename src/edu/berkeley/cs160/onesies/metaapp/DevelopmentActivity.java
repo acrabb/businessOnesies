@@ -49,6 +49,7 @@ public class DevelopmentActivity extends Activity {
 	private PopupMenu			mLinkPopupMenu;
 	private GridLayout			mElementsGridView;
 	private GridLayout			mShapesGridView;
+	private Dialog				mBigPictureDia;
 
 	private View 				mShapesContentView;
 	private View 				mElementsContentView;
@@ -448,6 +449,15 @@ public class DevelopmentActivity extends Activity {
 	//-------------------------------------------------------------------------
 	private void onLinkToExistingScreenSelected(MAButton button) {
 		makeToast("LINK TO EXISTING SCREEN");
+		final MAButton but = button;
+		// Ask big picture to display itself, asking for a screen selection
+		showBigPictureWithClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				but.setDestinationScreen((MAScreen) parent.getAdapter().getItem(position));
+				mBigPictureDia.dismiss();
+			}
+		});
 		
 	}
 	
@@ -466,10 +476,6 @@ public class DevelopmentActivity extends Activity {
 			mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
 			mMenuPopupMenu.getMenu().getItem(4).setVisible(true);
 		}
-		
-		// ------ OLD ------
-//		Intent mIntent = new Intent(this, TestingActivity.class);
-//		startActivity(mIntent);		
 	}
 	//-------------------------------------------------------------------------
 	public void onExitTestModeTapped() {
@@ -494,21 +500,25 @@ public class DevelopmentActivity extends Activity {
 	private void onBigPictureSelected() {
 		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
 		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		final Dialog dia = new Dialog(this);
-		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
-		ListView screenList = (ListView) v.findViewById(android.R.id.list);
-		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
-		screenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		
+		showBigPictureWithClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
-				dia.dismiss();
+				mBigPictureDia.dismiss();
 			}
 		});
-		
-		dia.setContentView(v);
-		dia.setTitle("Go To Screen:");
-		dia.show();
+	}
+	
+	private void showBigPictureWithClickListener(AdapterView.OnItemClickListener listener) {
+		mBigPictureDia = new Dialog(this);
+		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
+		ListView screenList = (ListView) v.findViewById(android.R.id.list);
+		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
+		screenList.setOnItemClickListener(listener);
+		mBigPictureDia.setContentView(v);
+		mBigPictureDia.setTitle("Go To Screen:");
+		mBigPictureDia.show();
 	}
 	
 	
