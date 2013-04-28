@@ -48,9 +48,6 @@ public class MASlider extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
-//		super.onDraw(canvas);
-//		canvas.save();
-//		canvas.scale(mScaleFactor, mScaleFactor);
 		// lol arbitrary hard coded values
 		float xleft = 0,
 			  xright = this.getWidth(),
