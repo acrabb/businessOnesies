@@ -25,11 +25,10 @@
             android:text="Text Label"
             android:textSize="50sp" />
         
-        <ImageView
+        <TextView 
             android:id="@+id/ma_slider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/arrow_dr" />
+            android:text="Slider"
+            android:textSize="50sp" />
     </GridLayout>
 
 </ScrollView>
