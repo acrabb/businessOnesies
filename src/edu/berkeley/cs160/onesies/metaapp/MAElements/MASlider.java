@@ -21,8 +21,9 @@ import edu.berkeley.cs160.onesies.metaapp.R;
 public class MASlider extends MAScreenElement {
 
 	private MAScreen	mDestinationScreen;
-	private DrawFilter mDrawFilter;
-	private Paint      paint;
+	private DrawFilter  mDrawFilter;
+	private Paint       paint;
+	private float 		completeRatio;
 	
 	public MASlider(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.BUTTON);
@@ -31,7 +32,7 @@ public class MASlider extends MAScreenElement {
 		paint = new Paint();
 		paint.setDither(true);
 		paint.setColor(Color.BLACK);
-
+		completeRatio = (float) 0.3;
 	}
 
 	public MASlider(Context context, AttributeSet attrs) {
@@ -48,29 +49,28 @@ public class MASlider extends MAScreenElement {
 		// lol arbitrary hard coded values
 		float xleft = 0,
 			  xright = this.getWidth(),
-			  xcenter = (xright - xleft)/2,
+			  thumbLocation = (xright - xleft)*completeRatio,
 			  ytop = 0,
 			  ybottom = this.getHeight(),
 			  ycenter = (ybottom - ytop)/2;
 		
-		paint.setColor(getResources().getColor(R.color.achalRed));
+		paint.setColor(getResources().getColor(R.color.black));
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(5);
 
 		// slider line
-		canvas.drawLine(xleft,ycenter,xcenter,ycenter,paint);
+		canvas.drawLine(xleft,ycenter,thumbLocation,ycenter,paint);
 
 		// slider unfilled line
 		paint.setStyle(Paint.Style.STROKE);
-		paint.setColor(Color.GRAY);
-		canvas.drawLine(xcenter,ycenter,xright,ycenter,paint);
+		paint.setColor(getResources().getColor(R.color.uiGray));
+		canvas.drawLine(thumbLocation,ycenter,xright,ycenter,paint);
 		
-		// slider active point (thumb)
-		paint.setColor(getResources().getColor(R.color.achalRed));
+		paint.setColor(getResources().getColor(R.color.black));
 		paint.setStrokeWidth(2);
-		canvas.drawCircle(xcenter, ycenter, 15, paint);
+		canvas.drawCircle(thumbLocation, ycenter, 15, paint);
 		paint.setStyle(Paint.Style.FILL);
-		canvas.drawCircle(xcenter, ycenter, 10, paint);
+		canvas.drawCircle(thumbLocation, ycenter, 10, paint);
 	}
 	
 	@Override
