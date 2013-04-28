@@ -43,8 +43,10 @@ public class MATriangle extends MAScreenElement {
 	public void onDraw(Canvas canvas) {
 		paint.setColor(Color.BLACK);
 		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(3);
+		paint.setStrokeWidth(6);
 		// top left: 0, 0
+		this.width = getWidth();
+		this.height = getHeight();
 		canvas.drawLine(0, this.height, this.width / 2, 0, paint);
 		canvas.drawLine(this.width / 2, 0, this.width, this.height, paint);
 		canvas.drawLine(this.width, this.height, 0, this.height, paint);

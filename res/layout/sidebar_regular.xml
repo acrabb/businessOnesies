@@ -91,6 +91,18 @@
         android:layout_below="@id/editTextButton"
 	    android:background="@drawable/trash"
         />
+    <Button
+        android:id="@+id/elementForward"
+        style="@style/sidebarButtonStyle"
+        android:layout_below="@id/deleteElementButton"
+        android:background="@drawable/forward"
+        />
+    <Button
+        android:id="@+id/elementBackward"
+        style="@style/sidebarButtonStyle"
+        android:layout_below="@id/elementForward"
+        android:text="Down"
+        />
 
     
 	<!-- SKETCH ZONE CONTEXT -->
@@ -98,7 +110,7 @@
         android:id="@+id/addButton"
         style="@style/sidebarButtonStyle"
         android:background="@drawable/check"
-        android:layout_below="@id/deleteElementButton"
+        android:layout_below="@id/elementBackward"
         />
     <!-- NumberPicker 
         android:id="@+id/brushSize"

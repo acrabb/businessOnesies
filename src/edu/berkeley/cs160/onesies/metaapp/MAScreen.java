@@ -1,5 +1,7 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
+import java.util.ArrayList;
+
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,9 +20,12 @@ public class MAScreen extends RelativeLayout {
 //	private TestingActivity 	mTestingActivity;
 	private String				mName;
 //	protected boolean    		testMode = false;
+	private ArrayList<MAScreenElement> children; // not needed?
+	private UndoModel           undo;
 	
 	public MAScreen(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		undo = new UndoModel(this);
 		this.setBackgroundColor(getResources().getColor(backColor));
 		this.setOnClickListener(new OnClickListener() {
 			@Override
@@ -28,6 +33,7 @@ public class MAScreen extends RelativeLayout {
 				deselectAll();
 			}
 		});
+		
 	}
 	
 	public void deselectAll() {
@@ -123,8 +129,62 @@ public class MAScreen extends RelativeLayout {
 	}
 	public void deleteSelected() {
 		if (mSelectedChild != null) {
+			this.updateModel(mSelectedChild, UndoStatus.REMOVE);
 			this.removeView(mSelectedChild);
 			mSelectedChild = null;
 		}
+
+	}
+	
+	/** Activity will use information from UndoModel, and handle it accordingly. */
+	public void handleUndo() {
+		undo.undoHandler();
+		this.invalidate();
+	}
+	
+	/** MAScreen will be responsible for passing data from Activity to its dedicated undoModel. */
+	public void updateModel(final MAScreenElement screenElement, final UndoStatus status) {
+		undo.updateModel(screenElement, status);
+	}
+	
+	/** Overloaded updateModel for editing Text. */
+	public void updateModel(final MAScreenElement screenElement, final UndoStatus status, final String text) {
+		undo.updateModel(screenElement, status, text);
+	}
+	
+	/**Overloaded updateModel for moving and resizing Elements. */
+	public void updateModel(final MAScreenElement screenElement, final UndoStatus status, final RelativeLayout.LayoutParams prevState) {
+		undo.updateModel(screenElement, status, prevState);
+	}
+	
+	/** undoAdd reverts this MAScreen back to the state before screenElement was added.*/
+	public void undoAdd(final MAScreenElement screenElement) {
+		screenElement.deselect();
+		this.removeView(screenElement);
+		mSelectedChild = null;
+		mDevelopmentActivity.showDefaultSidebar();
+	}
+	
+	/** undoRemove reverts this MAScreen back to the state before screenElement was removed.*/
+	public void undoRemove(final MAScreenElement screenElement) {
+		screenElement.deselect();
+		this.addView(screenElement);
+		mSelectedChild = null;
+		mDevelopmentActivity.showDefaultSidebar();
+	}
+	
+	/** undoText reverts the text value of ScreenElement to prevText. */
+	public void undoText(final MAScreenElement screenElement, final String prevText) {
+		screenElement.undoText(prevText);
+	}
+	
+	/** undoMove positions the ScreenElement in the last spot before it was moved. */
+	public void undoMove(final MAScreenElement screenElement, final RelativeLayout.LayoutParams prevState) {
+		screenElement.undoState(prevState);
+	}
+	
+	/** undoResize resets the height/width of the screenElement before it was resized. */
+	public void undoResize(final MAScreenElement screenElement, final RelativeLayout.LayoutParams prevState) {
+		screenElement.undoState(prevState);
 	}
 }

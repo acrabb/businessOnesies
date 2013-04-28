@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -47,6 +49,7 @@ public class DevelopmentActivity extends Activity {
 	private PopupMenu			mLinkPopupMenu;
 	private GridLayout			mElementsGridView;
 	private GridLayout			mShapesGridView;
+	private Dialog				mBigPictureDia;
 
 	private View 				mShapesContentView;
 	private View 				mElementsContentView;
@@ -109,7 +112,9 @@ public class DevelopmentActivity extends Activity {
 		MAScreen newScreen = mProject.getScreenWithName(name);
 		mDevRelLayout.removeView(mScreen);
 		mDevRelLayout.addView(newScreen,mScreen.getLayoutParams());
-		showDefaultSidebar();
+		if (!mIsTesting) {
+			showDefaultSidebar();
+		}
 		mScreen = newScreen;
 	}
 	
@@ -118,6 +123,31 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * MASIDEBAR "CALLBACK" METHODS
 	 *****************************************************************************/
+	public void onHomeButtonTapped() {
+		makeToast("IMPLEMENT HOME!!!");
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle("Unsaved changes will be set aflame!");
+		adb
+//			.setMessage("Go Home")
+			.setCancelable(true)
+			.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			})
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+		adb.create().show();
+		
+	}
+	public void onNotesButtonTapped() {
+		makeToast("IMPLEMENT NOTES!!!");
+	}
 	public void showSketchZone(View sketchButton) {
 		if (!mInSketchZone) {
 			mSketchCanvas = new MACanvas(getApplicationContext());
@@ -146,6 +176,7 @@ public class DevelopmentActivity extends Activity {
 			p.leftMargin = mSketchCanvas.getLeftMargin();
 			p.topMargin = mSketchCanvas.getTopMargin();
 			custom.setLayoutParams(p);
+			mScreen.updateModel(custom, UndoStatus.ADD);
 			mScreen.addView(custom);
 		}
 		hideSketchZone();
@@ -298,6 +329,16 @@ public class DevelopmentActivity extends Activity {
 	}
 	
 	//-------------------------------------------------------------------------
+	public void onElementForwardTapped() {
+		mScreen.getSelectedElement().bringToFront();
+		mScreen.invalidate();
+	}
+	//-------------------------------------------------------------------------
+	public void onElementBackwardTapped() {
+		
+	}
+	
+	//-------------------------------------------------------------------------
 	String m_Text = "";
 	public void onEditTextTapped() {
 		if(mScreen.getSelectedElement() == null) { 
@@ -310,6 +351,8 @@ public class DevelopmentActivity extends Activity {
 		final EditText input = new EditText(this);
 		// Specify the type of input expected
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+		input.setText(mScreen.getSelectedElement().getText());
+		mScreen.getSelectedElement().invalidate();
 		builder.setView(input);
 
 		// Set up the buttons
@@ -317,7 +360,9 @@ public class DevelopmentActivity extends Activity {
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
 		        m_Text = input.getText().toString();
-		        ((MAScreenElement) mScreen.getSelectedElement()).setLabel(m_Text);
+		        mScreen.updateModel(mScreen.getSelectedElement(), UndoStatus.TEXT, mScreen.getSelectedElement().getText());
+		        ((MAScreenElement) mScreen.getSelectedElement()).setText(m_Text);
+		        mScreen.getSelectedElement().invalidate();
 		    }
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -330,13 +375,23 @@ public class DevelopmentActivity extends Activity {
 		builder.show();
 	}
 	
+	//-------------------------------------------------------------------------
 	
+	public void onUndoTapped() {
+		mScreen.handleUndo();
+	}
 	
 	/*****************************************************************************
 	 * POPUP "CALLBACK" METHODS
 	 *****************************************************************************/
 	private void addUIElement(View element) {
 		// Take the view, and add it to the MAScreen object.
+		// TODO HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK
+		// TODO HACK HACK HACK HACK HACK HACK
+		
+//		LayoutInflater mInflater = new LayoutInflater();
+		
 		MAScreenElement clone;
 		switch (element.getId()) {
 		case R.id.ma_text_label:
@@ -351,8 +406,9 @@ public class DevelopmentActivity extends Activity {
 			clone = new MAButton(getApplicationContext(), mScreen);
 			break;
 		}
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
-		clone.setLayoutParams(params);
+		//NEEDED FROM MERGE?
+//		clone.setLayoutParams(params);
+		mScreen.updateModel(clone, UndoStatus.ADD);
 		mScreen.addView(clone);
 	}
 	//-------------------------------------------------------------------------
@@ -376,7 +432,7 @@ public class DevelopmentActivity extends Activity {
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
 		clone.setLayoutParams(params);
 
-	
+		mScreen.updateModel(clone, UndoStatus.ADD);
 		mScreen.addView(clone);
 	}
 	
@@ -402,6 +458,15 @@ public class DevelopmentActivity extends Activity {
 	//-------------------------------------------------------------------------
 	private void onLinkToExistingScreenSelected(MAButton button) {
 		makeToast("LINK TO EXISTING SCREEN");
+		final MAButton but = button;
+		// Ask big picture to display itself, asking for a screen selection
+		showBigPictureWithClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				but.setDestinationScreen((MAScreen) parent.getAdapter().getItem(position));
+				mBigPictureDia.dismiss();
+			}
+		});
 		
 	}
 	
@@ -420,10 +485,6 @@ public class DevelopmentActivity extends Activity {
 			mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
 			mMenuPopupMenu.getMenu().getItem(4).setVisible(true);
 		}
-		
-		// ------ OLD ------
-//		Intent mIntent = new Intent(this, TestingActivity.class);
-//		startActivity(mIntent);		
 	}
 	//-------------------------------------------------------------------------
 	public void onExitTestModeTapped() {
@@ -448,21 +509,25 @@ public class DevelopmentActivity extends Activity {
 	private void onBigPictureSelected() {
 		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
 		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		final Dialog dia = new Dialog(this);
-		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
-		ListView screenList = (ListView) v.findViewById(android.R.id.list);
-		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
-		screenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		
+		showBigPictureWithClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
-				dia.dismiss();
+				mBigPictureDia.dismiss();
 			}
 		});
-		
-		dia.setContentView(v);
-		dia.setTitle("Go To Screen:");
-		dia.show();
+	}
+	
+	private void showBigPictureWithClickListener(AdapterView.OnItemClickListener listener) {
+		mBigPictureDia = new Dialog(this);
+		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
+		ListView screenList = (ListView) v.findViewById(android.R.id.list);
+		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
+		screenList.setOnItemClickListener(listener);
+		mBigPictureDia.setContentView(v);
+		mBigPictureDia.setTitle("Go To Screen:");
+		mBigPictureDia.show();
 	}
 	
 	
@@ -500,8 +565,7 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * MISC METHODS
 	 *****************************************************************************/
-	
-	private Bitmap createBitmapOfView(View theView) {
+	public static Bitmap createBitmapOfView(View theView) {
 		Bitmap b = Bitmap.createBitmap(theView.getWidth(),
 				theView.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(b);
@@ -509,8 +573,8 @@ public class DevelopmentActivity extends Activity {
 		return b;
 	}
 	//-------------------------------------------------------------------------
-	private ImageView createImageViewWithBitmap(Bitmap bitmap) {
-		ImageView image = new ImageView(getApplicationContext());
+	public static ImageView createImageViewWithBitmapForContext(Bitmap bitmap, Context context) {
+		ImageView image = new ImageView(context);
 		image.setImageBitmap(bitmap);
 		return image;
 	}

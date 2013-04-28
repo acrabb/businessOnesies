@@ -50,18 +50,15 @@ public class MAButton extends MAScreenElement {
 //		canvas.restore();
 	}
 	
-	@Override
-	public void select() {
-		super.select();
-		this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
-				PorterDuff.Mode.DARKEN);
-		isSelected = true;
-	}
-	@Override
-	public void deselect() {
-		super.deselect();
-		this.getBackground().clearColorFilter();
-	}
+//	@Override
+//	public void select() {
+//		super.select();
+//		isSelected = true;
+//	}
+//	@Override
+//	public void deselect() {
+//		super.deselect();
+//	}
 	
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
@@ -73,7 +70,7 @@ public class MAButton extends MAScreenElement {
 		this.mDestinationScreen = mDestinationScreen;
 	}
 	
-	public void setLabel(String lbl) {
+	public void setText(String lbl) {
 		mLabel = lbl;
 		
 		this.invalidate();

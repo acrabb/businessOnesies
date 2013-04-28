@@ -46,7 +46,9 @@ public class MAOval extends MAScreenElement {
 	public void onDraw(Canvas canvas) {
 		paint.setColor(Color.BLACK);
 		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(3);
+		paint.setStrokeWidth(6);
+		this.width = getWidth();
+		this.height = getHeight();
 		ovalRect.right = this.width - 3;
 		ovalRect.bottom = this.height - 3;
 		canvas.drawOval(ovalRect, paint);
