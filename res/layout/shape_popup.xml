@@ -26,6 +26,12 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/ma_triangle" />
+        
+        <TextView
+            android:id="@+id/ma_star"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="Star" />
     </GridLayout>
 
 </ScrollView>
