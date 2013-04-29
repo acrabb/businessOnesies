@@ -24,6 +24,7 @@ public class MAOval extends MAScreenElement {
 		// Set background to be some image
 		paint = new Paint();
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
+		ovalRect = new RectF(padding,padding,this.width-padding,this.height-padding);
 	}
 
 	public MAOval(Context context, AttributeSet attrs) {
@@ -39,7 +40,6 @@ public class MAOval extends MAScreenElement {
 		params.height = 200;
 		params.width = 200;
 		setLayoutParams(params);
-		ovalRect = new RectF(padding,padding,this.width-padding,this.height-padding);
 		invalidate();
 	}
 	

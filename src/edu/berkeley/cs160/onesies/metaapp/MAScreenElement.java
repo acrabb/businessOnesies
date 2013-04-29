@@ -3,7 +3,6 @@ package edu.berkeley.cs160.onesies.metaapp;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 

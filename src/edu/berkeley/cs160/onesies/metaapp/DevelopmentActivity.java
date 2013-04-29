@@ -199,19 +199,14 @@ public class DevelopmentActivity extends Activity {
 		mPopupWindow = new PopupWindow(mShapesContentView,
 				(int) mResources.getDimension(R.dimen.shapePopupWidth),
 				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
-		/* draw triangle hack */
-		ImageView triangle = (ImageView) mShapesContentView.findViewById(R.id.ma_triangle);
-		Log.d("meta", "Triangle: w: " +triangle.getWidth() +";h:"+triangle.getHeight());
-		Bitmap triBitmap = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
-		Canvas triCanvas = new Canvas(triBitmap);
-		Paint paint = new Paint();
-		paint.setColor(getResources().getColor(R.color.achalRed));
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(5);
-		triCanvas.drawLine(50, 50, 25, 0, paint);
-		triCanvas.drawLine(25, 0, 0, 50, paint);
-		triCanvas.drawLine(0,50,50,50,paint);
-		triangle.setImageDrawable(new BitmapDrawable(getResources(), triBitmap));
+		MATriangle triangle  = new MATriangle(getApplicationContext(), (MAScreen) null);
+		MAOval oval = new MAOval(getApplicationContext(), (MAScreen) null);
+		MARectangle rectangle = new MARectangle(getApplicationContext(), (MAScreen) null);
+		MAStar star = new MAStar(getApplicationContext(), (MAScreen) null);
+		addElementToImageView(triangle, R.id.ma_triangle);
+		addElementToImageView(rectangle, R.id.ma_rectangle);
+		addElementToImageView(oval, R.id.ma_oval);
+		addElementToImageView(star, R.id.ma_star);
 		
 		/*
 		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
@@ -264,6 +259,12 @@ public class DevelopmentActivity extends Activity {
 		mPopupWindow.showAsDropDown(button, 0, 0);
 	}
 	
+	
+	private void addElementToImageView(MAScreenElement shape, int id) {
+		ImageView imageView = (ImageView) mShapesContentView.findViewById(id);
+		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape, 100, 100);
+		imageView.setImageBitmap(viewBitmap);
+	}
 	//-------------------------------------------------------------------------
 	public void showLinkPopup(View linkButton) {
 		mLinkPopupMenu = new PopupMenu(getApplicationContext(), linkButton);
@@ -611,12 +612,25 @@ public class DevelopmentActivity extends Activity {
 	 * MISC METHODS
 	 *****************************************************************************/
 	public static Bitmap createBitmapOfView(View theView) {
-		Bitmap b = Bitmap.createBitmap(theView.getWidth(),
-				theView.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(b);
-		theView.draw(c);
-		return b;
+		if (theView.getWidth() == 0 || theView.getHeight() == 0) {
+			Log.w("meta", "Trying to create bitmap of a view with 0 height or width :(");
+		}
+		theView.setDrawingCacheEnabled(true);
+		theView.buildDrawingCache();
+		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
+		theView.setDrawingCacheEnabled(true);
+		return a;
 	}
+	
+	public static Bitmap createBitmapOfView(View theView, int width, int height) {
+		theView.setDrawingCacheEnabled(true);
+		theView.layout(0, 0, width, height);
+		theView.buildDrawingCache();
+		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
+		theView.setDrawingCacheEnabled(true);
+		return a;
+	}
+	
 	//-------------------------------------------------------------------------
 	public static ImageView createImageViewWithBitmapForContext(Bitmap bitmap, Context context) {
 		ImageView image = new ImageView(context);
