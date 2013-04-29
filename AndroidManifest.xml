@@ -16,6 +16,7 @@
         <activity
             android:name="edu.berkeley.cs160.onesies.metaapp.MainActivity"
             android:theme="@style/NoTitlebarTheme"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,10 +34,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-        <activity
-            android:name="edu.berkeley.cs160.onesies.metaapp.TestingActivity"
+        <activity 
+            android:name="edu.berkeley.cs160.onesies.metaapp.BigPicture"
+            android:theme="@style/NoTitlebarTheme"
+            android:screenOrientation="landscape"
             >
-    <!--         android:label="@string/title_activity_testing" -->
         </activity>
     </application>
 

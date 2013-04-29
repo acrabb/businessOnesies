@@ -76,6 +76,10 @@ public class MAScreen extends RelativeLayout {
 		}
 	}
 	private void determineSidebarState() {
+		if(mDevelopmentActivity.isTesting()) {
+			mDevelopmentActivity.showTestSidebar();
+			return;
+		}
 		mDevelopmentActivity.showDefaultSidebar();
 		if(mSelectedChild == null) {
 //			mDevelopmentActivity.showDefaultSidebar();
