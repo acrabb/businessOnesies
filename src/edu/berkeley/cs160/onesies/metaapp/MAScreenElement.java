@@ -57,11 +57,6 @@ public class MAScreenElement extends FrameLayout {
 		this.setPivotX(0);
 		this.setPivotY(0);
 		
-//		Log.d("ACACAC", "Getting highlight overlay");
-//		mHighlightOverlay = this.findViewById(R.id.highlightOverlay);
-//		mHighlightOverlay.setVisibility(VISIBLE);
-		
-		
 		mHighlightOverlay = new View(getContext());
 //		mHighlightOverlay.setBackgroundResource(R.drawable.arrow_dr);
 		mHighlightOverlay.setBackgroundColor(mHighlightColor);
@@ -207,9 +202,6 @@ public class MAScreenElement extends FrameLayout {
         mHighlightOverlay.setVisibility(VISIBLE);
 		mDragTarget.setVisibility(VISIBLE);
         this.invalidate();
-        // Its up to the subclasses to highlight themselves when selected.
-        //        this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
-        //        		PorterDuff.Mode.DST_OVER);
 	}
 
 	/**

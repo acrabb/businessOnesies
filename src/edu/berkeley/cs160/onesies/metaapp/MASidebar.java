@@ -226,6 +226,10 @@ public class MASidebar extends RelativeLayout{
 			mEditTextButton.setVisibility(VISIBLE);
 			mLinkButton.setVisibility(VISIBLE);
 			break;
+		case CHECKBOX:
+		case RADIOBUTTON:
+			mEditTextButton.setVisibility(VISIBLE);
+			break;
 		case SHAPE:
 			mLinkButton.setVisibility(VISIBLE);
 			break;

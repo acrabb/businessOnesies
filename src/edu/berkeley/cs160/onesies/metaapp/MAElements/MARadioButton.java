@@ -3,76 +3,72 @@ package edu.berkeley.cs160.onesies.metaapp.MAElements;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
-import android.graphics.DrawFilter;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Path.FillType;
-import android.graphics.PorterDuff;
+import android.graphics.Paint.Style;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.RelativeLayout;
 import edu.berkeley.cs160.onesies.metaapp.ElementType;
 import edu.berkeley.cs160.onesies.metaapp.MAScreen;
 import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
 import edu.berkeley.cs160.onesies.metaapp.R;
 
-public class MASlider extends MAScreenElement {
+public class MARadioButton extends MAScreenElement {
 
 	private MAScreen	mDestinationScreen;
-	private DrawFilter  mDrawFilter;
 	private Paint       paint;
-	private float 		completeRatio;
 	
-	private int 			MIN_WIDTH = 60;
-	private int				MIN_HEIGHT = 40;
-	private int				MAX_HEIGHT = MIN_HEIGHT;
+	private int MIN_WIDTH = 60;
+	private int	MIN_HEIGHT = 40;
+	private int	MAX_HEIGHT = MIN_HEIGHT;
+	private int padding = 10;
+	private int textSize = 20;
+	private RectF mRectF;
+	private boolean isChecked;
 	
-	
-	public MASlider(Context context, MAScreen maScreen) {
-		super(context, maScreen, ElementType.SLIDER);
+	public MARadioButton(Context context, MAScreen maScreen) {
+		super(context, maScreen, ElementType.CHECKBOX);
 		// Set background to be some image
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		paint = new Paint();
 		paint.setDither(true);
+		paint.setTextSize(textSize);
+		paint.setTextAlign(Paint.Align.LEFT);
+		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		paint.setColor(Color.BLACK);
-		completeRatio = (float) 0.3;
+		mText = "Radio button";
+		// set right and bottom in onDraw
+		mRectF = new RectF(padding, padding, 0, 0);
 	}
 
-	public MASlider(Context context, AttributeSet attrs) {
+	public MARadioButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
-
 	
 	@Override
 	public void onDraw(Canvas canvas) {
-		// lol arbitrary hard coded values
-		float xleft = 0,
-			  xright = this.getWidth(),
-			  thumbLocation = (xright - xleft)*completeRatio,
-			  ytop = 0,
-			  ybottom = this.getHeight(),
-			  ycenter = (ybottom - ytop)/2;
-		
-		paint.setColor(getResources().getColor(R.color.black));
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(5);
+		float h = this.getHeight();
+		mRectF.right = h + 2*padding;
+		mRectF.bottom = h + 2*padding;
+		float radius = h / 2 - padding;
 
-		// slider line
-		canvas.drawLine(xleft,ycenter,thumbLocation,ycenter,paint);
+		paint.setColor(Color.BLACK);
+		paint.setStyle(Style.STROKE);
+		paint.setStrokeWidth(h / 10);
+		paint.setStyle(Style.STROKE);
+		canvas.drawCircle(padding + radius, h / 2, radius, paint);
+		paint.setStyle(Style.FILL);
+		canvas.drawText(mText, h + padding, h / 2 + padding, paint);
 
-		// slider unfilled line
-		paint.setStyle(Paint.Style.STROKE);
+		if (isChecked) {
+			canvas.drawCircle(padding + radius, h/2, (float) (radius * 0.7), paint);
+		}
 		paint.setColor(getResources().getColor(R.color.uiGray));
-		canvas.drawLine(thumbLocation,ycenter,xright,ycenter,paint);
-		
-		paint.setColor(getResources().getColor(R.color.black));
-		paint.setStrokeWidth(2);
-		canvas.drawCircle(thumbLocation, ycenter, 15, paint);
-		paint.setStyle(Paint.Style.FILL);
-		canvas.drawCircle(thumbLocation, ycenter, 10, paint);
+		paint.setStrokeWidth(0);
+		canvas.drawCircle(padding + radius, h / 2, radius, paint);
+
 	}
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
