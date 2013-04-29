@@ -18,6 +18,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -45,7 +46,6 @@ public class DevelopmentActivity extends Activity {
 
 	// UI Objects-------------------------------
 	private MAScreen			mScreen;
-//	private MAScreen            testScreen;
 	private RelativeLayout		mDevRelLayout;
 	private MASidebar			mSidebar;
 	private PopupWindow			mPopupWindow;
@@ -54,10 +54,10 @@ public class DevelopmentActivity extends Activity {
 	private GridLayout			mElementsGridView;
 	private GridLayout			mShapesGridView;
 	private Dialog				mBigPictureDia;
+	private MAButton			mButtonToLink;
 
 	private View 				mShapesContentView;
 	private View 				mElementsContentView;
-//	private View 				mLinkContentView;
 	
 	private MACanvas			mSketchCanvas;
 	
@@ -69,7 +69,8 @@ public class DevelopmentActivity extends Activity {
 	private boolean				mInSketchZone = false;
 	private boolean				mIsTesting = false;
 	
-	private final int			TAPPED_INDEX = 1;
+	private final int			SHOW_TAPPED = 1;
+	private final int			LINK_TAPPED = 2;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -290,47 +291,7 @@ public class DevelopmentActivity extends Activity {
 		});
 		mLinkPopupMenu.show();
 	}
-	//-------------------------------------------------------------------------
-	public void showMenuPopup(View button) {
-		mMenuPopupMenu = new PopupMenu(getApplicationContext(), button);
-		mMenuPopupMenu.inflate(R.menu.dev_menu);
-		mMenuPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				if(mIsTesting) {
-					mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
-					mMenuPopupMenu.getMenu().getItem(4).setVisible(true);				
-				} else {
-					mMenuPopupMenu.getMenu().getItem(3).setVisible(true);
-					mMenuPopupMenu.getMenu().getItem(4).setVisible(false);
-				}
-				switch(item.getItemId()) {
-					case R.id.link_menu_new:
-						// Create a new screen that is not linked to by anything.
-//						onLinkToNewScreenSelected();
-						break;
-					case R.id.link_menu_existing:
-						// Show Big Picture for the selection of a screen.
-//						onLinkToExistingScreenSelected();
-						break;
-					case R.id.dev_menu_big_picture:
-						onBigPictureSelected();
-						break;
-					case R.id.dev_menu_test:
-						onTestModeTapped();
-						break;
-					case R.id.dev_menu_test_exit:
-						onExitTestModeTapped();
-						break;
-					default:
-				}
-				return false;
-			}
-		});
-		mMenuPopupMenu.show();
-		/**/
-	}
+	
 	
 	
 	//-------------------------------------------------------------------------
@@ -363,6 +324,7 @@ public class DevelopmentActivity extends Activity {
 		// Specify the type of input expected
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
 		input.setText(mScreen.getSelectedElement().getText());
+		input.setSelection(input.getText().length());
 		mScreen.getSelectedElement().invalidate();
 		builder.setView(input);
 
@@ -481,18 +443,53 @@ public class DevelopmentActivity extends Activity {
 	//-------------------------------------------------------------------------
 	private void onLinkToExistingScreenSelected(MAButton button) {
 		makeToast("LINK TO EXISTING SCREEN");
-		final MAButton but = button;
-		// Ask big picture to display itself, asking for a screen selection
-		showBigPictureWithClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				but.setDestinationScreen((MAScreen) parent.getAdapter().getItem(position));
-				mBigPictureDia.dismiss();
-			}
-		});
-		
+		mButtonToLink = button;
+		showBigPictureForCode(LINK_TAPPED);
 	}
 	
+	//-------------------------------------------------------------------------
+	public void showMenuPopup(View button) {
+		// DON'T CREATE A NEW ONE EVERY TIME
+		mMenuPopupMenu = new PopupMenu(getApplicationContext(), button);
+		mMenuPopupMenu.inflate(R.menu.dev_menu);
+		Menu menu = mMenuPopupMenu.getMenu();
+		if(mIsTesting) {
+			mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
+			mMenuPopupMenu.getMenu().getItem(4).setVisible(true);				
+		} else {
+			mMenuPopupMenu.getMenu().getItem(3).setVisible(true);
+			mMenuPopupMenu.getMenu().getItem(4).setVisible(false);
+		}
+		mMenuPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+		
+				switch(item.getItemId()) {
+//					case R.id.link_menu_new:
+//						// Create a new screen that is not linked to by anything.
+////							onLinkToNewScreenSelected();
+//						break;
+//					case R.id.link_menu_existing:
+//						// Show Big Picture for the selection of a screen.
+////							onLinkToExistingScreenSelected();
+//						break;
+					case R.id.dev_menu_big_picture:
+						onBigPictureSelected();
+						break;
+					case R.id.dev_menu_test:
+						onTestModeTapped();
+						break;
+					case R.id.dev_menu_test_exit:
+						onExitTestModeTapped();
+						break;
+					default:
+				}
+				return false;
+			}
+		});
+		mMenuPopupMenu.show();
+		/**/
+	}
 	
 	
 	/*****************************************************************************
@@ -505,8 +502,11 @@ public class DevelopmentActivity extends Activity {
 			showScreenWithName(mProject.getFirstScreen().getName());
 			showTestSidebar();
 			// update menu
-			mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
-			mMenuPopupMenu.getMenu().getItem(4).setVisible(true);
+//			mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
+//			mMenuPopupMenu.getMenu().getItem(4).setVisible(true);
+			
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test).setVisible(false);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit).setVisible(true);
 		}
 	}
 	//-------------------------------------------------------------------------
@@ -517,8 +517,10 @@ public class DevelopmentActivity extends Activity {
 			showScreenWithName(mScreen.getName());
 			showDefaultSidebar();
 			// update menu
-			mMenuPopupMenu.getMenu().getItem(3).setVisible(true);
-			mMenuPopupMenu.getMenu().getItem(4).setVisible(false);
+//			mMenuPopupMenu.getMenu().getItem(3).setVisible(true);
+//			mMenuPopupMenu.getMenu().getItem(4).setVisible(false);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test).setVisible(true);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit).setVisible(true);
 		}
 	}
 	
@@ -530,45 +532,48 @@ public class DevelopmentActivity extends Activity {
 	}
 	//-------------------------------------------------------------------------
 	private void onBigPictureSelected() {
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
-		
-		Intent intent = new Intent(DevelopmentActivity.this, BigPicture.class);
-		intent.putExtra("RETURN_TAPPED", true);
-		startActivityForResult(intent, TAPPED_INDEX);
-				
-//		showBigPictureWithClickListener(new AdapterView.OnItemClickListener() {
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
-//				mBigPictureDia.dismiss();
-//			}
-//		});
+		showBigPictureForCode(SHOW_TAPPED);
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    switch(requestCode) {
-           case TAPPED_INDEX:
-            if (resultCode == RESULT_OK) {
-           	 	int i = data.getIntExtra("INDEX", -1);
-                Log.d("ACACAC", "SELECTED:"+i);
-				showScreenWithName(mProject.getScreens().get(i).getName());
-            }
-           break;
+	    // When BigPicture finishes for showing the tapped screen.
+        	case SHOW_TAPPED:
+	            if (resultCode == RESULT_OK) {
+	           	 	int i = data.getIntExtra("INDEX", -1);
+	                Log.d("ACACAC", "SELECTED:"+i);
+					showScreenWithName(mProject.getScreens().get(i).getName());
+	            }
+	            break;
+	    // When BigPicture finishes for linking a button to the tapped screen.
+        	case LINK_TAPPED:
+        		if (resultCode == RESULT_OK) {
+	           	 	int i = data.getIntExtra("INDEX", -1);
+	                Log.d("ACACAC", "SELECTED:"+i);
+	                mButtonToLink.setDestinationScreen(mProject.getScreens().get(i));
+	            }
+        		break;
+           default:
 	    }
 	}
 	
-	private void showBigPictureWithClickListener(AdapterView.OnItemClickListener listener) {
-		mBigPictureDia = new Dialog(this);
-		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
-		ListView screenList = (ListView) v.findViewById(android.R.id.list);
-		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
-		screenList.setOnItemClickListener(listener);
-		mBigPictureDia.setContentView(v);
-		mBigPictureDia.setTitle("Go To Screen:");
-		mBigPictureDia.show();
+	private void showBigPictureForCode(int requestCode) {
+		Intent intent = new Intent(DevelopmentActivity.this, BigPicture.class);
+		intent.putExtra("RETURN_TAPPED", true);
+		startActivityForResult(intent, requestCode);
 	}
+	
+//	private void showBigPictureWithClickListener(AdapterView.OnItemClickListener listener) {
+//		mBigPictureDia = new Dialog(this);
+//		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
+//		ListView screenList = (ListView) v.findViewById(android.R.id.list);
+//		screenList.setAdapter(new MAScreensAdapter(getApplicationContext(), mProject.getScreens()));
+//		screenList.setOnItemClickListener(listener);
+//		mBigPictureDia.setContentView(v);
+//		mBigPictureDia.setTitle("Go To Screen:");
+//		mBigPictureDia.show();
+//	}
 	
 	
 	/*****************************************************************************

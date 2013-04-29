@@ -97,7 +97,7 @@ public class BigPicture extends Activity {
 							Log.d("ACACAC", String.format("DOWN"));
 							break;
 						case MotionEvent.ACTION_MOVE:
-							/*
+							/**/
 							int horizDiff = (int)(x-mLastX);
 							int vertDiff = (int)(y-mLastY);
 //							Log.d("ACACAC", String.format("dx:%d, dy:%d", horizDiff, vertDiff));
@@ -108,8 +108,8 @@ public class BigPicture extends Activity {
 								params.rightMargin -= horizDiff;
 								params.bottomMargin -= vertDiff;
 								iv.setLayoutParams(params);
-							}
-							*/
+//							}
+							/**/
 							break;
 						case MotionEvent.ACTION_UP:
 							if (!mScreenWasDragged) {
