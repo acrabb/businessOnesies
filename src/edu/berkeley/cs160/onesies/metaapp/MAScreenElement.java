@@ -125,15 +125,7 @@ public class MAScreenElement extends FrameLayout {
 	@Override
 	public void onAttachedToWindow() {
 		// Get mScreen
-		// Set width and height
-//		this.height = 200;
-//		this.width = 200;
-		if(mType != ElementType.CUSTOM) {
-			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.getLayoutParams(); 
-			params.height = 100;
-			params.width = 200;
-			setLayoutParams(params);
-		}
+		// Set width and height?
 		// get mResizeTarget
 		// get mHighlightOverlay
 			// The following will only work if we inflate from ma_element.xml,

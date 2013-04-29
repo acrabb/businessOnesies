@@ -28,12 +28,17 @@ public class MainActivity extends Activity {
 	private final static DisplayMetrics display = new DisplayMetrics();
 	private final ArrayList<View> testScreens = new ArrayList<View>();
 	
+	
+	private MAModel mModel;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 		
+		mModel = MAModel.getInstance();
 		
 		this.getWindowManager().getDefaultDisplay().getMetrics(display);
 		RelativeLayout activityMain = (RelativeLayout)findViewById(R.id.background);

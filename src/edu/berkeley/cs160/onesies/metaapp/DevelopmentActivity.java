@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -58,11 +59,14 @@ public class DevelopmentActivity extends Activity {
 	private MACanvas			mSketchCanvas;
 	
 	// Non-UI Objects--------------------------
+	private MAModel				mModel;
 	private LayoutInflater		mLayoutInflater;
 	private Resources			mResources;
 	protected static MAProject	mProject;
 	private boolean				mInSketchZone = false;
 	private boolean				mIsTesting = false;
+	
+	private final int			TAPPED_INDEX = 1;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,8 @@ public class DevelopmentActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.development_main);
+		
+		mModel = MAModel.getInstance();
 		
 		mLayoutInflater = (LayoutInflater)getApplicationContext().
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -80,8 +86,6 @@ public class DevelopmentActivity extends Activity {
 		mScreen.setmDevelopmentActivity(this);
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
-		
-//		testScreen = (MAScreen) mLayoutInflater.inflate(R.layout.ma_screen, null);
 		
 		createNewProject();
 		mProject.addFirstScreen(mScreen);
@@ -94,7 +98,10 @@ public class DevelopmentActivity extends Activity {
 	//-------------------------------------------------------------------------
 	private void createNewProject() {
 		//TODO
-		mProject = new MAProject("Project1");
+		mProject = new MAProject(String.format("Project %d",
+				mModel.getNumProjects()+1));
+		mModel.addProject(mProject);
+		
 		String name = mProject.getNextDefaultScreenName();
 		mProject.addScreenToProject(name, mScreen);
 		mScreen.setName(name);
@@ -385,7 +392,7 @@ public class DevelopmentActivity extends Activity {
 	 * POPUP "CALLBACK" METHODS
 	 *****************************************************************************/
 	private void addUIElement(View element) {
-		// Take the view, and add it to the MAScreen object.
+		// Create the view, and add it to the MAScreen object.
 		// TODO HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK
@@ -406,8 +413,11 @@ public class DevelopmentActivity extends Activity {
 			clone = new MAButton(getApplicationContext(), mScreen);
 			break;
 		}
-		//NEEDED FROM MERGE?
-//		clone.setLayoutParams(params);
+		
+		if(clone.getmType() != ElementType.CUSTOM) {
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100); 
+			clone.setLayoutParams(params);
+		}
 		mScreen.updateModel(clone, UndoStatus.ADD);
 		mScreen.addView(clone);
 	}
@@ -510,13 +520,30 @@ public class DevelopmentActivity extends Activity {
 		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
 		//TODO HACK HACK HACK HACK HACK HACK HACK HACK HACK
 		
-		showBigPictureWithClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
-				mBigPictureDia.dismiss();
-			}
-		});
+		Intent intent = new Intent(DevelopmentActivity.this, BigPicture.class);
+		intent.putExtra("RETURN_TAPPED", true);
+		startActivityForResult(intent, TAPPED_INDEX);
+				
+//		showBigPictureWithClickListener(new AdapterView.OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//				showScreenWithName(((MAScreen) parent.getAdapter().getItem(position)).getName());
+//				mBigPictureDia.dismiss();
+//			}
+//		});
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    switch(requestCode) {
+           case TAPPED_INDEX:
+            if (resultCode == RESULT_OK) {
+           	 	int i = data.getIntExtra("INDEX", -1);
+                Log.d("ACACAC", "SELECTED:"+i);
+				showScreenWithName(mProject.getScreens().get(i).getName());
+            }
+           break;
+	    }
 	}
 	
 	private void showBigPictureWithClickListener(AdapterView.OnItemClickListener listener) {
@@ -604,6 +631,11 @@ public class DevelopmentActivity extends Activity {
 		return mIsTesting;
 	}
 	
+	
+	@Override
+	public void onBackPressed() {
+		
+	}
 	
 	//-------------------------------------------------------------------------
 	public void makeLogI(String format, Object... args) {
