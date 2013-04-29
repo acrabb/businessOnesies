@@ -32,6 +32,10 @@
         <TextView 
             android:id="@+id/ma_checkbox"
             android:text="Checkbox" />
+
+        <TextView 
+            android:id="@+id/ma_radiobutton"
+            android:text="Radio" />
     </GridLayout>
 
 </ScrollView>

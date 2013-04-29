@@ -12,6 +12,7 @@ public enum ElementType {
 	TEXT_LABEL,
 	SLIDER,
 	CHECKBOX,
+	RADIOBUTTON,
 	CUSTOM,
 	SHAPE,
 	OTHER;
