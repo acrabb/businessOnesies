@@ -28,6 +28,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MACheckbox;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MASlider;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MAOval;
@@ -399,6 +400,9 @@ public class DevelopmentActivity extends Activity {
 			break;
 		case R.id.ma_slider:
 			clone = new MASlider(getApplicationContext(), mScreen);
+			break;
+		case R.id.ma_checkbox:
+			clone = new MACheckbox(getApplicationContext(), mScreen);
 			break;
 		case R.id.ma_button:
 		default:

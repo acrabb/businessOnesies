@@ -10,6 +10,8 @@ package edu.berkeley.cs160.onesies.metaapp;
 public enum ElementType {
 	BUTTON,
 	TEXT_LABEL,
+	SLIDER,
+	CHECKBOX,
 	CUSTOM,
 	SHAPE,
 	OTHER;

@@ -27,8 +27,11 @@
         
         <TextView 
             android:id="@+id/ma_slider"
-            android:text="Slider"
-            android:textSize="50sp" />
+            android:text="Slider" />
+        
+        <TextView 
+            android:id="@+id/ma_checkbox"
+            android:text="Checkbox" />
     </GridLayout>
 
 </ScrollView>
