@@ -17,6 +17,7 @@ public class MAOval extends MAScreenElement {
 	private int left, top, width, height;
 	private Paint paint;
 	private RectF ovalRect;
+	private int padding = 10;
 	
 	public MAOval(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.SHAPE);
@@ -38,7 +39,7 @@ public class MAOval extends MAScreenElement {
 		params.height = 200;
 		params.width = 200;
 		setLayoutParams(params);
-		ovalRect = new RectF(0,0,this.width,this.height);
+		ovalRect = new RectF(padding,padding,this.width-padding,this.height-padding);
 		invalidate();
 	}
 	
@@ -49,8 +50,8 @@ public class MAOval extends MAScreenElement {
 		paint.setStrokeWidth(6);
 		this.width = getWidth();
 		this.height = getHeight();
-		ovalRect.right = this.width - 3;
-		ovalRect.bottom = this.height - 3;
+		ovalRect.right = this.width - padding;
+		ovalRect.bottom = this.height - padding;
 		canvas.drawOval(ovalRect, paint);
 	}
 	

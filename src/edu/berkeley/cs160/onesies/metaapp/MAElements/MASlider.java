@@ -75,17 +75,6 @@ public class MASlider extends MAScreenElement {
 		canvas.drawCircle(thumbLocation, ycenter, 10, paint);
 	}
 	
-//	@Override
-//	public void select() {
-//		super.select();
-//		isSelected = true;
-//	}
-//	@Override
-//	public void deselect() {
-//		super.deselect();
-//	}
-	
-	
 	//-----------------GETTERS AND SETTERS-----------------------------------
 	public MAScreen getDestinationScreen() {
 		return mDestinationScreen;

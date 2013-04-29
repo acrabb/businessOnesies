@@ -15,6 +15,7 @@ public class MATriangle extends MAScreenElement {
 	
 	private int left, top, width, height;
 	private Paint paint;
+	private int padding = 10;
 	
 	public MATriangle(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.SHAPE);
@@ -47,8 +48,8 @@ public class MATriangle extends MAScreenElement {
 		// top left: 0, 0
 		this.width = getWidth();
 		this.height = getHeight();
-		canvas.drawLine(0, this.height, this.width / 2, 0, paint);
-		canvas.drawLine(this.width / 2, 0, this.width, this.height, paint);
-		canvas.drawLine(this.width, this.height, 0, this.height, paint);
+		canvas.drawLine(padding, this.height - padding, this.width / 2, padding, paint);
+		canvas.drawLine(this.width / 2, padding, this.width - padding, this.height - padding, paint);
+		canvas.drawLine(this.width - padding, this.height - padding, padding, this.height - padding, paint);
 	}
 }

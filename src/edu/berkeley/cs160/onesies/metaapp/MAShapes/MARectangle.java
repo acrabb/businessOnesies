@@ -15,6 +15,7 @@ public class MARectangle extends MAScreenElement {
 	
 	private int left, top, width, height;
 	private Paint paint;
+	private int padding = 10;
 	
 	public MARectangle(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.SHAPE);
@@ -46,6 +47,6 @@ public class MARectangle extends MAScreenElement {
 		paint.setStrokeWidth(6);
 		this.width = getWidth();
 		this.height = getHeight();
-		canvas.drawRect(0,0, this.width, this.height, paint);
+		canvas.drawRect(padding,padding, this.width - padding, this.height - padding, paint);
 	}
 }
