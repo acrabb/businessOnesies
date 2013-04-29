@@ -215,9 +215,6 @@ public class MAScreenElement extends FrameLayout {
         mHighlightOverlay.setVisibility(VISIBLE);
 		mDragTarget.setVisibility(VISIBLE);
         this.invalidate();
-        // Its up to the subclasses to highlight themselves when selected.
-        //        this.getBackground().setColorFilter(getResources().getColor(R.color.blue),
-        //        		PorterDuff.Mode.DST_OVER);
 	}
 
 	/**
