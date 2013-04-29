@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -34,6 +32,7 @@ import edu.berkeley.cs160.onesies.metaapp.MAElements.MASlider;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MAOval;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MARectangle;
+import edu.berkeley.cs160.onesies.metaapp.MAShapes.MAStar;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MATriangle;
 
 
@@ -188,6 +187,7 @@ public class DevelopmentActivity extends Activity {
 		mPopupWindow = new PopupWindow(mShapesContentView,
 				(int) mResources.getDimension(R.dimen.shapePopupWidth),
 				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
+		/* draw triangle hack */
 		ImageView triangle = (ImageView) mShapesContentView.findViewById(R.id.ma_triangle);
 		Log.d("meta", "Triangle: w: " +triangle.getWidth() +";h:"+triangle.getHeight());
 		Bitmap triBitmap = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
@@ -423,6 +423,9 @@ public class DevelopmentActivity extends Activity {
 			break;
 		case R.id.ma_triangle:
 			clone = new MATriangle(getApplicationContext(), mScreen);
+			break;
+		case R.id.ma_star:
+			clone = new MAStar(getApplicationContext(), mScreen);
 			break;
 		default:
 			clone = new MARectangle(getApplicationContext(), mScreen);
