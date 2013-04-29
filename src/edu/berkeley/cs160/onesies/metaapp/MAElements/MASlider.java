@@ -31,7 +31,7 @@ public class MASlider extends MAScreenElement {
 	
 	
 	public MASlider(Context context, MAScreen maScreen) {
-		super(context, maScreen, ElementType.BUTTON);
+		super(context, maScreen, ElementType.SLIDER);
 		// Set background to be some image
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		paint = new Paint();
