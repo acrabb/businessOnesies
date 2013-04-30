@@ -14,28 +14,18 @@ import edu.berkeley.cs160.onesies.metaapp.R;
 public class MATextLabel extends MAScreenElement {
 
 //	private String		mText = "TextLabel";	
-	private Paint paint;
-	private int				textSize = 40;
-	private int 			MIN_WIDTH = 60;
+	private Paint 			paint;
+	// MATextLabels emphasize width.
+	private int 			MIN_WIDTH = 150;
+	private int 			MAX_WIDTH = 900;
 	private int				MIN_HEIGHT = 60;
-	private int				MAX_HEIGHT = MIN_HEIGHT;
+	private int				MAX_HEIGHT = 300;
 	
 	public MATextLabel(Context context, MAScreen maScreen, String text) {
 		super(context, maScreen, ElementType.TEXT_LABEL);
 		paint = new Paint();
-		paint.setColor(Color.BLACK);
-		paint.setTextSize(textSize); 
-		paint.setTextAlign(Paint.Align.CENTER);
-		paint.setTypeface(Typeface.DEFAULT_BOLD);
-		
-		// TODO Auto-generated constructor stub
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		mText = text;
-//		TextView mTextView = new TextView(context);
-//		mTextView.setTextColor(getResources().getColor(R.color.black));
-//		mTextView.setTextSize(30);
-//		mTextView.setText("HELLO");
-//		this.addView(mTextView);
 	}
 
 	public MATextLabel(Context context) {
@@ -55,23 +45,20 @@ public class MATextLabel extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
+		paint.setColor(Color.BLACK);
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.setTypeface(Typeface.DEFAULT_BOLD);
+		
+		paint.setTextSize(this.getHeight()); //Math.min(MAX_HEIGHT, this.getHeight())); 
+		this.MIN_HEIGHT = this.MAX_HEIGHT = this.getWidth()*2 / mText.length();
 		canvas.drawText(mText, this.getWidth()/2, this.getHeight()-10, paint);
 	}
 
-//	@Override
-//	public void select() {
-//		super.select();
-////		makeToast("MATextlabel select");
-//	}
-//	@Override
-//	public void deselect() {
-//		super.deselect();
-////		makeToast("MATextlabel deselect");
-//	}
-	
-	
 	public int getMinWidth() {
 		return this.MIN_WIDTH;
+	}
+	public int getMaxWidth() {
+		return this.MAX_WIDTH;
 	}
 	public int getMinHeight() {
 		return this.MIN_HEIGHT;
@@ -79,5 +66,4 @@ public class MATextLabel extends MAScreenElement {
 	public int getMaxHeight() {
 		return this.MAX_HEIGHT;
 	}
-	
 }

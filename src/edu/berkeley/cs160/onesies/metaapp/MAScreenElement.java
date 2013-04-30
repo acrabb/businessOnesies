@@ -20,7 +20,7 @@ public class MAScreenElement extends FrameLayout {
 	private View			mHighlightOverlay;
 	private int				mHighlightColor = getResources().getColor(R.color.highlightColor);
 	
-	private ElementType		mType;
+	protected ElementType		mType;
 	protected boolean 		isSelected = false;
 	protected String		mText;
 	private String			screenLinkedTo = null;
@@ -39,6 +39,7 @@ public class MAScreenElement extends FrameLayout {
 	 * IE...SO THAT TEXT LABELS CAN CALCULATE W&H FOR ITSELF.
 	 */
 	private int 			MIN_WIDTH = 60;
+	private int 			MAX_WIDTH = Integer.MAX_VALUE;
 	private int				MIN_HEIGHT = 60;
 	private int				MAX_HEIGHT = Integer.MAX_VALUE;
 	
@@ -59,6 +60,8 @@ public class MAScreenElement extends FrameLayout {
 //		this.setPivotY(0);
 		
 		// THIS SHOULD ALL MOVE TO ONFINISHINFLATE() LATER
+		// Currently done for:
+			// MAScreenElements
 		mHighlightOverlay = new View(getContext());
 //		mHighlightOverlay.setBackgroundResource(R.drawable.arrow_dr);
 		mHighlightOverlay.setBackgroundColor(mHighlightColor);
@@ -113,8 +116,7 @@ public class MAScreenElement extends FrameLayout {
 
 	public MAScreenElement(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		Log.i("MAMAMA", "here1");
-		setUp();
+		Log.i("MAMAMA", "MASE inflated");
 		// TODO Auto-generated constructor stub
 	}
 
@@ -123,11 +125,6 @@ public class MAScreenElement extends FrameLayout {
 		// TODO Auto-generated constructor stub
 	}
 
-	private void setUp() {
-//		mHighlightOverlay = findViewById(R.id.highlightOverlay);
-//		mDragTarget = (ImageView) findViewById(R.id.dragTarget);
-//		Log.i("ELELEL", String.format("SETUP! with high: %s, drag: %s", mHighlightOverlay, mDragTarget));
-	}
 	
 	//-------------------------------------------------------------------------
 	/*
@@ -193,10 +190,12 @@ public class MAScreenElement extends FrameLayout {
 					int horizDiff = (int)(x-mLastX);
 					int vertDiff = (int)(y-mLastY);
 					if (mResizing) {
-						params.width = Math.max(this.getMinWidth(), mLastW + horizDiff);
+						params.width = Math.min(Math.max(this.getMinWidth(),
+														mLastW + horizDiff),
+														this.getMaxWidth());
 						params.height = Math.min(Math.max(this.getMinHeight(),
 														mLastH + vertDiff),
-												this.getMaxHeight());
+														this.getMaxHeight());
 					} else {
 						params.leftMargin += horizDiff;
 						params.topMargin += vertDiff;
@@ -282,6 +281,9 @@ public class MAScreenElement extends FrameLayout {
 	//-------------------------------------------------------------------------
 	public int getMinWidth() {
 		return this.MIN_WIDTH;
+	}
+	public int getMaxWidth() {
+		return this.MAX_WIDTH;
 	}
 	public int getMinHeight() {
 		return this.MIN_HEIGHT;

@@ -29,56 +29,48 @@ public class MAButton extends MAScreenElement {
 	private ImageView	mLinkBadge;
 	
 	private Paint paint;
-	
-	public MAButton(Context context, MAScreen maScreen) {
-		super(context, maScreen, ElementType.BUTTON);
-		// Set background to be some image
-		this.setBackgroundResource(R.drawable.btn_default_normal);
-		paint = new Paint();
-		mScreen = maScreen;
-		
-		mText = "Button";
-		
-		// Set up Link Badge
-		mLinkBadge = new ImageView(getContext());
-		mLinkBadge.setBackgroundColor(getResources().getColor(R.color.highlightColor));
-		mLinkBadge.setImageDrawable(getResources().getDrawable(R.drawable.link_default));
-		mLinkBadge.setScaleType(ScaleType.FIT_CENTER);
-		FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(40, 40);
-		p.gravity = Gravity.TOP | Gravity.LEFT;
-		mLinkBadge.setLayoutParams(p);
-		mLinkBadge.invalidate();
-		this.addView(mLinkBadge);
-		mLinkBadge.setVisibility(INVISIBLE);
-		mLinkBadge.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-			}
-		});
-		
-	}
 
+	
+	//-------------------------------------------------------------------------
 	public MAButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
 
-	
+	//-------------------------------------------------------------------------
 	@Override
-	public void onAttachedToWindow() {
+	public void onFinishInflate() {
+		// Call super
+		super.onFinishInflate();
+		Log.i("BUBUBU", "BUTTON CREATED");
 		
+		// Set up paint, text, type, and link badge.
+		// mScreen should get assigned by devAct.
+		paint = new Paint();
+		mText = "Button";
+		mType = ElementType.BUTTON;
+		
+		mLinkBadge = (ImageView) findViewById(R.id.linkBadge);
+		mLinkBadge.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
 	}
 	
+	//-------------------------------------------------------------------------
 	@Override
 	public void onDraw(Canvas canvas) {
 		paint.setColor(Color.BLACK);
-		paint.setTextSize(40); 
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
+		
+		paint.setTextSize(Math.min(150, this.getHeight()/3)); 
 		canvas.drawText(mText, this.getWidth()/2, this.getHeight()/2, paint);
 	}
 	
 	
+	//-------------------------------------------------------------------------
 	@Override
 	public void select() {
 		super.select();
@@ -86,6 +78,7 @@ public class MAButton extends MAScreenElement {
 			mLinkBadge.setVisibility(VISIBLE);
 		}
 	}
+	//-------------------------------------------------------------------------
 	@Override
 	public void deselect() {
 		super.deselect();
@@ -98,16 +91,19 @@ public class MAButton extends MAScreenElement {
 		return mDestinationScreen;
 	}
 
+	//-------------------------------------------------------------------------
 	public void setDestinationScreen(MAScreen mDestinationScreen) {
 		this.mDestinationScreen = mDestinationScreen;
 	}
 	
+	//-------------------------------------------------------------------------
 	public void setText(String lbl) {
 		mText = lbl;
 		
 		this.invalidate();
 	}
 	
+	//-------------------------------------------------------------------------
 	public void setSize(int width, int height) {
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.getLayoutParams(); 
 		params.height = height;

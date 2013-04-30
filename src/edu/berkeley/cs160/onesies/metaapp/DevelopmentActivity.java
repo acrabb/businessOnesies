@@ -223,7 +223,6 @@ public class DevelopmentActivity extends Activity {
 	public void onAddSketchTapped() {
 		Bitmap map = mSketchCanvas.getSketch();
 		if (map != null) {
-			Log.i("ACACACAC", String.format("Map h: %d, w:%d", map.getHeight(), map.getWidth()));
 			MAScreenElement custom = (MAScreenElement) mLayoutInflater.inflate(R.layout.e_default, null);
 			setUpCustomElement(custom, map);
 //			MAScreenElement custom = createElement(ElementType.CUSTOM, map);
@@ -420,34 +419,41 @@ public class DevelopmentActivity extends Activity {
 		
 //		LayoutInflater mInflater = new LayoutInflater();
 		
-		MAScreenElement clone;
+		MAScreenElement newElement;
 		RelativeLayout.LayoutParams params;
 		switch (element.getId()) {
 		case R.id.ma_text_label:
-			clone = new MATextLabel(getApplicationContext(), mScreen, "Text Label");
+			newElement = new MATextLabel(getApplicationContext(), mScreen, "Text Label");
+			params = new RelativeLayout.LayoutParams(250, 50); 
+			newElement.setLayoutParams(params);
 			break;
 		case R.id.ma_slider:
-			clone = new MASlider(getApplicationContext(), mScreen);
+			newElement = new MASlider(getApplicationContext(), mScreen);
+			params = new RelativeLayout.LayoutParams(200, 100); 
+			newElement.setLayoutParams(params);
 			break;
 		case R.id.ma_checkbox:
-			clone = new MACheckbox(getApplicationContext(), mScreen);
+			newElement = new MACheckbox(getApplicationContext(), mScreen);
+			params = new RelativeLayout.LayoutParams(200, 100); 
+			newElement.setLayoutParams(params);
 			break;
 		case R.id.ma_radiobutton:
-			clone = new MARadioButton(getApplicationContext(), mScreen);
+			newElement = new MARadioButton(getApplicationContext(), mScreen);
+			params = new RelativeLayout.LayoutParams(200, 100); 
+			newElement.setLayoutParams(params);
 			break;
 		case R.id.ma_button:
 		default:
 			// lolol just make random buttons man
-			clone = new MAButton(getApplicationContext(), mScreen);
+			newElement = (MAScreenElement) mLayoutInflater.inflate(
+					R.layout.e_button, mScreen, false);
+			newElement.setmScreen(mScreen);
 			break;
 		}
 		
-		if(clone.getmType() != ElementType.CUSTOM) {
-			params = new RelativeLayout.LayoutParams(200, 100); 
-			clone.setLayoutParams(params);
-		}
-		mScreen.updateModel(clone, UndoStatus.ADD);
-		mScreen.addView(clone);
+		
+		mScreen.updateModel((MAScreenElement) newElement, UndoStatus.ADD);
+		mScreen.addView(newElement);
 	}
 	//-------------------------------------------------------------------------
 	private void addShapeElement(View element) {
