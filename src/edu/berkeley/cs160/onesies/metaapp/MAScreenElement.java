@@ -1,6 +1,5 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
-import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -44,6 +43,7 @@ public class MAScreenElement extends FrameLayout {
 	
 	private RelativeLayout.LayoutParams prev;
 	
+	//-------------------------------------------------------------------------
 	public MAScreenElement(Context context, MAScreen maScreen, ElementType type) {
 		super(context);
 		this.mMAScreen = maScreen;
@@ -93,15 +93,15 @@ public class MAScreenElement extends FrameLayout {
 						mResizing = false;
 						break;
 					default:
-						
 				}
 				return false;
 			}
 		});
-		
-		
 	}
 	
+	//-------------------------------------------------------------------------
+	// THESE SHOULD BE FILLED OUT WITH A 'SETUP' FUNCTION IF WE CHANGE TO USING
+	// LAYOUT INFLATION INSTEAD OF INSTANTIATION FOR SCREEN ELEMENTS.
 	public MAScreenElement(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -118,20 +118,22 @@ public class MAScreenElement extends FrameLayout {
 	}
 
 	
+	//-------------------------------------------------------------------------
 	@Override
 	public void onAttachedToWindow() {
 		// Get mScreen
 		// Set width and height?
 		// get mResizeTarget
 		// get mHighlightOverlay
-			// The following will only work if we inflate from ma_element.xml,
-			// and not create a UI element via a constructor. (In Development Activity.)
+		// The following will only work if we inflate from ma_element.xml,
+		// and not create a UI element via a constructor. (In Development Activity.)
 //		mHighlightOverlay = this.findViewById(R.id.highlightOverlay);
 //		mHighlightOverlay.setVisibility(VISIBLE);
 		
 		invalidate();
 	}
 
+	//-------------------------------------------------------------------------
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		RelativeLayout.LayoutParams params;
@@ -187,6 +189,7 @@ public class MAScreenElement extends FrameLayout {
 		return true;
 	}
 	
+	//-------------------------------------------------------------------------
 	private void elementWasTapped() {
 		if (mMAScreen.isTesting()) {
 			mMAScreen.onElementTappedInTest(this);
@@ -195,6 +198,7 @@ public class MAScreenElement extends FrameLayout {
 		}
 	}
 	
+	//-------------------------------------------------------------------------
 	/**
 	 * Called when an MAScreenElement is selected. This method should perform general
 	 * on-select actions for all ScreenElements. Subclasses should call super.select()
@@ -207,6 +211,7 @@ public class MAScreenElement extends FrameLayout {
         this.invalidate();
 	}
 
+	//-------------------------------------------------------------------------
 	/**
 	 * Called when an MAScreenElement is deselected. This method should perform general
 	 * on-deselect actions for all ScreenElements. Subclasses should call super.deselect()
@@ -219,6 +224,7 @@ public class MAScreenElement extends FrameLayout {
 		this.invalidate();
 	}
 	
+	//-------------------------------------------------------------------------
 	/* Reverts the label of this MAScreenElement to its previous text label, prevText. */
 	public void undoText(final String prevText) {
 		this.setText(prevText);
@@ -236,6 +242,7 @@ public class MAScreenElement extends FrameLayout {
 		return (RelativeLayout.LayoutParams) this.getLayoutParams();
 	}
 	
+	//-------------------------------------------------------------------------
 	public int getMinWidth() {
 		return this.MIN_WIDTH;
 	}
@@ -246,6 +253,7 @@ public class MAScreenElement extends FrameLayout {
 		return this.MAX_HEIGHT;
 	}
 	
+	//-------------------------------------------------------------------------
 	public void setScreenLinkedTo(final String screenName) {
 		this.screenLinkedTo = screenName;
 	}

@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
 		
 	}
 
+	// -- END MyPagerAdapter Class --------------------------------------------
 	private class MyPagerAdapter extends PagerAdapter {
 		
 		private ArrayList<View> views;
@@ -102,7 +103,7 @@ public class MainActivity extends Activity {
 			container.removeView((View) object);
 		}
 	}
-	
+	// -- START MyPagerAdapter Class ------------------------------------------
 	private void populateScreens() {
 		final int newfolder = this.getResources().getIdentifier("newfolder", "drawable", this.getPackageName());
 		ImageView test1 = new ImageView(this);
@@ -145,7 +146,7 @@ public class MainActivity extends Activity {
 		swipeParams.topMargin = 1100;
 		swipe.setTextSize(30);
 		swipe.setTextColor(Color.BLUE);
-		swipe.setText("Swipe to view recent projects");
+		swipe.setText("Swipe above to view recent prototypes.");
 		swipe.setLayoutParams(swipeParams);
 		return swipe;
 	}

@@ -112,6 +112,12 @@
         android:background="@drawable/check"
         android:layout_below="@id/elementBackward"
         />
+    <Button
+        android:id="@+id/cancelButton"
+        style="@style/sidebarButtonStyle"
+        android:background="@drawable/cancel"
+        android:layout_below="@id/addButton"
+        />
     <!-- NumberPicker 
         android:id="@+id/brushSize"
 	    android:layout_width="wrap_content"

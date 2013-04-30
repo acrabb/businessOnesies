@@ -49,7 +49,7 @@ public class DevelopmentActivity extends Activity {
 	private PopupMenu			mLinkPopupMenu;
 	private GridLayout			mElementsGridView;
 	private GridLayout			mShapesGridView;
-	private Dialog				mBigPictureDia;
+//	private Dialog				mBigPictureDia;
 	private MAButton			mButtonToLink;
 
 	private View 				mShapesContentView;
@@ -75,24 +75,30 @@ public class DevelopmentActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.development_main);
 		
+		// Get model
 		mModel = MAModel.getInstance();
 		
 		mLayoutInflater = (LayoutInflater)getApplicationContext().
 				getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mResources = getResources();
-		
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
+		
+		// Set up screen
 		mScreen = (MAScreen) findViewById(R.id.screen);
 		mScreen.setmDevelopmentActivity(this);
+		
+		// Set up sidebar
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
 		
+		// Set up project
 		createNewProject();
 		mProject.addFirstScreen(mScreen);
 		
-		//TESTING BADGING
-//		MAScreenElement v = (MAScreenElement) mLayoutInflater.inflate(R.layout.ma_element, null);
-//		mScreen.addView(v);
+		// Get menu for manipulation
+		mMenuPopupMenu = new PopupMenu(getApplicationContext(),
+				mSidebar.findViewById(R.id.menuButton));
+		mMenuPopupMenu.inflate(R.menu.dev_menu);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -135,7 +141,6 @@ public class DevelopmentActivity extends Activity {
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
 		adb.setTitle("Unsaved changes will be set aflame!");
 		adb
-//			.setMessage("Go Home")
 			.setCancelable(true)
 			.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
 				@Override
@@ -167,7 +172,7 @@ public class DevelopmentActivity extends Activity {
 		}
 	}
 	//-------------------------------------------------------------------------
-	private void hideSketchZone() {
+	public void hideSketchZone() {
 			mDevRelLayout.removeView(mSketchCanvas);
 			showDefaultSidebar();
 			mInSketchZone = false;
@@ -354,7 +359,9 @@ public class DevelopmentActivity extends Activity {
 	//-------------------------------------------------------------------------
 	
 	public void onUndoTapped() {
-		mScreen.handleUndo();
+		if (!mIsTesting){
+			mScreen.handleUndo();			
+		}
 	}
 	
 	/*****************************************************************************
@@ -452,37 +459,30 @@ public class DevelopmentActivity extends Activity {
 	
 	//-------------------------------------------------------------------------
 	public void showMenuPopup(View button) {
-		// DON'T CREATE A NEW ONE EVERY TIME
-		mMenuPopupMenu = new PopupMenu(getApplicationContext(), button);
-		mMenuPopupMenu.inflate(R.menu.dev_menu);
-		Menu menu = mMenuPopupMenu.getMenu();
-		if(mIsTesting) {
-			mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
-			mMenuPopupMenu.getMenu().getItem(4).setVisible(true);				
-		} else {
-			mMenuPopupMenu.getMenu().getItem(3).setVisible(true);
-			mMenuPopupMenu.getMenu().getItem(4).setVisible(false);
-		}
+		mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_delete_screen).setVisible(false);
+		mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_new_screen).setVisible(false);
+		
 		mMenuPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-		
 				switch(item.getItemId()) {
-//					case R.id.link_menu_new:
-//						// Create a new screen that is not linked to by anything.
-////							onLinkToNewScreenSelected();
-//						break;
-//					case R.id.link_menu_existing:
-//						// Show Big Picture for the selection of a screen.
-////							onLinkToExistingScreenSelected();
-//						break;
 					case R.id.dev_menu_big_picture:
 						onBigPictureSelected();
 						break;
+					case R.id.dev_menu_delete_screen:
+//						onDeleteScreenSelected();
+						break;
+					case R.id.dev_menu_new_screen:
+//						onNewScreenSelected();
+						break;
 					case R.id.dev_menu_test:
+						item.setVisible(false);
+						mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit).setVisible(true);
 						onTestModeTapped();
 						break;
 					case R.id.dev_menu_test_exit:
+						item.setVisible(false);
+						mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test).setVisible(true);
 						onExitTestModeTapped();
 						break;
 					default:
@@ -504,12 +504,6 @@ public class DevelopmentActivity extends Activity {
 			makeLogI(">>> Test mode tapped");
 			showScreenWithName(mProject.getFirstScreen().getName());
 			showTestSidebar();
-			// update menu
-//			mMenuPopupMenu.getMenu().getItem(3).setVisible(false);
-//			mMenuPopupMenu.getMenu().getItem(4).setVisible(true);
-			
-			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test).setVisible(false);
-			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit).setVisible(true);
 		}
 	}
 	//-------------------------------------------------------------------------
@@ -519,11 +513,6 @@ public class DevelopmentActivity extends Activity {
 			makeLogI(">>> Exit test mode tapped");
 			showScreenWithName(mScreen.getName());
 			showDefaultSidebar();
-			// update menu
-//			mMenuPopupMenu.getMenu().getItem(3).setVisible(true);
-//			mMenuPopupMenu.getMenu().getItem(4).setVisible(false);
-			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test).setVisible(true);
-			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit).setVisible(true);
 		}
 	}
 	
