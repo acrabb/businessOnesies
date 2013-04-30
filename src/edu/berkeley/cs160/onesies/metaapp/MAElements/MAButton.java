@@ -9,7 +9,12 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ImageView.ScaleType;
 import edu.berkeley.cs160.onesies.metaapp.ElementType;
 import edu.berkeley.cs160.onesies.metaapp.MAScreen;
 import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
@@ -18,8 +23,11 @@ import edu.berkeley.cs160.onesies.metaapp.R;
 public class MAButton extends MAScreenElement {
 
 	private MAScreen	mDestinationScreen;
-	private String		mLabel = "Button";	
-	private DrawFilter mDrawFilter;
+	private DrawFilter	mDrawFilter;
+	private MAScreen	mScreen;
+	
+	private ImageView	mLinkBadge;
+	
 	private Paint paint;
 	
 	public MAButton(Context context, MAScreen maScreen) {
@@ -27,6 +35,27 @@ public class MAButton extends MAScreenElement {
 		// Set background to be some image
 		this.setBackgroundResource(R.drawable.btn_default_normal);
 		paint = new Paint();
+		mScreen = maScreen;
+		
+		mText = "Button";
+		
+		// Set up Link Badge
+		mLinkBadge = new ImageView(getContext());
+		mLinkBadge.setBackgroundColor(getResources().getColor(R.color.highlightColor));
+		mLinkBadge.setImageDrawable(getResources().getDrawable(R.drawable.link_default));
+		mLinkBadge.setScaleType(ScaleType.FIT_CENTER);
+		FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(40, 40);
+		p.gravity = Gravity.TOP | Gravity.LEFT;
+		mLinkBadge.setLayoutParams(p);
+		mLinkBadge.invalidate();
+		this.addView(mLinkBadge);
+		mLinkBadge.setVisibility(INVISIBLE);
+		mLinkBadge.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
+		
 	}
 
 	public MAButton(Context context, AttributeSet attrs) {
@@ -37,28 +66,26 @@ public class MAButton extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
-//		super.onDraw(canvas);
-//		canvas.save();
-//		canvas.scale(mScaleFactor, mScaleFactor);
-		
 		paint.setColor(Color.BLACK);
 		paint.setTextSize(40); 
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
-		canvas.drawText(mLabel, this.getWidth()/2, this.getHeight()/2, paint);
-		
-//		canvas.restore();
+		canvas.drawText(mText, this.getWidth()/2, this.getHeight()/2, paint);
 	}
 	
-//	@Override
-//	public void select() {
-//		super.select();
-//		isSelected = true;
-//	}
-//	@Override
-//	public void deselect() {
-//		super.deselect();
-//	}
+	
+	@Override
+	public void select() {
+		super.select();
+		if (mDestinationScreen != null) {
+			mLinkBadge.setVisibility(VISIBLE);
+		}
+	}
+	@Override
+	public void deselect() {
+		super.deselect();
+		mLinkBadge.setVisibility(INVISIBLE);
+	}
 	
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
@@ -71,7 +98,7 @@ public class MAButton extends MAScreenElement {
 	}
 	
 	public void setText(String lbl) {
-		mLabel = lbl;
+		mText = lbl;
 		
 		this.invalidate();
 	}

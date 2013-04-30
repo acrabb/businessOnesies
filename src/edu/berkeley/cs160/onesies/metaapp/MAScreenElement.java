@@ -1,5 +1,6 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -69,7 +70,7 @@ public class MAScreenElement extends FrameLayout {
 		// DO THIS BETTER
 		// DO THIS BETTER
 		// DO THIS BETTER
-		//Set up Badge
+		//Set up Drag Badge
 		mDragTarget = new ImageView(getContext());
 		mDragTarget.setBackgroundResource(R.drawable.arrow_dr);
 		mDragTarget.setScaleType(ScaleType.FIT_CENTER);
@@ -97,6 +98,8 @@ public class MAScreenElement extends FrameLayout {
 				return false;
 			}
 		});
+		
+		
 	}
 	
 	public MAScreenElement(Context context) {
@@ -158,6 +161,8 @@ public class MAScreenElement extends FrameLayout {
 					} else {
 						params.leftMargin += horizDiff;
 						params.topMargin += vertDiff;
+						params.rightMargin -= horizDiff;
+						params.bottomMargin -= vertDiff;
 					}
 					this.setLayoutParams(params);
 				}
