@@ -25,17 +25,20 @@
             android:text="Text Label"
             android:textSize="50sp" />
         
-        <TextView 
+        <ImageView 
             android:id="@+id/ma_slider"
-            android:text="Slider" />
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
         
-        <TextView 
+        <ImageView 
             android:id="@+id/ma_checkbox"
-            android:text="Checkbox" />
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
 
-        <TextView 
+        <ImageView 
             android:id="@+id/ma_radiobutton"
-            android:text="Radio" />
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
     </GridLayout>
 
 </ScrollView>

@@ -5,13 +5,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.InputType;
@@ -198,14 +194,10 @@ public class DevelopmentActivity extends Activity {
 		mPopupWindow = new PopupWindow(mShapesContentView,
 				(int) mResources.getDimension(R.dimen.shapePopupWidth),
 				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
-		MATriangle triangle  = new MATriangle(getApplicationContext(), (MAScreen) null);
-		MAOval oval = new MAOval(getApplicationContext(), (MAScreen) null);
-		MARectangle rectangle = new MARectangle(getApplicationContext(), (MAScreen) null);
-		MAStar star = new MAStar(getApplicationContext(), (MAScreen) null);
-		addElementToImageView(triangle, R.id.ma_triangle);
-		addElementToImageView(rectangle, R.id.ma_rectangle);
-		addElementToImageView(oval, R.id.ma_oval);
-		addElementToImageView(star, R.id.ma_star);
+		addShapeToPopup(new MATriangle(getApplicationContext(), (MAScreen) null), R.id.ma_triangle);
+		addShapeToPopup(new MARectangle(getApplicationContext(), (MAScreen) null), R.id.ma_rectangle);
+		addShapeToPopup(new MAOval(getApplicationContext(), (MAScreen) null), R.id.ma_oval);
+		addShapeToPopup(new MAStar(getApplicationContext(), (MAScreen) null), R.id.ma_star);
 		
 		/*
 		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
@@ -253,14 +245,24 @@ public class DevelopmentActivity extends Activity {
 			});
 		}
 		
+		addElementToPopup(new MASlider(getApplicationContext(), (MAScreen) null), R.id.ma_slider);
+		addElementToPopup(new MACheckbox(getApplicationContext(), (MAScreen) null), R.id.ma_checkbox);
+		addElementToPopup(new MARadioButton(getApplicationContext(), (MAScreen) null), R.id.ma_radiobutton);
+		
 		mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
 		mPopupWindow.setOutsideTouchable(true);
 		mPopupWindow.showAsDropDown(button, 0, 0);
 	}
 	
 	
-	private void addElementToImageView(MAScreenElement shape, int id) {
+	private void addShapeToPopup(MAScreenElement shape, int id) {
 		ImageView imageView = (ImageView) mShapesContentView.findViewById(id);
+		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape, 100, 100);
+		imageView.setImageBitmap(viewBitmap);
+	}
+	
+	private void addElementToPopup(MAScreenElement shape, int id) {
+		ImageView imageView = (ImageView) mElementsContentView.findViewById(id);
 		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape, 100, 100);
 		imageView.setImageBitmap(viewBitmap);
 	}
