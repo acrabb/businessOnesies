@@ -60,11 +60,6 @@ public class MASidebar extends RelativeLayout{
 	}
 	
 	//-------------------------------------------------------------------------
-	public void setUp(TestingActivity activity) {
-		this.setBackgroundColor(Color.GRAY);
-	}
-	
-	//-------------------------------------------------------------------------
 	public void setUp(DevelopmentActivity activity) {
 		mActivity = activity;
 		
@@ -99,8 +94,8 @@ public class MASidebar extends RelativeLayout{
 		mNotesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				mActivity.makeToast("Hello Notes!");
-				mActivity.onNotesButtonTapped();
+//				mActivity.makeToast("Hello Notes!");
+//				mActivity.onNotesButtonTapped();
 			}
 		});
 		mSketchButton.setOnClickListener(new View.OnClickListener() {

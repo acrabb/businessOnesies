@@ -1,0 +1,11 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+	<ImageView
+        android:id="@+id/dragTarget"
+	    android:layout_width="35dp"
+	    android:layout_height="35dp"
+	    android:scaleType="fitCenter"
+	    android:layout_gravity="bottom|right"
+	    android:background="@drawable/arrow_dr"
+	    android:visibility="invisible"
+        />
+</merge>

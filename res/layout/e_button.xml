@@ -5,23 +5,18 @@
     android:layout_height="100dp"
     android:padding="0dp"
     >
-    <!-- View 
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:background="@color/testingRed"
-        /-->
+    <!-- THESE SHOULD BE VIEWS THAT CUSTOM ELEMENTS HAVE. -->
     <View
         android:id="@+id/highlightOverlay"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:background="@color/testingRed"
-        />
-    <View
-        android:id="@+id/resizeTarget"
-	    android:layout_width="20dp"
-	    android:layout_height="20dp"
-	    android:background="@color/testingGreen"
+	    android:background="@color/highlightColor"
+	    android:visibility="invisible"
         />
     
-
+    <include layout="@layout/e_drag_target"/>
+    
+    <!-- BUTTON ONLY THINGS -->
+    <include layout="@layout/e_link_badge"/>
+    
 </edu.berkeley.cs160.onesies.metaapp.MAScreenElement>

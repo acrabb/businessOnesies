@@ -31,13 +31,13 @@ public class MARectangle extends MAScreenElement {
 	
 	@Override
 	public void onAttachedToWindow() {
-		this.height = 200;
-		this.width = 200;
-		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.getLayoutParams(); 
-		params.height = 200;
-		params.width = 200;
-		setLayoutParams(params);
-		invalidate();
+//		this.height = 200;
+//		this.width = 200;
+//		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.getLayoutParams(); 
+//		params.height = 200;
+//		params.width = 200;
+//		setLayoutParams(params);
+//		invalidate();
 	}
 
 	@Override

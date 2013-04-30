@@ -64,6 +64,7 @@ public class DevelopmentActivity extends Activity {
 	protected static MAProject	mProject;
 	private boolean				mInSketchZone = false;
 	private boolean				mIsTesting = false;
+	private Intent				mIntent;
 	
 	private final int			SHOW_TAPPED = 1;
 	private final int			LINK_TAPPED = 2;
@@ -83,24 +84,41 @@ public class DevelopmentActivity extends Activity {
 		mResources = getResources();
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
 		
-		// Set up screen
-		mScreen = (MAScreen) findViewById(R.id.screen);
-		mScreen.setmDevelopmentActivity(this);
-		
 		// Set up sidebar
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
-		
-		// Set up project
-		createNewProject();
-		mProject.addFirstScreen(mScreen);
 		
 		// Get menu for manipulation
 		mMenuPopupMenu = new PopupMenu(getApplicationContext(),
 				mSidebar.findViewById(R.id.menuButton));
 		mMenuPopupMenu.inflate(R.menu.dev_menu);
+		
+		
+		
+		// Set up screen
+		mScreen = (MAScreen) findViewById(R.id.screen);
+		mScreen.setmDevelopmentActivity(this);
+			
+		// Get project if any
+		mIntent = getIntent();
+		int projIndex = mIntent.getIntExtra("PROJECT", -1);
+		if (projIndex != -1) {
+			loadProject(projIndex);
+		} else {
+			// Set up project
+			createNewProject();
+		}
 	}
 	
+	
+	//-------------------------------------------------------------------------
+	private void loadProject(int projIndex) {
+		mProject = mModel.getProject(projIndex);
+		showScreenWithName(mProject.getFirstScreen().getName());
+		for(MAScreen s : mProject.getScreens()) {
+			s.setmDevelopmentActivity(this);
+		}
+	}
 	//-------------------------------------------------------------------------
 	private void createNewProject() {
 		//TODO
@@ -111,6 +129,7 @@ public class DevelopmentActivity extends Activity {
 		String name = mProject.getNextDefaultScreenName();
 		mProject.addScreenToProject(name, mScreen);
 		mScreen.setName(name);
+		mProject.addFirstScreen(mScreen);
 		makeToast("Screen '%s' Created.", name);
 	}
 	
@@ -119,6 +138,11 @@ public class DevelopmentActivity extends Activity {
 		// Deselect any current selection.
 		MAScreenElement selected = mScreen.getSelectedElement();
 		if(selected != null) {
+			// FIXME What is this doing here??
+			// FIXME What is this doing here??
+			// FIXME What is this doing here??
+			// FIXME What is this doing here??
+			// FIXME What is this doing here??
 			selected.setScreenLinkedTo(name);
 			selected.deselect();
 		}
@@ -131,35 +155,53 @@ public class DevelopmentActivity extends Activity {
 		mScreen = newScreen;
 	}
 	
+	//-------------------------------------------------------------------------
+	@Override
+	public void finish()
+	{
+		// Book keeping
+		mScreen.deselectAll();
+		mDevRelLayout.removeView(mScreen);
+		
+	   Intent intent = new Intent(DevelopmentActivity.this, MainActivity.class);
+	   if (getParent() == null) {
+		   setResult(Activity.RESULT_OK, intent);
+	   } else {
+		   getParent().setResult(Activity.RESULT_OK, intent);
+	   }
+	   super.finish();
+	}
 	
 	
 	/*****************************************************************************
 	 * MASIDEBAR "CALLBACK" METHODS
 	 *****************************************************************************/
+	//-------------------------------------------------------------------------
 	public void onHomeButtonTapped() {
-		makeToast("IMPLEMENT HOME!!!");
-		AlertDialog.Builder adb = new AlertDialog.Builder(this);
-		adb.setTitle("Unsaved changes will be set aflame!");
-		adb
-			.setCancelable(true)
-			.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			})
-			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.cancel();
-				}
-			});
-		adb.create().show();
-		
+//		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+//		adb.setTitle("Unsaved changes will be set aflame!");
+//		adb
+//			.setCancelable(true)
+//			.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					finish();
+//				}
+//			})
+//			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					dialog.cancel();
+//				}
+//			});
+//		adb.create().show();
+		finish();
 	}
-	public void onNotesButtonTapped() {
-		makeToast("IMPLEMENT NOTES!!!");
-	}
+	
+//	public void onNotesButtonTapped() {
+//		makeToast("IMPLEMENT NOTES!!!");
+//	}
+	//-------------------------------------------------------------------------
 	public void showSketchZone(View sketchButton) {
 		if (!mInSketchZone) {
 			mSketchCanvas = new MACanvas(getApplicationContext());
@@ -182,7 +224,9 @@ public class DevelopmentActivity extends Activity {
 		Bitmap map = mSketchCanvas.getSketch();
 		if (map != null) {
 			Log.i("ACACACAC", String.format("Map h: %d, w:%d", map.getHeight(), map.getWidth()));
-			MAScreenElement custom = createElement(ElementType.CUSTOM, map);
+			MAScreenElement custom = (MAScreenElement) mLayoutInflater.inflate(R.layout.e_default, null);
+			setUpCustomElement(custom, map);
+//			MAScreenElement custom = createElement(ElementType.CUSTOM, map);
 			RelativeLayout.LayoutParams p = 
 					new RelativeLayout.LayoutParams(map.getWidth(), map.getHeight());
 			p.leftMargin = mSketchCanvas.getLeftMargin();
@@ -367,6 +411,7 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * POPUP "CALLBACK" METHODS
 	 *****************************************************************************/
+	//-------------------------------------------------------------------------
 	private void addUIElement(View element) {
 		// Create the view, and add it to the MAScreen object.
 		// TODO HACK HACK HACK HACK HACK HACK
@@ -376,6 +421,7 @@ public class DevelopmentActivity extends Activity {
 //		LayoutInflater mInflater = new LayoutInflater();
 		
 		MAScreenElement clone;
+		RelativeLayout.LayoutParams params;
 		switch (element.getId()) {
 		case R.id.ma_text_label:
 			clone = new MATextLabel(getApplicationContext(), mScreen, "Text Label");
@@ -397,7 +443,7 @@ public class DevelopmentActivity extends Activity {
 		}
 		
 		if(clone.getmType() != ElementType.CUSTOM) {
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100); 
+			params = new RelativeLayout.LayoutParams(200, 100); 
 			clone.setLayoutParams(params);
 		}
 		mScreen.updateModel(clone, UndoStatus.ADD);
@@ -424,7 +470,7 @@ public class DevelopmentActivity extends Activity {
 			break;
 		}
 		
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 100);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 200);
 		clone.setLayoutParams(params);
 
 		mScreen.updateModel(clone, UndoStatus.ADD);
@@ -498,6 +544,7 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * MENU "CALLBACK" METHODS
 	 *****************************************************************************/
+	//-------------------------------------------------------------------------
 	public void onTestModeTapped() {
 		if (!mIsTesting) {
 			mIsTesting = true;
@@ -516,6 +563,7 @@ public class DevelopmentActivity extends Activity {
 		}
 	}
 	
+	//-------------------------------------------------------------------------
 	/** 
 	 * Test for passing custom objects through intents using serializable bundles
 	 */
@@ -524,6 +572,7 @@ public class DevelopmentActivity extends Activity {
 	}
 	//-------------------------------------------------------------------------
 	private void onBigPictureSelected() {
+		mScreen.deselectAll();
 		showBigPictureForCode(SHOW_TAPPED);
 	}
 	
@@ -550,12 +599,14 @@ public class DevelopmentActivity extends Activity {
 	    }
 	}
 	
+	//-------------------------------------------------------------------------
 	private void showBigPictureForCode(int requestCode) {
 		Intent intent = new Intent(DevelopmentActivity.this, BigPicture.class);
 		intent.putExtra("RETURN_TAPPED", true);
 		startActivityForResult(intent, requestCode);
 	}
 	
+	//-------------------------------------------------------------------------
 //	private void showBigPictureWithClickListener(AdapterView.OnItemClickListener listener) {
 //		mBigPictureDia = new Dialog(this);
 //		View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
@@ -571,6 +622,7 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * TESTING MODE METHODS
 	 *****************************************************************************/
+	//-------------------------------------------------------------------------
 	public void onButtonTappedInTest(MAButton button) {
 		if (button.getDestinationScreen() != null) {
 			showScreenWithName(button.getDestinationScreen().getName());
@@ -581,15 +633,19 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * SIDEBAR RELAY METHODS
 	 *****************************************************************************/
+	//-------------------------------------------------------------------------
 	public void showDefaultSidebar() {
 		mSidebar.showDefaultSidebar();
 	}
+	//-------------------------------------------------------------------------
 	public void showElementSidebar() {
 		mSidebar.showElementContextBar(mScreen.getSelectedElement());
 	}
+	//-------------------------------------------------------------------------
 	public void showCustomElementSidebar(){
 		mSidebar.showCustomElementBar();
 	}
+	//-------------------------------------------------------------------------
 	public void showTestSidebar() {
 		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
@@ -602,6 +658,7 @@ public class DevelopmentActivity extends Activity {
 	/*****************************************************************************
 	 * MISC METHODS
 	 *****************************************************************************/
+	//-------------------------------------------------------------------------
 	public static Bitmap createBitmapOfView(View theView) {
 		if (theView.getWidth() == 0 || theView.getHeight() == 0) {
 			Log.w("meta", "Trying to create bitmap of a view with 0 height or width :(");
@@ -613,6 +670,7 @@ public class DevelopmentActivity extends Activity {
 		return a;
 	}
 	
+	//-------------------------------------------------------------------------
 	public static Bitmap createBitmapOfView(View theView, int width, int height) {
 		theView.setDrawingCacheEnabled(true);
 		theView.layout(0, 0, width, height);
@@ -629,11 +687,16 @@ public class DevelopmentActivity extends Activity {
 		return image;
 	}
 	//------------- Testing bitmap background ----------------
-	private MAScreenElement createElement(ElementType type, Bitmap back) {
-		MAScreenElement element = new MAScreenElement(getApplicationContext(), mScreen, type);
-		element.setBackgroundDrawable(new BitmapDrawable(back));
-		
-		return element;
+//	private MAScreenElement createElement(ElementType type, Bitmap back) {
+//		MAScreenElement element = new MAScreenElement(getApplicationContext(), mScreen, type);
+//		element.setBackgroundDrawable(new BitmapDrawable(back));
+//		
+//		return element;
+//	}
+	private void setUpCustomElement(MAScreenElement e, Bitmap back) {
+		e.setmScreen(mScreen);
+		e.setmType(ElementType.CUSTOM);
+		e.setBackgroundDrawable(new BitmapDrawable(back));
 	}
 	
 	//-------------------------------------------------------------------------
@@ -655,15 +718,17 @@ public class DevelopmentActivity extends Activity {
 	}
 	
 	
+	//-------------------------------------------------------------------------
 	@Override
 	public void onBackPressed() {
-		
+		// Do nothing.
 	}
 	
 	//-------------------------------------------------------------------------
 	public void makeLogI(String format, Object... args) {
 		Log.i("meta", String.format(format, args));
 	}
+	//-------------------------------------------------------------------------
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getApplicationContext(),
 				String.format(format, args), Toast.LENGTH_SHORT).show();

@@ -2,6 +2,7 @@ package edu.berkeley.cs160.onesies.metaapp;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,6 +45,7 @@ public class MAScreenElement extends FrameLayout {
 	private RelativeLayout.LayoutParams prev;
 	
 	//-------------------------------------------------------------------------
+	/**/
 	public MAScreenElement(Context context, MAScreen maScreen, ElementType type) {
 		super(context);
 		this.mMAScreen = maScreen;
@@ -51,11 +53,12 @@ public class MAScreenElement extends FrameLayout {
 		
 		LayoutInflater mInflater = (LayoutInflater)context.getSystemService
 			      (Context.LAYOUT_INFLATER_SERVICE);
-		mInflater.inflate(R.layout.ma_element, null);
+		mInflater.inflate(R.layout.e_default, null);
 		//----------__OTHER SETUP__-------------------
-		this.setPivotX(0);
-		this.setPivotY(0);
+//		this.setPivotX(0);
+//		this.setPivotY(0);
 		
+		// THIS SHOULD ALL MOVE TO ONFINISHINFLATE() LATER
 		mHighlightOverlay = new View(getContext());
 //		mHighlightOverlay.setBackgroundResource(R.drawable.arrow_dr);
 		mHighlightOverlay.setBackgroundColor(mHighlightColor);
@@ -98,6 +101,7 @@ public class MAScreenElement extends FrameLayout {
 			}
 		});
 	}
+	/**/
 	
 	//-------------------------------------------------------------------------
 	// THESE SHOULD BE FILLED OUT WITH A 'SETUP' FUNCTION IF WE CHANGE TO USING
@@ -109,6 +113,8 @@ public class MAScreenElement extends FrameLayout {
 
 	public MAScreenElement(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		Log.i("MAMAMA", "here1");
+		setUp();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -117,19 +123,50 @@ public class MAScreenElement extends FrameLayout {
 		// TODO Auto-generated constructor stub
 	}
 
+	private void setUp() {
+//		mHighlightOverlay = findViewById(R.id.highlightOverlay);
+//		mDragTarget = (ImageView) findViewById(R.id.dragTarget);
+//		Log.i("ELELEL", String.format("SETUP! with high: %s, drag: %s", mHighlightOverlay, mDragTarget));
+	}
 	
 	//-------------------------------------------------------------------------
+	/*
+	 * Make all connections for the element such as touch listeners.
+	 * 
+	 * (non-Javadoc)
+	 * @see android.view.View#onFinishInflate()
+	 */
 	@Override
-	public void onAttachedToWindow() {
-		// Get mScreen
-		// Set width and height?
-		// get mResizeTarget
-		// get mHighlightOverlay
+	public void onFinishInflate() {
 		// The following will only work if we inflate from ma_element.xml,
 		// and not create a UI element via a constructor. (In Development Activity.)
-//		mHighlightOverlay = this.findViewById(R.id.highlightOverlay);
-//		mHighlightOverlay.setVisibility(VISIBLE);
 		
+		// Get mScreen (?)
+			// I don't think we can. I think this needs to be assigned by devAct.
+		// Set width and height?
+			// No. This should be a property of the xml file we inflate from.
+		
+		// get mHighlightOverlay
+		mHighlightOverlay = findViewById(R.id.highlightOverlay);
+		// get mResizeTarget
+		mDragTarget = (ImageView) findViewById(R.id.dragTarget);
+		mDragTarget.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+						mResizing = true;
+						break;
+					case MotionEvent.ACTION_MOVE:
+						break;
+					case MotionEvent.ACTION_UP:
+						mResizing = false;
+						break;
+					default:
+				}
+				return false;
+			}
+		});
 		invalidate();
 	}
 
@@ -281,5 +318,13 @@ public class MAScreenElement extends FrameLayout {
 	
 	public void setText(String lbl) {
 		this.mText = lbl;
+	}
+
+	public MAScreen getmScreen() {
+		return mMAScreen;
+	}
+
+	public void setmScreen(MAScreen mMAScreen) {
+		this.mMAScreen = mMAScreen;
 	}
 }

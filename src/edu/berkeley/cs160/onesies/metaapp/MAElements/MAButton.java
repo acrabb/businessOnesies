@@ -65,6 +65,11 @@ public class MAButton extends MAScreenElement {
 
 	
 	@Override
+	public void onAttachedToWindow() {
+		
+	}
+	
+	@Override
 	public void onDraw(Canvas canvas) {
 		paint.setColor(Color.BLACK);
 		paint.setTextSize(40); 

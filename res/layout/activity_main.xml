@@ -3,9 +3,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/background"
-    android:background="@color/mainBackgroundColor"
+    android:background="@color/white"
     tools:context=".MainActivity"
     >
+    
+    <TextView 
+        android:id="@+id/metaAppText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerHorizontal="true"
+	    android:textSize="100sp"
+        android:text="MetaApp"
+        android:textColor="@color/achalRed"
+        />
+    
+    
+    <TextView 
+        android:id="@+id/swipeText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentBottom="true"
+	    android:layout_marginBottom="20dp"
+	    
+	    android:textSize="30sp"
+	    android:textAlignment="center"
+        android:text="Swipe above!"
+        android:textColor="@color/achalRed"
+        
+        android:background="@color/whiteTrans"
+        />
+    
+    <RelativeLayout 
+        android:id="@+id/phone"
+	    android:layout_width="400dp"
+	    android:layout_height="wrap_content"
+	    android:scaleType="center"
+	    android:layout_below="@id/metaAppText"
+	    android:layout_above="@id/swipeText"
+	    android:layout_centerHorizontal="true"
+	    android:adjustViewBounds="true"
+        android:background="@drawable/androidphone"
+        >
+        
+    </RelativeLayout>
+    
+    
     <!-- 
     <Button 
         android:id="@+id/newProjectButton"
