@@ -86,16 +86,12 @@ public class MAScreen extends RelativeLayout {
 			return;
 		}
 		switch (mSelectedChild.getmType()) {
-			case BUTTON:
-			case TEXT_LABEL:
-			case SHAPE:
-				mDevelopmentActivity.showElementSidebar();
-				break;
 			case CUSTOM:
 				mDevelopmentActivity.showCustomElementSidebar();
 				break;
 			default:
-				//Things;	
+				mDevelopmentActivity.showElementSidebar();
+				break;
 		}
 	}
 
