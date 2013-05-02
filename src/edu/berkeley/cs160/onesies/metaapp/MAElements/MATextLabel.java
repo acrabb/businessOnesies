@@ -20,6 +20,7 @@ public class MATextLabel extends MAScreenElement {
 	private int 			MAX_WIDTH = 900;
 	private int				MIN_HEIGHT = 60;
 	private int				MAX_HEIGHT = 300;
+	private int				tolerable_padding = 1;
 	
 	public MATextLabel(Context context, MAScreen maScreen, String text) {
 		super(context, maScreen, ElementType.TEXT_LABEL);
@@ -49,14 +50,16 @@ public class MATextLabel extends MAScreenElement {
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		
-		int h = 0;
-		do {
-			paint.setTextSize(++h); //Math.min(MAX_HEIGHT, this.getHeight())); 
-		} while (paint.measureText(mText) < this.getWidth());
-		this.MIN_HEIGHT = this.MAX_HEIGHT = h;
-		canvas.drawText(mText, this.getWidth()/2, this.getHeight(), paint);
+		float h = paint.getTextSize();
+		while (paint.measureText(mText) > this.getWidth()) paint.setTextSize(h--);
+		while (paint.measureText(mText) < (this.getWidth() - tolerable_padding)) paint.setTextSize(h++);
+		
+		this.MIN_HEIGHT = this.MAX_HEIGHT = (int) h;
+		enforceDimensionConstraints();
+		canvas.drawText(mText, this.getWidth()/2, h, paint);
 	}
 
+	//-------------------------------------------------------------------------
 	public int getMinWidth() {
 		return this.MIN_WIDTH;
 	}
