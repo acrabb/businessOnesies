@@ -39,6 +39,11 @@
             android:id="@+id/ma_radiobutton"
             android:layout_width="50dp"
             android:layout_height="50dp" />
+        
+        <ImageView
+            android:id="@+id/ma_toggle"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
     </GridLayout>
 
 </ScrollView>

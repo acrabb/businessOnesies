@@ -32,6 +32,7 @@ import edu.berkeley.cs160.onesies.metaapp.MAElements.MACheckbox;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MARadioButton;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MASlider;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MAToggle;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MAOval;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MARectangle;
 import edu.berkeley.cs160.onesies.metaapp.MAShapes.MAStar;
@@ -439,6 +440,11 @@ public class DevelopmentActivity extends Activity {
 			break;
 		case R.id.ma_radiobutton:
 			newElement = new MARadioButton(getApplicationContext(), mScreen);
+			params = new RelativeLayout.LayoutParams(200, 100); 
+			newElement.setLayoutParams(params);
+			break;
+		case R.id.ma_toggle:
+			newElement = new MAToggle(getApplicationContext(), mScreen);
 			params = new RelativeLayout.LayoutParams(200, 100); 
 			newElement.setLayoutParams(params);
 			break;
