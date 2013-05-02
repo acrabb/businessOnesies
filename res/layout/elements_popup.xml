@@ -47,6 +47,7 @@
             android:id="@+id/ma_toggle"
             android:layout_width="@dimen/elementsPopupElementWidth"
             android:layout_height="@dimen/elementsPopupElementHeight"
+            />
     </GridLayout>
 
 </ScrollView>
