@@ -21,18 +21,17 @@ public class MARadioButton extends MAScreenElement {
 	
 	private int MIN_WIDTH = 0;
 	private int MAX_WIDTH = 1000;
-	private int	MIN_HEIGHT = 0;
-	private int	MAX_HEIGHT = 0;
+	private int MIN_HEIGHT = 80;
+	private int MAX_HEIGHT = 80;
 	
 	// LOL HACKACKACK
-	private int min_min_height = 20;
+	private int min_min_height = 30;
 	private int max_max_height = 50;
 	private int max_max_width = 1000;
 	private int min_min_width = 0;
 	
 	private int tolerable_padding = 1;
 	private int padding;
-	private int textSize = 20;
 	private RectF mRectF;
 	private boolean isChecked;
 	
@@ -42,7 +41,6 @@ public class MARadioButton extends MAScreenElement {
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		paint = new Paint();
 		paint.setDither(true);
-		paint.setTextSize(textSize);
 		paint.setTextAlign(Paint.Align.LEFT);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		paint.setColor(Color.BLACK);
@@ -58,7 +56,7 @@ public class MARadioButton extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
-		float h = this.getHeight();
+		float h = Math.min(max_max_height, this.getHeight());
 		padding = (int) (h / 10);
 		mRectF.left = padding;
 		mRectF.top = padding;
