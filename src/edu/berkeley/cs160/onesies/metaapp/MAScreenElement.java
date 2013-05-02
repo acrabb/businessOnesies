@@ -225,6 +225,23 @@ public class MAScreenElement extends FrameLayout {
 		return true;
 	}
 	
+	public void enforceDimensionConstraints() {
+		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.getLayoutParams();
+		if (lp == null) return;
+
+		if (lp.height > getMaxHeight()) 
+			lp.height = getMaxHeight();
+		else if (lp.height < getMinHeight())
+			lp.height = getMinHeight();
+
+		if (lp.width > getMaxWidth()) 
+			lp.width = getMaxWidth();
+		else if (lp.width < getMinWidth())
+			lp.width = getMinWidth();
+		
+		this.setLayoutParams(lp);
+	}
+	
 	//-------------------------------------------------------------------------
 	private void elementWasTapped() {
 		if (mMAScreen.isTesting()) {
