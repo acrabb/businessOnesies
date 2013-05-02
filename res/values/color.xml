@@ -18,6 +18,7 @@
     <color name="mainBackgroundColor">#000</color>
     <color name="achalRed">#ff600000</color>
     <color name="uiGray">#ffbababa</color>
+    <color name="uiDarkerGray">#ff999999</color>
     <color name="canvasColor">#99000000</color>
     
     <color name="separatorColor">#ff555555</color>
