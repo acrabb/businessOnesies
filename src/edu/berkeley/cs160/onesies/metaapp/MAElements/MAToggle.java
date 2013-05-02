@@ -20,6 +20,7 @@ public class MAToggle extends MAScreenElement {
 	private Paint       paint;
 	
 	private int MIN_WIDTH = 60;
+	private int MAX_WIDTH = 60;
 	private int	MIN_HEIGHT = 70;
 	private int	MAX_HEIGHT = MIN_HEIGHT;
 	private int padding = 10;
@@ -84,10 +85,10 @@ public class MAToggle extends MAScreenElement {
 		
 		paint.setColor(Color.BLACK);
 		paint.getTextBounds(off, 0, off.length(), textBounds);
-		canvas.drawText(off, l + (toggleWidth / 4), h / 2 - (textBounds.top - textBounds.bottom)/2, paint);
+		canvas.drawText(off, l + (toggleWidth / 4), h / 2 + Math.abs(textBounds.top - textBounds.bottom)/2, paint);
 		
 		paint.getTextBounds(on, 0, on.length(), textBounds);
-		canvas.drawText(on, r - (toggleWidth / 4), h / 2 - (textBounds.top - textBounds.bottom)/2, paint);
+		canvas.drawText(on, r - (toggleWidth / 4), h / 2 + Math.abs(textBounds.top - textBounds.bottom)/2, paint);
 	}
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
@@ -112,9 +113,12 @@ public class MAToggle extends MAScreenElement {
 		this.setLayoutParams(params);
 	}
 	
-	
+	//-------------------------------------------------------------------------
 	public int getMinWidth() {
 		return this.MIN_WIDTH;
+	}
+	public int getMaxWidth() {
+		return this.MAX_WIDTH;
 	}
 	public int getMinHeight() {
 		return this.MIN_HEIGHT;
@@ -122,5 +126,4 @@ public class MAToggle extends MAScreenElement {
 	public int getMaxHeight() {
 		return this.MAX_HEIGHT;
 	}
-	
 }
