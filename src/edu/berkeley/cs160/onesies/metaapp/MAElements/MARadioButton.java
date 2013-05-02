@@ -19,10 +19,19 @@ public class MARadioButton extends MAScreenElement {
 	private MAScreen	mDestinationScreen;
 	private Paint       paint;
 	
-	private int MIN_WIDTH = 60;
-	private int	MIN_HEIGHT = 40;
-	private int	MAX_HEIGHT = MIN_HEIGHT;
-	private int padding = 10;
+	private int MIN_WIDTH = 0;
+	private int MAX_WIDTH = 1000;
+	private int	MIN_HEIGHT = 0;
+	private int	MAX_HEIGHT = 0;
+	
+	// LOL HACKACKACK
+	private int min_min_height = 20;
+	private int max_max_height = 50;
+	private int max_max_width = 1000;
+	private int min_min_width = 0;
+	
+	private int tolerable_padding = 1;
+	private int padding;
 	private int textSize = 20;
 	private RectF mRectF;
 	private boolean isChecked;
@@ -50,6 +59,9 @@ public class MARadioButton extends MAScreenElement {
 	@Override
 	public void onDraw(Canvas canvas) {
 		float h = this.getHeight();
+		padding = (int) (h / 10);
+		mRectF.left = padding;
+		mRectF.top = padding;
 		mRectF.right = h + 2*padding;
 		mRectF.bottom = h + 2*padding;
 		float radius = h / 2 - padding;
@@ -59,8 +71,36 @@ public class MARadioButton extends MAScreenElement {
 		paint.setStrokeWidth(h / 10);
 		paint.setStyle(Style.STROKE);
 		canvas.drawCircle(padding + radius, h / 2, radius, paint);
+
+		float textSize = 0;
+
+		/*
+		 * decrease font size while 
+		 * 		the total text width is greater than the width of the element 
+		 * 			or 
+		 * 		the text size is greater than the maximum allowed height
+		 * 
+		 * 		but stop if the font size goes below min_min_height
+		 */
+		while ((paint.measureText(mText) < (this.getWidth() - h - padding - tolerable_padding) || textSize < min_min_height)
+				&& textSize < max_max_height)
+			paint.setTextSize(textSize++);
+		if (paint.measureText(mText) > (this.getWidth() - h - padding - tolerable_padding)) {
+			if (this.getLayoutParams() != null) {
+				this.getLayoutParams().width = (int) (h + padding + tolerable_padding + paint.measureText(mText));
+				this.setLayoutParams(this.getLayoutParams());
+			}
+		}
+
 		paint.setStyle(Style.FILL);
-		canvas.drawText(mText, h + padding, h / 2 + padding, paint);
+		canvas.drawText(mText, padding + h, h - padding, paint);
+
+		MIN_HEIGHT = MAX_HEIGHT = (int) textSize;
+		if (MAX_HEIGHT >= max_max_height)
+			MAX_WIDTH = this.getWidth();
+
+		if (MIN_HEIGHT <= min_min_height)
+			MIN_WIDTH = this.getWidth();
 
 		if (isChecked) {
 			canvas.drawCircle(padding + radius, h/2, (float) (radius * 0.7), paint);
@@ -72,18 +112,19 @@ public class MARadioButton extends MAScreenElement {
 	}
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
+	
+	public void setText(String lbl) {
+		this.mText = lbl;
+		MAX_WIDTH = max_max_width;
+		MIN_WIDTH = min_min_width;
+	}
+	
 	public MAScreen getDestinationScreen() {
 		return mDestinationScreen;
 	}
 
 	public void setDestinationScreen(MAScreen mDestinationScreen) {
 		this.mDestinationScreen = mDestinationScreen;
-	}
-	
-	public void setText(String lbl) {
-		mText = lbl;
-		
-		this.invalidate();
 	}
 	
 	public void setSize(int width, int height) {
@@ -96,6 +137,9 @@ public class MARadioButton extends MAScreenElement {
 	
 	public int getMinWidth() {
 		return this.MIN_WIDTH;
+	}
+	public int getMaxWidth() {
+		return this.MAX_WIDTH;
 	}
 	public int getMinHeight() {
 		return this.MIN_HEIGHT;
