@@ -54,7 +54,8 @@ public class MATextLabel extends MAScreenElement {
 			paint.setTextSize(++h); //Math.min(MAX_HEIGHT, this.getHeight())); 
 		} while (paint.measureText(mText) < this.getWidth());
 		this.MIN_HEIGHT = this.MAX_HEIGHT = h;
-		canvas.drawText(mText, this.getWidth()/2, this.getHeight(), paint);
+//		canvas.drawText(mText, this.getWidth()/2, this.getHeight(), paint);
+		canvas.drawText(mText, this.getWidth()/2, (int)(h*.75), paint);
 	}
 
 	public int getMinWidth() {
