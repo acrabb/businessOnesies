@@ -239,6 +239,14 @@ public class DevelopmentActivity extends Activity {
 	
 	//-------------------------------------------------------------------------
 	public void showShapesPopup(View button) {
+		if (mPopupWindow != null) {
+			Log.i("ACACAC", "POPUP WINDOW ! NULL");
+			if (mPopupWindow.isShowing()) {
+				Log.i("ACACAC", "POPUP WINDOW SHOWING");
+				mPopupWindow.dismiss();
+				return;
+			}
+		}
 		mShapesContentView = mLayoutInflater.inflate(R.layout.shape_popup, null);
 		mPopupWindow = new PopupWindow(mShapesContentView,
 				(int) mResources.getDimension(R.dimen.shapePopupWidth),
@@ -273,6 +281,14 @@ public class DevelopmentActivity extends Activity {
 	
 	//-------------------------------------------------------------------------
 	public void showElementsPopup(View button) {
+		if (mPopupWindow != null) {
+			Log.i("ACACAC", "POPUP WINDOW ! NULL");
+			if (mPopupWindow.isShowing()) {
+				Log.i("ACACAC", "POPUP WINDOW SHOWING");
+				mPopupWindow.dismiss();
+				return;
+			}
+		}
 		mElementsContentView = mLayoutInflater.inflate(R.layout.elements_popup, null);
 		mPopupWindow = new PopupWindow(mElementsContentView,
 				(int) mResources.getDimension(R.dimen.elementsPopupWidth),
@@ -306,13 +322,17 @@ public class DevelopmentActivity extends Activity {
 	
 	private void addShapeToPopup(MAScreenElement shape, int id) {
 		ImageView imageView = (ImageView) mShapesContentView.findViewById(id);
-		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape, 100, 100);
+		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape,
+				(int) getResources().getDimension(R.dimen.shapePopupShapeWidth),
+				(int) getResources().getDimension(R.dimen.shapePopupShapeHeight));
 		imageView.setImageBitmap(viewBitmap);
 	}
 	
 	private void addElementToPopup(MAScreenElement shape, int id) {
 		ImageView imageView = (ImageView) mElementsContentView.findViewById(id);
-		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape, 100, 100);
+		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape,
+				(int) getResources().getDimension(R.dimen.elementsPopupElementWidth),
+				(int) getResources().getDimension(R.dimen.elementsPopupElementHeight));
 		imageView.setImageBitmap(viewBitmap);
 	}
 	//-------------------------------------------------------------------------

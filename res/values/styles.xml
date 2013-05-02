@@ -22,9 +22,7 @@
     <style name="sidebarButtonStyle">
         <item name="android:layout_width">@dimen/sidebarButtonWidth</item>
         <item name="android:layout_height">@dimen/sidebarButtonWidth</item>
-        <!-- item name="android:layout_margin">@dimen/sidebarButtonPadding</item--> 
         <item name="android:layout_marginBottom">@dimen/sidebarButtonTopBottomMargin</item> 
-        <!-- item name="android:layout_margin">@dimen/sidebarButtonTopBottomMargin</item--> 
         <item name="android:scaleType">fitCenter</item>
     </style>
     <style name="sidebarSpacerStyle">
