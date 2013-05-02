@@ -75,4 +75,8 @@ public class MAProject {
 	public MAScreen getFirstScreen() {
 		return firstScreen;
 	}
+
+	public String getName() {
+		return mName;
+	}
 }

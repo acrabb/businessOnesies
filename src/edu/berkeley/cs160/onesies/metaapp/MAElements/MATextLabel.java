@@ -56,7 +56,8 @@ public class MATextLabel extends MAScreenElement {
 		
 		this.MIN_HEIGHT = this.MAX_HEIGHT = (int) h;
 		enforceDimensionConstraints();
-		canvas.drawText(mText, this.getWidth()/2, h, paint);
+//		canvas.drawText(mText, this.getWidth()/2, this.getHeight(), paint);
+		canvas.drawText(mText, this.getWidth()/2, (int)(h*.75), paint);
 	}
 
 	//-------------------------------------------------------------------------

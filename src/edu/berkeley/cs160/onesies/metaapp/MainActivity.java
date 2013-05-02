@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -116,9 +117,12 @@ public class MainActivity extends Activity {
 		@Override
 		public Object instantiateItem(ViewGroup container, final int position) {
 			final ImageView currentView;
+			final TextView text = new TextView(getApplicationContext());
 			if (position == 0 ){
 				currentView = getFolderView();
 			} else {
+				text.setText(views.get(position-1).getName());
+				text.setTextColor(getResources().getColor(R.color.black));
 				currentView = createImageViewFromView(views.get(position-1).getFirstScreen());
 				currentView.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -132,6 +136,7 @@ public class MainActivity extends Activity {
 				});
 			}
 			container.addView(currentView);
+			container.addView(text);
 			return currentView;
 		}
 		@Override
@@ -151,14 +156,47 @@ public class MainActivity extends Activity {
 	
 	
 	//-------------------------------------------------------------------------
+	boolean dragged = false;
+	float mLastX;
+	float mLastY;
 	private ImageView getFolderView() {
-		final int newfolder = R.drawable.newfolder;
+		final int newfolder = R.drawable.new_project;
 		ImageView folderView = new ImageView(this);
 		folderView.setScaleType(ScaleType.FIT_START);
 		folderView.setLayoutParams(new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT));
 		folderView.setBackgroundResource(newfolder);
+		/*/
+		folderView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getActionMasked()) {
+					case MotionEvent.ACTION_DOWN:
+						mLastX = event.getX();
+						mLastY = event.getY();
+						Log.i("ACACA", "FOLDER DOWN.");
+						break;
+					case MotionEvent.ACTION_MOVE:
+//						dragged = true;
+						Log.i("ACACA", "FOLDER MOVE.");
+						break;
+					case MotionEvent.ACTION_UP:
+						Log.i("ACACA", "FOLDER UP.");
+//						if (!dragged) {
+//						if (distance(mLastX, mLastY, event.getX(), event.getY()) < 10) {
+							Intent intent = new Intent(MainActivity.this, DevelopmentActivity.class);
+							startActivityForResult(intent, CODE_HOME);
+//						}
+						dragged = false;
+						break;
+					default:
+				}
+				return false;
+			}
+		});
+		/**/
+		/**/
 		folderView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -166,6 +204,7 @@ public class MainActivity extends Activity {
 				startActivityForResult(intent, CODE_HOME);
 			}
 		});
+		/**/
 		return folderView;
 	}
 	
@@ -258,7 +297,7 @@ public class MainActivity extends Activity {
 		screenParams.leftMargin = 58;
 		screenParams.topMargin = 108;
 		screen.setLayoutParams(screenParams);
-		screen.setBackgroundColor(Color.BLUE);
+		screen.setBackgroundColor(Color.BLACK);
 		return screen;
 	}
 	//-------------------------------------------------------------------------
@@ -283,12 +322,14 @@ public class MainActivity extends Activity {
 	
 	
 	//-------------------------------------------------------------------------
-//	public static float distance(float x1, float y1, float x2, float y2) {
-//		float dist  = 0;
+	public static float distance(float x1, float y1, float x2, float y2) {
+		float dist  = 0;
 //		dist = (float) Math.sqrt(Math.pow(Math.abs(x2-x1), 2) + Math.pow(Math.abs(y2-y1), 2));
-////		dist = (float) Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
-////		Math.sqrt(Math.pow(p1.x-p2.x, 2) + Math.pow(p1.y-p2.y, 2));
-//		return dist;
-//	}
+		dist = (float) Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+		Log.d("ACACAC", String.format("Dist between %f,%f and %f,%f is %f.",
+				x1, y1, x2, y2, dist));
+//		Math.sqrt(Math.pow(p1.x-p2.x, 2) + Math.pow(p1.y-p2.y, 2));
+		return dist;
+	}
 
 }

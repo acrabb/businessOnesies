@@ -29,7 +29,7 @@
 	    
 	    android:textSize="30sp"
 	    android:textAlignment="center"
-        android:text="Swipe above!"
+        android:text="Swipe and tap above to view recent projects!"
         android:textColor="@color/achalRed"
         
         android:background="@color/whiteTrans"
