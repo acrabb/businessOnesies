@@ -725,10 +725,11 @@ public class DevelopmentActivity extends Activity {
 	
 	
 	//-------------------------------------------------------------------------
-	@Override
-	public void onBackPressed() {
-		// Do nothing.
-	}
+//	@Override
+//	public void onBackPressed() {
+//		// Do nothing.
+//		onHomeButtonTapped();
+//	}
 	
 	//-------------------------------------------------------------------------
 	public void makeLogI(String format, Object... args) {

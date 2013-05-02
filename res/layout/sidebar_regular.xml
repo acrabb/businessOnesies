@@ -10,6 +10,7 @@
         style="@style/sidebarButtonStyle"
         android:background="@drawable/home"
         android:layout_alignParentTop="true"
+        android:visibility="gone"
         /> 
    <View
        android:id="@+id/spacer1"
@@ -129,11 +130,16 @@
     
     
     <!-- BASE BUTTONS (In upside-down order for access to buttons below)-->
+	 <View
+	     android:id="@+id/spacer3"
+	     style="@style/sidebarSpacerStyle"
+         android:layout_alignParentBottom="true"
+	     />
 	<Button 
         android:id="@+id/helpButton"
         style="@style/sidebarButtonStyle"
         android:background="@drawable/help"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/spacer3"
         />
 	<Button 
         android:id="@+id/menuButton"

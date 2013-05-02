@@ -2,8 +2,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <!-- SIDEBAR DIMENS -->
-    <dimen name="sidebarButtonHeight">50dp</dimen>
-    <dimen name="sidebarButtonPadding">5dp</dimen>
+    <dimen name="sidebarButtonWidth">50dp</dimen>
+    <dimen name="sidebarButtonPadding">10dp</dimen>
     <dimen name="sidebarButtonTopBottomMargin">5dp</dimen>
     
     
