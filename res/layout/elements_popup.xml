@@ -8,42 +8,45 @@
         android:id="@+id/elementsGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="4" >
+        android:columnCount="3" >
 
         <Button
             android:id="@+id/ma_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/elementsPopupElementWidth"
+            android:layout_height="@dimen/elementsPopupElementHeight"
             android:background="@drawable/btn_default_normal"
             android:text="Button"
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/ma_text_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/elementsPopupElementWidth"
+            android:layout_height="@dimen/elementsPopupElementHeight"
             android:text="Text Label"
-            android:textSize="50sp" />
+            android:textColor="@color/black"
+            android:textSize="30sp" />
         
         <ImageView 
             android:id="@+id/ma_slider"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="@dimen/elementsPopupElementWidth"
+            android:layout_height="@dimen/elementsPopupElementHeight" />
         
         <ImageView 
             android:id="@+id/ma_checkbox"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="@dimen/elementsPopupElementWidth"
+            android:layout_height="@dimen/elementsPopupElementHeight"
+            />
 
         <ImageView 
             android:id="@+id/ma_radiobutton"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="@dimen/elementsPopupElementWidth"
+            android:layout_height="@dimen/elementsPopupElementHeight"
+            />
         
         <ImageView
             android:id="@+id/ma_toggle"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="@dimen/elementsPopupElementWidth"
+            android:layout_height="@dimen/elementsPopupElementHeight"
     </GridLayout>
 
 </ScrollView>

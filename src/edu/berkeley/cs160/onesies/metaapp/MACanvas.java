@@ -9,10 +9,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Join;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 public class MACanvas extends View {
 	private Canvas			mCanvas;
@@ -68,7 +71,7 @@ public class MACanvas extends View {
 				
 				switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
-						mPath = new Path(); 
+						mPath = new Path();
 						mPaths.add(mPath);
 						mPath.moveTo(event.getX(), event.getY());
 						// +1 and +1 to allow for dots with settings above.
@@ -93,8 +96,24 @@ public class MACanvas extends View {
 		int buffer = 8;
 		t = Math.max(0, (int) mTopMost-buffer);
 		l = Math.max(0, (int) mLeftMost-buffer);
-		int b = (int) mBottomMost+buffer;
-		int r = (int) mRightMost+buffer;
+		
+//		Display display = getWindowManager().getDefaultDisplay();
+		
+		// Trying to fix custom element crash.
+//		WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+//		Display display = wm.getDefaultDisplay();
+//		
+//		Point size = new Point();
+//		display.getSize(size);
+//		int right = size.x;
+//		int bottom = size.y;
+		int right = mCanvas.getWidth();
+		int bottom = mCanvas.getHeight();
+		
+		
+		
+		int b = Math.min(bottom, (int) mBottomMost+buffer);
+		int r = Math.min(right, (int) mRightMost+buffer);
 		int height = b-t;
 		int width = r-l;
 		if(width < 0 || height < 0) {

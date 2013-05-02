@@ -20,15 +20,15 @@
     
     <!-- Sidebar Themes -->
     <style name="sidebarButtonStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/sidebarButtonHeight</item>
-        <item name="android:padding">@dimen/sidebarButtonPadding</item> 
-        <!-- item name="android:layout_marginTop">@dimen/sidebarButtonTopBottomMargin</item--> 
+        <item name="android:layout_width">@dimen/sidebarButtonWidth</item>
+        <item name="android:layout_height">@dimen/sidebarButtonWidth</item>
         <item name="android:layout_marginBottom">@dimen/sidebarButtonTopBottomMargin</item> 
+        <item name="android:scaleType">fitCenter</item>
     </style>
     <style name="sidebarSpacerStyle">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_height">5dp</item>
+        <item name="android:background">@color/achalRed</item>
     </style>
 
 </resources>
