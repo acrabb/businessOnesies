@@ -695,7 +695,7 @@ public class DevelopmentActivity extends Activity {
 		theView.setDrawingCacheEnabled(true);
 		theView.buildDrawingCache();
 		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
-		theView.setDrawingCacheEnabled(true);
+		theView.setDrawingCacheEnabled(false);
 		return a;
 	}
 	
@@ -705,7 +705,7 @@ public class DevelopmentActivity extends Activity {
 		theView.layout(0, 0, width, height);
 		theView.buildDrawingCache();
 		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
-		theView.setDrawingCacheEnabled(true);
+		theView.setDrawingCacheEnabled(false);
 		return a;
 	}
 	
