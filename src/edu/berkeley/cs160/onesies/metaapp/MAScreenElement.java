@@ -38,10 +38,10 @@ public class MAScreenElement extends FrameLayout {
 	 * UNIQUE VALUE.
 	 * IE...SO THAT TEXT LABELS CAN CALCULATE W&H FOR ITSELF.
 	 */
-	private int 			MIN_WIDTH = 60;
-	private int 			MAX_WIDTH = Integer.MAX_VALUE;
-	private int				MIN_HEIGHT = 60;
-	private int				MAX_HEIGHT = Integer.MAX_VALUE;
+	protected int 			MIN_WIDTH = 60;
+	protected int 			MAX_WIDTH = Integer.MAX_VALUE;
+	protected int			MIN_HEIGHT = 60;
+	protected int			MAX_HEIGHT = Integer.MAX_VALUE;
 	
 	private RelativeLayout.LayoutParams prev;
 	
