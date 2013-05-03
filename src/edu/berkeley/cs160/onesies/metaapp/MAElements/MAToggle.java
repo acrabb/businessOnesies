@@ -23,7 +23,7 @@ public class MAToggle extends MAScreenElement {
 	private int MAX_WIDTH = 60;
 	private int	MIN_HEIGHT = 70;
 	private int	MAX_HEIGHT = MIN_HEIGHT;
-	private int padding = 10;
+	private int padding;
 	private int textSize = 20;
 	private boolean toggleOn = false;
 	private Rect textBounds;
@@ -52,8 +52,10 @@ public class MAToggle extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
+		Log.d("meta", "Drawing toggle");
 		float h = this.getHeight();
 		float w = this.getWidth();
+		padding = (int) (h / 10);
 		float toggleHeight = h - 2*padding;
 		float toggleWidth  = w - 2*padding;
 
