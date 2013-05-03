@@ -310,6 +310,7 @@ public class DevelopmentActivity extends Activity {
 		addElementToPopup(new MASlider(getApplicationContext(), (MAScreen) null), R.id.ma_slider);
 		addElementToPopup(new MACheckbox(getApplicationContext(), (MAScreen) null), R.id.ma_checkbox);
 		addElementToPopup(new MARadioButton(getApplicationContext(), (MAScreen) null), R.id.ma_radiobutton);
+		addElementToPopup(new MAToggle(getApplicationContext(), (MAScreen) null), R.id.ma_toggle);
 		
 		mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
 		mPopupWindow.setOutsideTouchable(true);
