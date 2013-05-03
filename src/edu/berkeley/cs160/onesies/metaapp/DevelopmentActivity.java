@@ -1,7 +1,5 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
-import java.util.LinkedList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
