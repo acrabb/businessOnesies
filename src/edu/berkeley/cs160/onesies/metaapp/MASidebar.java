@@ -210,6 +210,14 @@ public class MASidebar extends RelativeLayout{
 //		}
 	}
 	public void showSketchZoneBar() {
+//		mHomeButton.setVisibility(VISIBLE);
+		mNotesButton.setVisibility(GONE);
+		mSketchButton.setVisibility(INVISIBLE);
+		mShapesButton.setVisibility(INVISIBLE);
+		mElementButton.setVisibility(INVISIBLE);
+		mUndoButton.setVisibility(INVISIBLE);
+		mMenuButton.setVisibility(INVISIBLE);
+		
 		mLinkButton.setVisibility(INVISIBLE);
 		mEditTextButton.setVisibility(INVISIBLE);
 		mDeleteButton.setVisibility(INVISIBLE);
