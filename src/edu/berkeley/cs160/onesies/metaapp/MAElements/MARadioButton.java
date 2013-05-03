@@ -19,11 +19,7 @@ public class MARadioButton extends MAScreenElement {
 	private MAScreen	mDestinationScreen;
 	private Paint       paint;
 	
-	private int MIN_WIDTH = 0;
-	private int MAX_WIDTH = 1000;
-	private int MIN_HEIGHT = 80;
-	private int MAX_HEIGHT = 80;
-	
+
 	// LOL HACKACKACK
 	private int min_min_height = 30;
 	private int max_max_height = 50;
@@ -37,6 +33,12 @@ public class MARadioButton extends MAScreenElement {
 	
 	public MARadioButton(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.CHECKBOX);
+	
+		MIN_WIDTH = 0;
+		MAX_WIDTH = 1000;
+		MIN_HEIGHT = 80;
+		MAX_HEIGHT = 80;
+
 		// Set background to be some image
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		paint = new Paint();

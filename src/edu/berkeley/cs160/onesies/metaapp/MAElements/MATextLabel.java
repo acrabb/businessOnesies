@@ -16,10 +16,6 @@ public class MATextLabel extends MAScreenElement {
 //	private String		mText = "TextLabel";	
 	private Paint 			paint;
 	// MATextLabels emphasize width.
-	private int 			MIN_WIDTH = 150;
-	private int 			MAX_WIDTH = 900;
-	private int				MIN_HEIGHT = 60;
-	private int				MAX_HEIGHT = 300;
 	private int				tolerable_padding = 1;
 	
 	public MATextLabel(Context context, MAScreen maScreen, String text) {
@@ -27,6 +23,11 @@ public class MATextLabel extends MAScreenElement {
 		paint = new Paint();
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		mText = text;
+		
+		MIN_WIDTH = 150;
+		MAX_WIDTH = 900;
+		MIN_HEIGHT = 60;
+		MAX_HEIGHT = 300;
 	}
 
 	public MATextLabel(Context context) {
@@ -61,16 +62,4 @@ public class MATextLabel extends MAScreenElement {
 	}
 
 	//-------------------------------------------------------------------------
-	public int getMinWidth() {
-		return this.MIN_WIDTH;
-	}
-	public int getMaxWidth() {
-		return this.MAX_WIDTH;
-	}
-	public int getMinHeight() {
-		return this.MIN_HEIGHT;
-	}
-	public int getMaxHeight() {
-		return this.MAX_HEIGHT;
-	}
 }

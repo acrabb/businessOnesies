@@ -19,10 +19,6 @@ public class MAToggle extends MAScreenElement {
 	private MAScreen	mDestinationScreen;
 	private Paint       paint;
 	
-	private int MIN_WIDTH = 60;
-	private int MAX_WIDTH = 60;
-	private int	MIN_HEIGHT = 70;
-	private int	MAX_HEIGHT = MIN_HEIGHT;
 	private int padding;
 	private int textSize = 20;
 	private boolean toggleOn = false;
@@ -32,6 +28,12 @@ public class MAToggle extends MAScreenElement {
 	
 	public MAToggle(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.CHECKBOX);
+		
+		MIN_WIDTH = 100;
+		MAX_WIDTH = 500;
+		MIN_HEIGHT = 70;
+		MAX_HEIGHT = 2*MIN_HEIGHT;
+	
 		// Set background to be some image
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
 		paint = new Paint();
@@ -52,7 +54,6 @@ public class MAToggle extends MAScreenElement {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
-		Log.d("meta", "Drawing toggle");
 		float h = this.getHeight();
 		float w = this.getWidth();
 		padding = (int) (h / 10);
@@ -113,19 +114,5 @@ public class MAToggle extends MAScreenElement {
 		params.height = height;
 		params.width = width;
 		this.setLayoutParams(params);
-	}
-	
-	//-------------------------------------------------------------------------
-	public int getMinWidth() {
-		return this.MIN_WIDTH;
-	}
-	public int getMaxWidth() {
-		return this.MAX_WIDTH;
-	}
-	public int getMinHeight() {
-		return this.MIN_HEIGHT;
-	}
-	public int getMaxHeight() {
-		return this.MAX_HEIGHT;
 	}
 }
