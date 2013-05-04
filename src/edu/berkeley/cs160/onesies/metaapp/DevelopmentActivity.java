@@ -689,9 +689,6 @@ public class DevelopmentActivity extends Activity {
 	 *****************************************************************************/
 	//-------------------------------------------------------------------------
 	public static Bitmap createBitmapOfView(View theView) {
-		if (theView.getWidth() == 0 || theView.getHeight() == 0) {
-			Log.w("meta", "Trying to create bitmap of a view with 0 height or width :(");
-		}
 		theView.setDrawingCacheEnabled(true);
 		theView.buildDrawingCache();
 		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
