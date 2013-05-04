@@ -22,7 +22,7 @@ public class MASidebar extends RelativeLayout{
 	private DevelopmentActivity mActivity;
 	private int 	backColor = R.color.sidebarColor;
 	
-//	private Button 	mHomeButton;
+	private Button 	mHomeButton;
 	private Button 	mNotesButton;
 	private Button 	mSketchButton;
 	private Button 	mShapesButton;
@@ -63,7 +63,7 @@ public class MASidebar extends RelativeLayout{
 		mActivity = activity;
 		
 		//---Main Dev Buttons ---------------------------------
-//		mHomeButton = (Button) findViewById(R.id.homeButton);
+		mHomeButton = (Button) findViewById(R.id.homeButton);
 		mNotesButton = (Button) findViewById(R.id.notesButton);
 		mSketchButton = (Button) findViewById(R.id.sketchButton);
 		mShapesButton = (Button) findViewById(R.id.shapesButton);
@@ -83,13 +83,13 @@ public class MASidebar extends RelativeLayout{
 		mElementForwardButton = (Button) findViewById(R.id.elementForward);
 		mElementBackwardButton = (Button) findViewById(R.id.elementBackward); 
 		
-//		mHomeButton.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
+		mHomeButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
 //				mActivity.makeToast("Hello Home!");
-//				mActivity.onHomeButtonTapped();
-//			}
-//		});
+				mActivity.onHomeButtonTapped();
+			}
+		});
 		mNotesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -188,7 +188,7 @@ public class MASidebar extends RelativeLayout{
 
 	//-------------------------------------------------------------------------
 	public void showDefaultSidebar() {
-//		mHomeButton.setVisibility(VISIBLE);
+		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(GONE);
 		mSketchButton.setVisibility(VISIBLE);
 		mShapesButton.setVisibility(VISIBLE);
@@ -210,7 +210,7 @@ public class MASidebar extends RelativeLayout{
 //		}
 	}
 	public void showSketchZoneBar() {
-//		mHomeButton.setVisibility(VISIBLE);
+		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(GONE);
 		mSketchButton.setVisibility(INVISIBLE);
 		mShapesButton.setVisibility(INVISIBLE);
@@ -283,7 +283,7 @@ public class MASidebar extends RelativeLayout{
 		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
 		
-//		mHomeButton.setVisibility(VISIBLE);
+		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(INVISIBLE);
 		mSketchButton.setVisibility(INVISIBLE);
 		mShapesButton.setVisibility(INVISIBLE);
