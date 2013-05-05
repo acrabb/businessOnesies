@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+<ScrollView 
     android:id="@+id/shapesLayout"
     android:layout_width="0dp"
     android:layout_height="0dp" >
+    -->
 
-    <GridLayout
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/shapesGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="4" >
 
         <ImageView
-            android:layout_width="@dimen/shapePopupShapeWidth"
-            android:layout_height="@dimen/shapePopupShapeHeight" 
+            android:layout_width="@dimen/shapesPopupShapeWidth"
+            android:layout_height="@dimen/shapesPopupShapeHeight" 
             android:id="@+id/ma_rectangle" />
 
         <ImageView
-            android:layout_width="@dimen/shapePopupShapeWidth"
-            android:layout_height="@dimen/shapePopupShapeHeight"
+            android:layout_width="@dimen/shapesPopupShapeWidth"
+            android:layout_height="@dimen/shapesPopupShapeHeight"
             android:id="@+id/ma_oval" />
         
         <ImageView
-            android:layout_width="@dimen/shapePopupShapeWidth"
-            android:layout_height="@dimen/shapePopupShapeHeight"
+            android:layout_width="@dimen/shapesPopupShapeWidth"
+            android:layout_height="@dimen/shapesPopupShapeHeight"
             android:id="@+id/ma_triangle" />
         
         <ImageView
             android:id="@+id/ma_star"
-            android:layout_width="@dimen/shapePopupShapeWidth"
-            android:layout_height="@dimen/shapePopupShapeHeight" />
+            android:layout_width="@dimen/shapesPopupShapeWidth"
+            android:layout_height="@dimen/shapesPopupShapeHeight" />
     </GridLayout>
 
-</ScrollView>
+<!-- </ScrollView> -->
