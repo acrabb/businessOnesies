@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -46,11 +47,13 @@ public class DevelopmentActivity extends Activity {
 	private PopupMenu			mLinkPopupMenu;
 	private GridLayout			mElementsGridView;
 	private GridLayout			mShapesGridView;
+	private Button 				mSketchButton;
 //	private Dialog				mBigPictureDia;
 	private MAButton			mButtonToLink;
 
 	private View 				mShapesContentView;
 	private View 				mElementsContentView;
+	private View 				mAddContentView;
 	
 	private MACanvas			mSketchCanvas;
 	
@@ -235,66 +238,34 @@ public class DevelopmentActivity extends Activity {
 	}
 	
 	//-------------------------------------------------------------------------
-	public void showShapesPopup(View button) {
+	
+	public void showAddPopup(View button) {
 		if (mPopupWindow != null) {
-			Log.i("ACACAC", "POPUP WINDOW ! NULL");
 			if (mPopupWindow.isShowing()) {
-				Log.i("ACACAC", "POPUP WINDOW SHOWING");
 				mPopupWindow.dismiss();
 				return;
 			}
 		}
-		mShapesContentView = mLayoutInflater.inflate(R.layout.shape_popup, null);
-		mPopupWindow = new PopupWindow(mShapesContentView,
-				(int) mResources.getDimension(R.dimen.shapePopupWidth),
-				(int) mResources.getDimension(R.dimen.shapePopupHeight), false);
-		addShapeToPopup(new MATriangle(getApplicationContext(), (MAScreen) null), R.id.ma_triangle);
-		addShapeToPopup(new MARectangle(getApplicationContext(), (MAScreen) null), R.id.ma_rectangle);
-		addShapeToPopup(new MAOval(getApplicationContext(), (MAScreen) null), R.id.ma_oval);
-		addShapeToPopup(new MAStar(getApplicationContext(), (MAScreen) null), R.id.ma_star);
+		mAddContentView = mLayoutInflater.inflate(R.layout.add_popup, null);
+		mPopupWindow = new PopupWindow(mAddContentView,
+				(int) mResources.getDimension(R.dimen.addPopupWidth),
+				(int) mResources.getDimension(R.dimen.addPopupHeight), false);
 		
 		/*
 		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
 		 * dismissed properly
 		 */
-		mShapesGridView = (GridLayout) mShapesContentView.findViewById(R.id.shapesGrid);
-		View v;
-		int numChildren = mShapesGridView.getChildCount();
-		for (int i = 0; i < numChildren; i++) {
-			v = mShapesGridView.getChildAt(i);
-			v.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Log.d("meta", "Clicked on a shape");
-					addShapeElement(v);
-				}
-			});
-		}
-		
 		mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
 		mPopupWindow.setOutsideTouchable(true);
 		mPopupWindow.showAsDropDown(button, 0, 0);
+		
+		setupElements();
+		setupShapes();
+		setupSketch();
 	}
 	
-	//-------------------------------------------------------------------------
-	public void showElementsPopup(View button) {
-		if (mPopupWindow != null) {
-			Log.i("ACACAC", "POPUP WINDOW ! NULL");
-			if (mPopupWindow.isShowing()) {
-				Log.i("ACACAC", "POPUP WINDOW SHOWING");
-				mPopupWindow.dismiss();
-				return;
-			}
-		}
-		mElementsContentView = mLayoutInflater.inflate(R.layout.elements_popup, null);
-		mPopupWindow = new PopupWindow(mElementsContentView,
-				(int) mResources.getDimension(R.dimen.elementsPopupWidth),
-				(int) mResources.getDimension(R.dimen.elementsPopupHeight), false);
-		/*
-		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
-		 * dismissed properly
-		 */
-		mElementsGridView = (GridLayout) mElementsContentView.findViewById(R.id.elementsGrid);
+	private void setupElements() {
+		mElementsGridView = (GridLayout) mAddContentView.findViewById(R.id.elements_popup);
 		int numChildren = mElementsGridView.getChildCount();
 		View v;
 		for (int i=0; i<numChildren; i++) {
@@ -306,33 +277,64 @@ public class DevelopmentActivity extends Activity {
 				}
 			});
 		}
-		
-		addElementToPopup(new MASlider(getApplicationContext(), (MAScreen) null), R.id.ma_slider);
-		addElementToPopup(new MACheckbox(getApplicationContext(), (MAScreen) null), R.id.ma_checkbox);
-		addElementToPopup(new MARadioButton(getApplicationContext(), (MAScreen) null), R.id.ma_radiobutton);
-		addElementToPopup(new MAToggle(getApplicationContext(), (MAScreen) null), R.id.ma_toggle);
-		
-		mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
-		mPopupWindow.setOutsideTouchable(true);
-		mPopupWindow.showAsDropDown(button, 0, 0);
+		addElementsToPopup(new MASlider(getApplicationContext(), (MAScreen) null), R.id.ma_slider);
+		addElementsToPopup(new MACheckbox(getApplicationContext(), (MAScreen) null), R.id.ma_checkbox);
+		addElementsToPopup(new MARadioButton(getApplicationContext(), (MAScreen) null), R.id.ma_radiobutton);
+		addElementsToPopup(new MAToggle(getApplicationContext(), (MAScreen) null), R.id.ma_toggle);
 	}
 	
+	private void setupShapes() {
+		
+		/*
+		 * setBackgroundDrawable MUST MUST MUST be called in order for the popup to be
+		 * dismissed properly
+		 */
+		mShapesGridView = (GridLayout) mAddContentView.findViewById(R.id.shapesGrid);
+		View v;
+		int numChildren = mShapesGridView.getChildCount();
+		for (int i = 0; i < numChildren; i++) {
+			v = mShapesGridView.getChildAt(i);
+			v.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					addShapeElement(v);
+				}
+			});
+		}
+		
+		addShapesToPopup(new MATriangle(getApplicationContext(), (MAScreen) null), R.id.ma_triangle);
+		addShapesToPopup(new MARectangle(getApplicationContext(), (MAScreen) null), R.id.ma_rectangle);
+		addShapesToPopup(new MAOval(getApplicationContext(), (MAScreen) null), R.id.ma_oval);
+		addShapesToPopup(new MAStar(getApplicationContext(), (MAScreen) null), R.id.ma_star);
+	}
 	
-	private void addShapeToPopup(MAScreenElement shape, int id) {
-		ImageView imageView = (ImageView) mShapesContentView.findViewById(id);
-		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape,
-				(int) getResources().getDimension(R.dimen.shapePopupShapeWidth),
-				(int) getResources().getDimension(R.dimen.shapePopupShapeHeight));
+	private void setupSketch() {
+		mSketchButton = (Button) mAddContentView.findViewById(R.id.sketchButton);
+		mSketchButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				showSketchZone(arg0);
+				mPopupWindow.dismiss();
+			}
+		});
+	}
+	
+	private void addShapesToPopup(MAScreenElement elem, int id) {
+		ImageView imageView = (ImageView) mShapesGridView.findViewById(id);
+		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(elem,
+				imageView.getLayoutParams().width,
+				imageView.getLayoutParams().height);
 		imageView.setImageBitmap(viewBitmap);
 	}
 	
-	private void addElementToPopup(MAScreenElement shape, int id) {
-		ImageView imageView = (ImageView) mElementsContentView.findViewById(id);
-		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(shape,
-				(int) getResources().getDimension(R.dimen.elementsPopupElementWidth),
-				(int) getResources().getDimension(R.dimen.elementsPopupElementHeight));
+	private void addElementsToPopup(MAScreenElement elem, int id) {
+		ImageView imageView = (ImageView) mElementsGridView.findViewById(id);
+		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(elem,
+				imageView.getLayoutParams().width,
+				imageView.getLayoutParams().height);
 		imageView.setImageBitmap(viewBitmap);
 	}
+	
 	//-------------------------------------------------------------------------
 	public void showLinkPopup(View linkButton) {
 		mLinkPopupMenu = new PopupMenu(getApplicationContext(), linkButton);

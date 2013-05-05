@@ -24,24 +24,23 @@ public class MASidebar extends RelativeLayout{
 	
 //	private Button 	mHomeButton;
 	private Button 	mNotesButton;
-	private Button 	mSketchButton;
-	private Button 	mShapesButton;
-	private Button 	mElementButton;
+	//private Button 	mSketchButton;
+	//private Button 	mShapesButton;
+	//private Button 	mElementButton;
+	private Button 	mAddButton;
 	private Button 	mMenuButton;
 	private Button  mUndoButton;
 	
 //	private View	mSketchOptionsView;
 //	private View 	mButtonOptionsView;
 //	private View	mCurrentContextOptions = null;
-	private Button	mAddButton;
-	private Button	mCancelDrawButton;
+	private Button	mSketchAddButton;
+	private Button	mSketchCancelButton;
 	private Button	mDeleteButton;
 	private Button	mElementForwardButton;
 	private Button	mElementBackwardButton;
 	private Button	mLinkButton;
 	private Button	mEditTextButton;
-	
-	
 
 	public MASidebar(Context context) {
 		super(context);
@@ -65,9 +64,10 @@ public class MASidebar extends RelativeLayout{
 		//---Main Dev Buttons ---------------------------------
 //		mHomeButton = (Button) findViewById(R.id.homeButton);
 		mNotesButton = (Button) findViewById(R.id.notesButton);
-		mSketchButton = (Button) findViewById(R.id.sketchButton);
-		mShapesButton = (Button) findViewById(R.id.shapesButton);
-		mElementButton = (Button) findViewById(R.id.elementsButton);
+		// mSketchButton = (Button) findViewById(R.id.sketchButton);
+		// mShapesButton = (Button) findViewById(R.id.shapesButton);
+		// mElementButton = (Button) findViewById(R.id.elementsButton);
+		mAddButton = (Button) findViewById(R.id.addButton);
 		mMenuButton = (Button) findViewById(R.id.menuButton);
 		mUndoButton = (Button) findViewById(R.id.undoButton);
 		
@@ -78,8 +78,8 @@ public class MASidebar extends RelativeLayout{
 		mLinkButton = (Button) findViewById(R.id.linkButton);
 		mEditTextButton = (Button) findViewById(R.id.editTextButton);
 		mDeleteButton = (Button) findViewById(R.id.deleteElementButton);
-		mAddButton = (Button) findViewById(R.id.addButton);
-		mCancelDrawButton = (Button) findViewById(R.id.cancelButton);
+		mSketchAddButton = (Button) findViewById(R.id.sketchAddButton);
+		mSketchCancelButton = (Button) findViewById(R.id.sketchCancelButton);
 		mElementForwardButton = (Button) findViewById(R.id.elementForward);
 		mElementBackwardButton = (Button) findViewById(R.id.elementBackward); 
 		
@@ -97,6 +97,7 @@ public class MASidebar extends RelativeLayout{
 //				mActivity.onNotesButtonTapped();
 			}
 		});
+		/*
 		mSketchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -114,6 +115,14 @@ public class MASidebar extends RelativeLayout{
 			public void onClick(View arg0) {
 				mActivity.showElementsPopup(arg0);
 			}
+		});
+		*/
+		mAddButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				mActivity.showAddPopup(arg0);
+			}
+			
 		});
 		mDeleteButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -139,7 +148,7 @@ public class MASidebar extends RelativeLayout{
 		
 		
 	//---- SKETCH ZONE CONTEXT BUTTONS ----
-		mAddButton.setOnClickListener(new View.OnClickListener() {
+		mSketchAddButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -147,7 +156,7 @@ public class MASidebar extends RelativeLayout{
 				mActivity.onAddSketchTapped();
 			}
 		});
-		mCancelDrawButton.setOnClickListener(new View.OnClickListener() {
+		mSketchCancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -190,9 +199,11 @@ public class MASidebar extends RelativeLayout{
 	public void showDefaultSidebar() {
 //		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(GONE);
+		/*
 		mSketchButton.setVisibility(VISIBLE);
 		mShapesButton.setVisibility(VISIBLE);
 		mElementButton.setVisibility(VISIBLE);
+		*/
 		mUndoButton.setVisibility(VISIBLE);
 		mMenuButton.setVisibility(VISIBLE);
 		
@@ -202,8 +213,8 @@ public class MASidebar extends RelativeLayout{
 		mDeleteButton.setVisibility(INVISIBLE);
 		mElementForwardButton.setVisibility(INVISIBLE);
 		mElementBackwardButton.setVisibility(INVISIBLE);
-		mAddButton.setVisibility(INVISIBLE);
-		mCancelDrawButton.setVisibility(INVISIBLE);
+		mSketchAddButton.setVisibility(INVISIBLE);
+		mSketchCancelButton.setVisibility(INVISIBLE);
 //		if (mCurrentContextOptions != null) {
 //			mCurrentContextOptions.setVisibility(INVISIBLE);
 //			mCurrentContextOptions = null;
@@ -212,9 +223,11 @@ public class MASidebar extends RelativeLayout{
 	public void showSketchZoneBar() {
 //		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(GONE);
+		/*
 		mSketchButton.setVisibility(INVISIBLE);
 		mShapesButton.setVisibility(INVISIBLE);
 		mElementButton.setVisibility(INVISIBLE);
+		*/
 		mUndoButton.setVisibility(INVISIBLE);
 		mMenuButton.setVisibility(INVISIBLE);
 		
@@ -223,8 +236,8 @@ public class MASidebar extends RelativeLayout{
 		mDeleteButton.setVisibility(INVISIBLE);
 		mElementForwardButton.setVisibility(INVISIBLE);
 		mElementBackwardButton.setVisibility(INVISIBLE);
-		mAddButton.setVisibility(VISIBLE);
-		mCancelDrawButton.setVisibility(VISIBLE);
+		mSketchAddButton.setVisibility(VISIBLE);
+		mSketchCancelButton.setVisibility(VISIBLE);
 		mUndoButton.setVisibility(INVISIBLE);
 //		if(mCurrentContextOptions != mSketchOptionsView) {
 //			mSketchOptionsView.setVisibility(VISIBLE);
@@ -258,8 +271,8 @@ public class MASidebar extends RelativeLayout{
 		mElementForwardButton.setVisibility(VISIBLE);
 		// IMPLEMENT FIRST
 //		mElementBackwardButton.setVisibility(VISIBLE);
-		mAddButton.setVisibility(INVISIBLE);
-		mCancelDrawButton.setVisibility(INVISIBLE);
+		mSketchAddButton.setVisibility(INVISIBLE);
+		mSketchCancelButton.setVisibility(INVISIBLE);
 		mUndoButton.setVisibility(VISIBLE);
 //		if (mCurrentContextOptions != mButtonOptionsView) {			
 //			mButtonOptionsView.setVisibility(VISIBLE);
@@ -272,8 +285,8 @@ public class MASidebar extends RelativeLayout{
 		mDeleteButton.setVisibility(VISIBLE);
 		mElementForwardButton.setVisibility(VISIBLE);
 		mElementBackwardButton.setVisibility(INVISIBLE);
-		mAddButton.setVisibility(INVISIBLE);
-		mCancelDrawButton.setVisibility(INVISIBLE);
+		mSketchAddButton.setVisibility(INVISIBLE);
+		mSketchCancelButton.setVisibility(INVISIBLE);
 		mUndoButton.setVisibility(VISIBLE);
 	}
 	
@@ -285,9 +298,11 @@ public class MASidebar extends RelativeLayout{
 		
 //		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(INVISIBLE);
+		/*
 		mSketchButton.setVisibility(INVISIBLE);
 		mShapesButton.setVisibility(INVISIBLE);
 		mElementButton.setVisibility(INVISIBLE);
+		*/
 		mUndoButton.setVisibility(INVISIBLE);
 		mMenuButton.setVisibility(VISIBLE);
 		
@@ -296,8 +311,8 @@ public class MASidebar extends RelativeLayout{
 		mDeleteButton.setVisibility(INVISIBLE);
 		mElementForwardButton.setVisibility(INVISIBLE);
 		mElementBackwardButton.setVisibility(INVISIBLE);
-		mAddButton.setVisibility(INVISIBLE);
-		mCancelDrawButton.setVisibility(INVISIBLE);
+		mSketchAddButton.setVisibility(INVISIBLE);
+		mSketchCancelButton.setVisibility(INVISIBLE);
 	}
 
 	//-------------------------------------------------------------------------
