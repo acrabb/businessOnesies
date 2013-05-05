@@ -568,7 +568,6 @@ public class DevelopmentActivity extends Activity {
 			}
 		});
 		mMenuPopupMenu.show();
-		/**/
 	}
 	
 	

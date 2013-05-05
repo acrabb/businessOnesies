@@ -24,9 +24,6 @@ public class MASidebar extends RelativeLayout{
 	
 //	private Button 	mHomeButton;
 	private Button 	mNotesButton;
-	//private Button 	mSketchButton;
-	//private Button 	mShapesButton;
-	//private Button 	mElementButton;
 	private Button 	mAddButton;
 	private Button 	mMenuButton;
 	private Button  mUndoButton;
@@ -97,26 +94,6 @@ public class MASidebar extends RelativeLayout{
 //				mActivity.onNotesButtonTapped();
 			}
 		});
-		/*
-		mSketchButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				mActivity.showSketchZone(arg0);
-			}
-		});
-		mShapesButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				mActivity.showShapesPopup(arg0);
-			}
-		});
-		mElementButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				mActivity.showElementsPopup(arg0);
-			}
-		});
-		*/
 		mAddButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -199,11 +176,6 @@ public class MASidebar extends RelativeLayout{
 	public void showDefaultSidebar() {
 //		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(GONE);
-		/*
-		mSketchButton.setVisibility(VISIBLE);
-		mShapesButton.setVisibility(VISIBLE);
-		mElementButton.setVisibility(VISIBLE);
-		*/
 		mUndoButton.setVisibility(VISIBLE);
 		mMenuButton.setVisibility(VISIBLE);
 		
@@ -223,11 +195,6 @@ public class MASidebar extends RelativeLayout{
 	public void showSketchZoneBar() {
 //		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(GONE);
-		/*
-		mSketchButton.setVisibility(INVISIBLE);
-		mShapesButton.setVisibility(INVISIBLE);
-		mElementButton.setVisibility(INVISIBLE);
-		*/
 		mUndoButton.setVisibility(INVISIBLE);
 		mMenuButton.setVisibility(INVISIBLE);
 		
@@ -298,11 +265,6 @@ public class MASidebar extends RelativeLayout{
 		
 //		mHomeButton.setVisibility(VISIBLE);
 		mNotesButton.setVisibility(INVISIBLE);
-		/*
-		mSketchButton.setVisibility(INVISIBLE);
-		mShapesButton.setVisibility(INVISIBLE);
-		mElementButton.setVisibility(INVISIBLE);
-		*/
 		mUndoButton.setVisibility(INVISIBLE);
 		mMenuButton.setVisibility(VISIBLE);
 		
