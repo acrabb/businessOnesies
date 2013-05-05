@@ -1,5 +1,7 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
+import java.util.Stack;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -127,11 +129,16 @@ public class DevelopmentActivity extends Activity {
 		mProject.addScreenToProject(name, mScreen);
 		mScreen.setName(name);
 		mProject.addFirstScreen(mScreen);
+		showScreenWithName(name);
 		makeToast("Screen '%s' Created.", name);
 	}
 	
 	//-------------------------------------------------------------------------
 	private void showScreenWithName(String name) {
+		showScreenWithName(name, false);
+	}
+	//-------------------------------------------------------------------------
+	private void showScreenWithName(String name, boolean addToHistory) {
 		// Deselect any current selection.
 		MAScreenElement selected = mScreen.getSelectedElement();
 		if(selected != null) {
@@ -148,6 +155,9 @@ public class DevelopmentActivity extends Activity {
 		mDevRelLayout.addView(newScreen,mScreen.getLayoutParams());
 		if (!mIsTesting) {
 			showDefaultSidebar();
+		}
+		if (addToHistory) {
+			mModel.addToHistory(mScreen);
 		}
 		mScreen = newScreen;
 	}
@@ -519,7 +529,7 @@ public class DevelopmentActivity extends Activity {
 			button.setDestinationScreen(newScreen);			
 		}
 		
-		showScreenWithName(newName);
+		showScreenWithName(newName, true);
 		
 		// Actually link the button to new screen
 		button.setDestinationScreen(newScreen);
@@ -551,13 +561,9 @@ public class DevelopmentActivity extends Activity {
 //						onNewScreenSelected();
 						break;
 					case R.id.dev_menu_test:
-						item.setVisible(false);
-						mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit).setVisible(true);
 						onTestModeTapped();
 						break;
 					case R.id.dev_menu_test_exit:
-						item.setVisible(false);
-						mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test).setVisible(true);
 						onExitTestModeTapped();
 						break;
 					default:
@@ -580,6 +586,8 @@ public class DevelopmentActivity extends Activity {
 			makeLogI(">>> Test mode tapped");
 			showScreenWithName(mProject.getFirstScreen().getName());
 			showTestSidebar();
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test).setVisible(false);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit).setVisible(true);
 		}
 	}
 	//-------------------------------------------------------------------------
@@ -589,6 +597,8 @@ public class DevelopmentActivity extends Activity {
 			makeLogI(">>> Exit test mode tapped");
 			showScreenWithName(mScreen.getName());
 			showDefaultSidebar();
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test).setVisible(true);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit).setVisible(false);
 		}
 	}
 	
@@ -613,7 +623,7 @@ public class DevelopmentActivity extends Activity {
 	            if (resultCode == RESULT_OK) {
 	           	 	int i = data.getIntExtra("INDEX", -1);
 	                Log.d("ACACAC", "SELECTED:"+i);
-					showScreenWithName(mProject.getScreens().get(i).getName());
+					showScreenWithName(mProject.getScreens().get(i).getName(), true);
 	            }
 	            break;
 	    // When BigPicture finishes for linking a button to the tapped screen.
@@ -689,9 +699,6 @@ public class DevelopmentActivity extends Activity {
 	 *****************************************************************************/
 	//-------------------------------------------------------------------------
 	public static Bitmap createBitmapOfView(View theView) {
-		if (theView.getWidth() == 0 || theView.getHeight() == 0) {
-			Log.w("meta", "Trying to create bitmap of a view with 0 height or width :(");
-		}
 		theView.setDrawingCacheEnabled(true);
 		theView.buildDrawingCache();
 		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
@@ -748,11 +755,19 @@ public class DevelopmentActivity extends Activity {
 	
 	
 	//-------------------------------------------------------------------------
-//	@Override
-//	public void onBackPressed() {
-//		// Do nothing.
+	@Override
+	public void onBackPressed() {
+		// Do nothing.
 //		onHomeButtonTapped();
-//	}
+		MAScreen s = mModel.getFromHistory();
+		if (s != null) {
+			showScreenWithName(s.getName());
+		} else if (isTesting()) {
+			onExitTestModeTapped();
+		} else {
+			makeToast("History is empty...");
+		}
+	}
 	
 	//-------------------------------------------------------------------------
 	public void makeLogI(String format, Object... args) {

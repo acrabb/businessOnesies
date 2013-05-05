@@ -2,6 +2,7 @@ package edu.berkeley.cs160.onesies.metaapp;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,12 +26,21 @@ public class MAScreenElement extends FrameLayout {
 	protected String		mText;
 	private String			screenLinkedTo = null;
 	
-	private boolean			mWasDragged = false;
-	private boolean			mResizing = false;
+//	private boolean			mWasDragged = false;
+//	private boolean			mResizing = false;
+	static final int 		NONE = 0;
+    static final int 		DRAG = 1;
+    static final int 		RESIZE = 2;
+    static final int 		PINCH = 3;
+    int						mMode = NONE;
+	
 	private float 			mLastX = 0;
 	private float 			mLastY = 0;
 	private int 			mLastW = 0;
 	private int				mLastH = 0;
+	
+	private int				INVALID_POINTER_ID = -1;
+	private int 			mActivePointerId = INVALID_POINTER_ID;
 	
 	/****
 	 * WRITE A GETTER FUNCTION TO GET MIN WIDTH / HEIGHT
@@ -91,18 +101,24 @@ public class MAScreenElement extends FrameLayout {
 			public boolean onTouch(View v, MotionEvent event) {
 				switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
-						mResizing = true;
+//						mResizing = true;
+						mMode = RESIZE;
 						break;
 					case MotionEvent.ACTION_MOVE:
 						break;
 					case MotionEvent.ACTION_UP:
-						mResizing = false;
+//						mResizing = false;
+						mMode = NONE;
 						break;
 					default:
 				}
 				return false;
 			}
 		});
+		
+		
+		
+		//////
 	}
 	/**/
 	
@@ -152,12 +168,14 @@ public class MAScreenElement extends FrameLayout {
 			public boolean onTouch(View v, MotionEvent event) {
 				switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
-						mResizing = true;
+//						mResizing = true;
+						mMode = RESIZE;
 						break;
 					case MotionEvent.ACTION_MOVE:
 						break;
 					case MotionEvent.ACTION_UP:
-						mResizing = false;
+//						mResizing = false;
+						mMode = NONE;
 						break;
 					default:
 				}
@@ -168,6 +186,8 @@ public class MAScreenElement extends FrameLayout {
 	}
 
 	//-------------------------------------------------------------------------
+	float touchDistX = 0;
+	float touchDistY = 0;
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		RelativeLayout.LayoutParams params;
@@ -176,6 +196,9 @@ public class MAScreenElement extends FrameLayout {
 		float y = event.getY();
 		switch(event.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
+				Log.i("ACACAC", "ACTION DOWN");
+				mActivePointerId = event.getPointerId(0);
+				
 				prev = new RelativeLayout.LayoutParams(params.width, params.height);
 				prev.leftMargin = params.leftMargin;
 				prev.topMargin = params.topMargin;
@@ -184,19 +207,43 @@ public class MAScreenElement extends FrameLayout {
 				mLastW = params.width;
 				mLastH = params.height;
 				break;
+			case MotionEvent.ACTION_POINTER_DOWN:
+				Log.i("ACACAC", "ACTOIN POINTER DOWN");
+				Log.i("ACACAC", String.format("Dist: %f", spacing(event)));
+				mMode = PINCH;
+				touchDistX = spacingHoriz(event);
+				touchDistY = spacingVert(event);
+				// Store the X and Y distances here
+				break;
 			case MotionEvent.ACTION_MOVE:
 				if (!mMAScreen.isTesting()) {
-					mWasDragged = true;
+//					mWasDragged = true;
 					int horizDiff = (int)(x-mLastX);
 					int vertDiff = (int)(y-mLastY);
-					if (mResizing) {
+//					if (mResizing) {
+					if (mMode == RESIZE) {
 						params.width = Math.min(Math.max(this.getMinWidth(),
 														mLastW + horizDiff),
 														this.getMaxWidth());
 						params.height = Math.min(Math.max(this.getMinHeight(),
 														mLastH + vertDiff),
 														this.getMaxHeight());
+					} else if (mMode == PINCH) {
+//						Log.i("ACACAC", String.format("Vert: %d", vertDiff));
+						int dX = (int) ((spacingHoriz(event) - touchDistX)/event.getXPrecision());
+						int dY = (int) ((spacingVert(event) - touchDistY)/event.getYPrecision());
+						
+						Log.i("ACACAC", String.format("Diff vert: %d", dY));
+						// Add the diff in X distance to width, and diff in Y distance to height
+						params.width = Math.min(Math.max(this.getMinWidth(),
+														mLastW + dX),
+														this.getMaxWidth());
+						params.height = Math.min(Math.max(this.getMinHeight(),
+														mLastH - dY),
+														this.getMaxHeight());
+						
 					} else {
+						mMode = DRAG;
 						params.leftMargin += horizDiff;
 						params.topMargin += vertDiff;
 						params.rightMargin -= horizDiff;
@@ -206,17 +253,24 @@ public class MAScreenElement extends FrameLayout {
 				}
 				break;
 			case MotionEvent.ACTION_UP:
-				if (!mWasDragged) {
+//				if (!mWasDragged) {
+				if (mMode == NONE) {
 					// Element tapped!
 					elementWasTapped();
 				} else {
 					mMAScreen.updateModel(this, UndoStatus.MOVE, prev);
 				}
-				if (mResizing) {
+//				if (mResizing) {
+				if (mMode == RESIZE) {
 					mMAScreen.updateModel(this, UndoStatus.RESIZE, prev);
 				}
-				mResizing = false;
-				mWasDragged = false;
+//				mResizing = false;
+//				mWasDragged = false;
+				mMode = NONE;
+				break;
+			case MotionEvent.ACTION_POINTER_UP:
+				Log.i("ACACAC", "ACTOIN POINTER UP");
+				mMode = DRAG;
 				break;
 			default:
 				break;
@@ -294,6 +348,24 @@ public class MAScreenElement extends FrameLayout {
 	public RelativeLayout.LayoutParams getState() {
 		return (RelativeLayout.LayoutParams) this.getLayoutParams();
 	}
+	
+	
+	//-------------------------------------------------------------------------
+	/** Determine the space between the first two fingers */
+    private float spacing(MotionEvent event) {
+        // ...
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return Math.abs(FloatMath.sqrt(x * x + y * y));
+    }
+    private float spacingHoriz(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        return Math.abs(x);
+    }
+    private float spacingVert(MotionEvent event) {
+        float y = event.getY(0) - event.getY(1);
+        return Math.abs(y);
+    }
 	
 	//-------------------------------------------------------------------------
 	public int getMinWidth() {

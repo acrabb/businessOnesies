@@ -4,6 +4,7 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,12 +19,14 @@ import android.widget.ImageView;
 public class MAModel {
 
 	private static MAModel			instance = null;
-	public ArrayList<MAProject>	mProjects = null;
+	public ArrayList<MAProject>		mProjects = null;
 	private MAProject				mCurrentProject = null;
+	private Stack<MAScreen> 		mHistory;
 	
 	//-------------------------------------------------------------------------
 	private MAModel() {
 		mProjects = new ArrayList<MAProject>();
+		mHistory = new Stack<MAScreen>();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -34,13 +37,24 @@ public class MAModel {
 		return instance;
 	}
 
-	
-	
-	
 	//-------------------------------------------------------------------------
 //	public ArrayList<MAProject> getmProjects() {
 //		return mProjects;
 //	}
+	
+	
+	//-------------------------------------------------------------------------
+	public void addToHistory(MAScreen s) {
+		mHistory.push(s);
+	}
+	//-------------------------------------------------------------------------
+	public MAScreen getFromHistory() {
+		if (mHistory.isEmpty()) {
+			return null;
+		} else {
+			return mHistory.pop();
+		}
+	}
 	
 	//-------------------------------------------------------------------------
 	public void addProject(MAProject project) {
