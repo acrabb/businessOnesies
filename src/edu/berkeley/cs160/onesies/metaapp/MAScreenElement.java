@@ -32,6 +32,9 @@ public class MAScreenElement extends FrameLayout {
 	private int 			mLastW = 0;
 	private int				mLastH = 0;
 	
+	private int				INVALID_POINTER_ID = -1;
+	private int 			mActivePointerId = INVALID_POINTER_ID;
+	
 	/****
 	 * WRITE A GETTER FUNCTION TO GET MIN WIDTH / HEIGHT
 	 * OVERWRITE GETTERS IN SUBCLASSES SO THAT EACH CAN RETURN A 
@@ -103,6 +106,10 @@ public class MAScreenElement extends FrameLayout {
 				return false;
 			}
 		});
+		
+		
+		
+		//////
 	}
 	/**/
 	
@@ -176,6 +183,8 @@ public class MAScreenElement extends FrameLayout {
 		float y = event.getY();
 		switch(event.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
+				mActivePointerId = event.getPointerId(0);
+				
 				prev = new RelativeLayout.LayoutParams(params.width, params.height);
 				prev.leftMargin = params.leftMargin;
 				prev.topMargin = params.topMargin;
@@ -183,6 +192,8 @@ public class MAScreenElement extends FrameLayout {
 				mLastY = y;
 				mLastW = params.width;
 				mLastH = params.height;
+				break;
+			case MotionEvent.ACTION_POINTER_DOWN:
 				break;
 			case MotionEvent.ACTION_MOVE:
 				if (!mMAScreen.isTesting()) {
@@ -217,6 +228,8 @@ public class MAScreenElement extends FrameLayout {
 				}
 				mResizing = false;
 				mWasDragged = false;
+				break;
+			case MotionEvent.ACTION_POINTER_UP:
 				break;
 			default:
 				break;
