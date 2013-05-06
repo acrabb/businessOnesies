@@ -39,8 +39,8 @@ public class MainActivity extends Activity {
 		RelativeLayout phone = (RelativeLayout)findViewById(R.id.phone);
 		final int height = 927;
 		final int width = 550;
-		ViewPager screen = setupPager(width, height);
-		phone.addView(screen);
+		ViewPager pager = setupPager(width, height);
+		phone.addView(pager);
 	}
 
 	

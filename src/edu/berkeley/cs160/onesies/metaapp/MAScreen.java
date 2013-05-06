@@ -15,15 +15,9 @@ import edu.berkeley.cs160.onesies.metaapp.MAElements.*;
 public class MAScreen extends RelativeLayout {
 
 	private int backColor = R.color.white;
-//	private float mRatio = 1.60f;
-	
-//	private int 				mChildCount;
 	private MAScreenElement 	mSelectedChild;
 	private DevelopmentActivity mDevelopmentActivity;
-//	private TestingActivity 	mTestingActivity;
 	private String				mName;
-//	protected boolean    		testMode = false;
-	private ArrayList<MAScreenElement> children; // not needed?
 	private UndoModel           undo;
 	
 	public MAScreen(Context context, AttributeSet attrs) {
@@ -46,77 +40,7 @@ public class MAScreen extends RelativeLayout {
 				return false;
 			}
 		});
-		
-		this.setOnDragListener(new View.OnDragListener() {
-			@Override
-			public boolean onDrag(View v, DragEvent event) {
-				Log.i("ACACAC", "DRAGGGGGG");
-				switch(event.getAction()) {
-					case DragEvent.ACTION_DRAG_ENTERED:
-						Log.i("ACACAC", "DRAG ENTERED");
-						break;
-					case DragEvent.ACTION_DRAG_STARTED:
-						Log.i("ACACAC", "DRAG STARTED");
-						break;
-					case DragEvent.ACTION_DROP:
-						Log.i("ACACAC", "DRAG DROPPED");
-						break;
-					case DragEvent.ACTION_DRAG_ENDED:
-						Log.i("ACACAC", "DRAG DROPPED");
-						break;
-					default:
-				}
-				return true;
-			}
-		});
 	}
-	
-	
-//	public void showDropDown(PopupWindow p, View v) {
-//		p.showAsDropDown(v, 0, 0);
-//	}
-	
-//	@Override
-//	public boolean onDragEvent(DragEvent event) {
-//				Log.i("ACACAC", "DRAGGGGGG");
-//		switch(event.getAction()) {
-//			case DragEvent.ACTION_DRAG_ENTERED:
-//				Log.i("ACACAC", "DRAG ENTERED");
-//				break;
-//			case DragEvent.ACTION_DRAG_STARTED:
-//				Log.i("ACACAC", "DRAG STARTED");
-//				break;
-//			case DragEvent.ACTION_DROP:
-//				Log.i("ACACAC", "DRAG DROPPED");
-//				break;
-//			case DragEvent.ACTION_DRAG_ENDED:
-//				Log.i("ACACAC", "DRAG ENDED");
-////				mDevelopmentActivity.dismissPopup();
-//				break;
-//			default:
-//		}
-//		return true;
-//	}
-	
-//	@Override
-//	public void onFinishInflate() {
-//		this.setOnDragListener(new View.OnDragListener() {
-//			@Override
-//			public boolean onDrag(View v, DragEvent event) {
-//				Log.i("ACACAC", "DRAGGGGGG");
-//				switch(event.getAction()) {
-//					case DragEvent.ACTION_DRAG_ENTERED:
-//						Log.i("ACACAC", "DRAG ENTERED");
-//						break;
-//					case DragEvent.ACTION_DROP:
-//						Log.i("ACACAC", "DRAG DROPPED");
-//						break;
-//					default:
-//				}
-//				return true;
-//			}
-//		});
-//	}
 	
 	public void deselectAll() {
 		if (mSelectedChild != null) {
@@ -132,12 +56,6 @@ public class MAScreen extends RelativeLayout {
 	}
 	public void onElementTappedInTest(MAScreenElement e) {
 		mDevelopmentActivity.onButtonTappedInTest(e);
-//		switch (e.getmType()) {
-//			case BUTTON:
-//				break;
-//			default:
-//				break;
-//		}
 	}
 	private void determineSelectionState(MAScreenElement e) {
 		if (e == null) {
@@ -145,7 +63,8 @@ public class MAScreen extends RelativeLayout {
 		}
 		// If the element is already selected, deselect it.
 		if (e == mSelectedChild) {
-			if (e instanceof MATextLabel) {
+			if (e instanceof MATextLabel || e instanceof MAButton
+					|| e instanceof MARadioButton || e instanceof MACheckbox) {
 				mDevelopmentActivity.onEditTextTapped();
 			} else {
 				e.deselect();
@@ -181,26 +100,12 @@ public class MAScreen extends RelativeLayout {
 		}
 	}
 
-//	public void setTestMode(final boolean mode) {
-//		this.testMode = mode;
-//	}
-//	
-//	public boolean getTestMode() {
-//		return this.testMode;
-//	}
-	
 	public DevelopmentActivity getmDevelopmentActivity() {
 		return mDevelopmentActivity;
 	}
 	public void setmDevelopmentActivity(DevelopmentActivity mDevelopmentActivity) {
 		this.mDevelopmentActivity = mDevelopmentActivity;
 	}
-//	public void setmTestingActivity(TestingActivity mTestingActivity) {
-//		this.mTestingActivity = mTestingActivity;
-//	}
-//	public TestingActivity getmTestingActivity() {
-//		return mTestingActivity;
-//	}
 	public boolean isTesting() {
 		return mDevelopmentActivity.isTesting();
 	}
