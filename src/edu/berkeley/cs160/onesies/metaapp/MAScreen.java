@@ -31,15 +31,15 @@ public class MAScreen extends RelativeLayout {
 			}
 		});
 		
-		this.setOnTouchListener(new View.OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				Log.i("ACACAC", "TOUCH!");
-				return false;
-			}
-		});
+//		this.setOnTouchListener(new View.OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				// TODO Auto-generated method stub
+//				Log.i("ACACAC", "TOUCH!");
+//				return false;
+//			}
+//		});
 	}
 	
 	public void deselectAll() {

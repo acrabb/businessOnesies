@@ -7,25 +7,20 @@
     <Button
         android:id="@+id/homeButton"
         style="@style/sidebarButtonStyle"
-        android:layout_alignParentTop="true"
         android:background="@drawable/home"
-        android:visibility="gone" />
+        android:layout_alignParentTop="true"
+        />
 
     <View
         android:id="@+id/spacer1"
         style="@style/sidebarSpacerStyle"
-        android:layout_below="@id/homeButton" />
-
-    <Button
-        android:id="@+id/notesButton"
-        style="@style/sidebarButtonStyle"
-        android:layout_below="@id/spacer1"
-        android:background="@drawable/notes" />
+        android:layout_below="@id/homeButton"
+        />
 
     <Button
         android:id="@+id/addButton"
         style="@style/sidebarButtonStyle"
-        android:layout_below="@id/notesButton"
+        android:layout_below="@id/spacer1"
         android:background="@drawable/plus" />
 
     <View
@@ -81,29 +76,33 @@
         android:background="@drawable/text_editing" />
 
     <Button
-        android:id="@+id/deleteElementButton"
-        style="@style/sidebarButtonStyle"
-        android:layout_below="@id/editTextButton"
-        android:background="@drawable/trash" />
-
-    <Button
         android:id="@+id/elementForward"
         style="@style/sidebarButtonStyle"
-        android:layout_below="@id/deleteElementButton"
+        android:layout_below="@id/editTextButton"
         android:background="@drawable/forward" />
-
+    
     <Button
+        android:id="@+id/deleteElementButton"
+        style="@style/sidebarButtonStyle"
+        android:layout_below="@id/elementForward"
+        android:background="@drawable/trash" />
+
+    <!-- Button
         android:id="@+id/elementBackward"
         style="@style/sidebarButtonStyle"
         android:layout_below="@id/elementForward"
-        android:text="Down" />
+        android:text="Down" /-->
 
+    <View
+        android:id="@+id/spacer5"
+        style="@style/sidebarSpacerStyle"
+        android:layout_below="@id/deleteElementButton" />
     <!-- SKETCH ZONE CONTEXT -->
 
     <Button
         android:id="@+id/sketchAddButton"
         style="@style/sidebarButtonStyle"
-        android:layout_below="@id/elementBackward"
+        android:layout_below="@id/spacer5"
         android:background="@drawable/check" />
 
     <Button
@@ -127,14 +126,14 @@
     <View
         android:id="@+id/spacer3"
         style="@style/sidebarSpacerStyle"
-        android:layout_alignParentBottom="true" />
-
+        android:layout_alignParentBottom="true"
+        />
     <Button
         android:id="@+id/helpButton"
         style="@style/sidebarButtonStyle"
         android:layout_above="@id/spacer3"
-        android:background="@drawable/help" />
-
+        android:background="@drawable/help"
+        />
     <Button
         android:id="@+id/menuButton"
         style="@style/sidebarButtonStyle"
@@ -146,5 +145,9 @@
         style="@style/sidebarButtonStyle"
         android:layout_above="@id/menuButton"
         android:background="@drawable/undo" />
+    <View
+        android:id="@+id/spacer4"
+        style="@style/sidebarSpacerStyle"
+        android:layout_above="@id/undoButton"/>
 
 </edu.berkeley.cs160.onesies.metaapp.MASidebar> <!-- /LinearLayout -->

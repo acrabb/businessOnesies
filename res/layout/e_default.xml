@@ -14,7 +14,4 @@
 	    android:visibility="invisible"
         />
     
-    <include layout="@layout/e_drag_target"
-        />
-    
 </edu.berkeley.cs160.onesies.metaapp.MAScreenElement>

@@ -14,8 +14,6 @@
 	    android:visibility="invisible"
         />
     
-    <include layout="@layout/e_drag_target"/>
-    
     <!-- BUTTON ONLY THINGS -->
     <include layout="@layout/e_link_badge"
         	android:visibility="gone" />

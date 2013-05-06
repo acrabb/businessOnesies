@@ -15,5 +15,6 @@ public enum ElementType {
 	RADIOBUTTON,
 	CUSTOM,
 	SHAPE,
+	TOGGLE,
 	OTHER;
 }
