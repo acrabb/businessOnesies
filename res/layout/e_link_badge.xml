@@ -5,7 +5,7 @@
     android:layout_width="35dp"
     android:layout_height="35dp"
     android:scaleType="fitCenter"
-    android:layout_gravity="top|left"
+    android:layout_gravity="top|right"
     android:background="@drawable/link"
     android:visibility="invisible"
     />

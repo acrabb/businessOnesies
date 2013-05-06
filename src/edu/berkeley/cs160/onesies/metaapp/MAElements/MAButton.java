@@ -5,16 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DrawFilter;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
+import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ImageView.ScaleType;
 import edu.berkeley.cs160.onesies.metaapp.ElementType;
 import edu.berkeley.cs160.onesies.metaapp.MAScreen;
 import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
@@ -22,13 +20,23 @@ import edu.berkeley.cs160.onesies.metaapp.R;
 
 public class MAButton extends MAScreenElement {
 
-//	private MAScreen	mDestinationScreen;
+	private Rect textBounds;
 	
 	private ImageView	mLinkBadge;
 	
 	private Paint paint;
-
 	
+	public MAButton(Context context, MAScreen maScreen) {
+		super(context, maScreen, ElementType.CHECKBOX);
+		
+		// Set background to be some image
+		setBackgroundColor(getResources().getColor(R.color.clearColor));
+		paint = new Paint();
+		mText = "Button";
+		mType = ElementType.BUTTON;
+		textBounds = new Rect();
+	}
+
 	//-------------------------------------------------------------------------
 	public MAButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -42,11 +50,15 @@ public class MAButton extends MAScreenElement {
 		super.onFinishInflate();
 		Log.i("BUBUBU", "BUTTON CREATED");
 		
+		// Set background to be some image
+		setBackgroundColor(getResources().getColor(R.color.clearColor));
+
 		// Set up paint, text, type, and link badge.
 		// mScreen should get assigned by devAct.
 		paint = new Paint();
 		mText = "Button";
 		mType = ElementType.BUTTON;
+		textBounds = new Rect();
 		
 		mLinkBadge = (ImageView) findViewById(R.id.linkBadge);
 		mLinkBadge.setOnClickListener(new View.OnClickListener() {
@@ -59,12 +71,22 @@ public class MAButton extends MAScreenElement {
 	//-------------------------------------------------------------------------
 	@Override
 	public void onDraw(Canvas canvas) {
-		paint.setColor(Color.BLACK);
 		paint.setTextAlign(Paint.Align.CENTER);
-		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		
+		paint.setColor(getResources().getColor(R.color.uiGray));
+		paint.setStyle(Style.FILL);
+		canvas.drawRect(0, 0, this.getWidth(), this.getHeight(), paint);
+		
+		paint.setColor(Color.BLACK);
+		paint.setStyle(Style.STROKE);
+		paint.setStrokeWidth(10);
+		canvas.drawRect(0, 0, this.getWidth(), this.getHeight(), paint);
+
+		paint.setStyle(Style.FILL);
 		paint.setTextSize(Math.min(150, this.getHeight()/3)); 
-		canvas.drawText(mText, this.getWidth()/2, this.getHeight()/2, paint);
+		paint.setColor(Color.BLACK);
+		paint.getTextBounds(mText, 0, mText.length(), textBounds);
+		canvas.drawText(mText, this.getWidth()/2, this.getHeight()/2 + Math.abs(textBounds.top - textBounds.bottom) / 2, paint);
 	}
 	
 	
@@ -72,7 +94,7 @@ public class MAButton extends MAScreenElement {
 	@Override
 	public void select() {
 		super.select();
-		if (mDestinationScreen != null) {
+		if (mDestinationScreen != null && mLinkBadge != null) {
 			mLinkBadge.setVisibility(VISIBLE);
 		}
 	}

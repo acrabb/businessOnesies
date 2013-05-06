@@ -12,12 +12,10 @@
         android:layout_height="wrap_content"
         android:columnCount="3" >
 
-        <Button
+        <ImageView
             android:id="@+id/ma_button"
             android:layout_width="@dimen/elementsPopupElementWidth"
             android:layout_height="@dimen/elementsPopupElementHeight"
-            android:background="@drawable/btn_default_normal"
-            android:text="Button"
             android:textColor="@color/black" />
 
         <TextView
