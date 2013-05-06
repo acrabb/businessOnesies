@@ -165,27 +165,6 @@ public class MAScreenElement extends FrameLayout {
 		
 		// get mHighlightOverlay
 		mHighlightOverlay = findViewById(R.id.highlightOverlay);
-		// get mResizeTarget
-//		mDragTarget = (ImageView) findViewById(R.id.dragTarget);
-//		mDragTarget.setOnTouchListener(new View.OnTouchListener() {
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//				switch(event.getAction()) {
-//					case MotionEvent.ACTION_DOWN:
-////						mResizing = true;
-//						mMode = RESIZE;
-//						break;
-//					case MotionEvent.ACTION_MOVE:
-//						break;
-//					case MotionEvent.ACTION_UP:
-////						mResizing = false;
-//						mMode = NONE;
-//						break;
-//					default:
-//				}
-//				return false;
-//			}
-//		});
 		invalidate();
 	}
 
@@ -227,17 +206,8 @@ public class MAScreenElement extends FrameLayout {
 			        y = event.getY(pointerIndex);
 					int horizDiff = (int)(x-mLastX);
 					int vertDiff = (int)(y-mLastY);
-					// If dragging via the drag target.
-//					if (mMode == RESIZE) {
-//						params.width = Math.min(Math.max(this.getMinWidth(),
-//														mLastW + horizDiff),
-//														this.getMaxWidth());
-//						params.height = Math.min(Math.max(this.getMinHeight(),
-//														mLastH + vertDiff),
-//														this.getMaxHeight());
-//					}
+					
 					if (mMode == PINCH) {
-//						Log.i("ACACAC", String.format("Vert: %d", vertDiff));
 						int dX = (int) ((spacingHoriz(event) - touchDistX));///event.getXPrecision());
 						int dY = (int) ((spacingVert(event) - touchDistY));// /event.getYPrecision());
 						
@@ -259,7 +229,7 @@ public class MAScreenElement extends FrameLayout {
 						
 					} else {
 						float dist = dist(mLastX, mLastY, event.getX(), event.getY());
-						Log.i("ACACAC", String.format("Drag dist: %f", dist));
+//						Log.i("ACACAC", String.format("Drag dist: %f", dist));
 						if (dist > MIN_DRAG_DIST) {
 							mMode = DRAG;
 						}
@@ -288,7 +258,7 @@ public class MAScreenElement extends FrameLayout {
 				break;
 			//-----------------------------------------------------------------
 			case MotionEvent.ACTION_POINTER_UP:
-				Log.i("ACACAC", "ACTION POINTER UP");
+//				Log.i("ACACAC", "ACTION POINTER UP");
 				// Extract the index of the pointer that left the touch sensor
 		        final int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) 
 		                >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
@@ -384,12 +354,12 @@ public class MAScreenElement extends FrameLayout {
 	
 	//-------------------------------------------------------------------------
 	/** Determine the space between the first two fingers */
-    private float spacing(MotionEvent event) {
-        // ...
-        float x = event.getX(0) - event.getX(1);
-        float y = event.getY(0) - event.getY(1);
-        return Math.abs(FloatMath.sqrt(x * x + y * y));
-    }
+//    private float spacing(MotionEvent event) {
+//        // ...
+//        float x = event.getX(0) - event.getX(1);
+//        float y = event.getY(0) - event.getY(1);
+//        return Math.abs(FloatMath.sqrt(x * x + y * y));
+//    }
     private float spacingHoriz(MotionEvent event) {
         float x = event.getX(0) - event.getX(1);
         return Math.abs(x);

@@ -23,6 +23,13 @@
         
         />
     
+    <ImageView 
+	    android:id="@+id/helpImage"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:visibility="gone"
+	    android:background="@drawable/help_screen"
+        />
     <!-- edu.berkeley.cs160.onesies.metaapp.MAScreen 
         android:id="@+id/maScreen"
 	    android:layout_width="match_parent"

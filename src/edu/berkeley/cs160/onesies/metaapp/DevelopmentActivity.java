@@ -1,7 +1,5 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
-import java.util.Stack;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,16 +9,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.text.InputType;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.DragShadowBuilder;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MACheckbox;
@@ -54,14 +47,10 @@ public class DevelopmentActivity extends Activity {
 	private GridLayout			mElementsGridView;
 	private GridLayout			mShapesGridView;
 	private Button 				mSketchButton;
-//	private Dialog				mBigPictureDia;
 	private MAScreenElement		mButtonToLink;
-
-	private View 				mShapesContentView;
-	private View 				mElementsContentView;
 	private View 				mAddContentView;
-	
 	private MACanvas			mSketchCanvas;
+	private ImageView			mHelpImage;
 	
 	// Non-UI Objects--------------------------
 	private MAModel				mModel;
@@ -70,8 +59,8 @@ public class DevelopmentActivity extends Activity {
 	protected static MAProject	mProject;
 	private boolean				mInSketchZone = false;
 	private boolean				mIsTesting = false;
+	private boolean				mPopupIsShowing = false;
 	private Intent				mIntent;
-	private DevelopmentActivity self = this;
 	
 	private final int			SHOW_TAPPED = 1;
 	private final int			LINK_TAPPED = 2;
@@ -91,6 +80,16 @@ public class DevelopmentActivity extends Activity {
 		mResources = getResources();
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
 
+		mHelpImage = (ImageView) findViewById(R.id.helpImage);
+//		mHelpImage = new ImageView(this);
+//		mHelpImage.setBackgroundResource(R.drawable.help_screen);
+		mHelpImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onHelpTapped();
+			}
+		});
+		
 		// Set up sidebar
 		mSidebar = (MASidebar) findViewById(R.id.sidebar);
 		mSidebar.setUp(this);
@@ -114,6 +113,13 @@ public class DevelopmentActivity extends Activity {
 		}
 	}
 
+//	@Override
+//	public void onAttachedToWindow() {
+//		mHelpImage.setLayoutParams(new RelativeLayout.LayoutParams(mDevRelLayout.getWidth(), mDevRelLayout.getHeight()));
+//		mHelpImage.invalidate();
+//		
+//	}
+	
 	// -------------------------------------------------------------------------
 	private void loadProject(int projIndex) {
 		mProject = mModel.getProject(projIndex);
@@ -278,11 +284,10 @@ public class DevelopmentActivity extends Activity {
 	// -------------------------------------------------------------------------
 
 	public void showAddPopup(View button) {
-		if (mPopupWindow != null) {
-			if (mPopupWindow.isShowing()) {
-				mPopupWindow.dismiss();
-				return;
-			}
+		// Custom check needed to dismiss popup on "+" button click again.
+		if (mPopupIsShowing) {
+			mPopupWindow.dismiss();
+			return;
 		}
 		mAddContentView = mLayoutInflater.inflate(R.layout.add_popup, null);
 		mPopupWindow = new PopupWindow(mAddContentView,
@@ -295,6 +300,12 @@ public class DevelopmentActivity extends Activity {
 		 */
 		mPopupWindow.setBackgroundDrawable(getResources().getDrawable(
 				R.drawable.popup_bg));
+		mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			@Override
+			public void onDismiss() {
+				mPopupIsShowing = false;
+			}
+		});
 		mPopupWindow.setOutsideTouchable(true);
 //		mPopupWindow.setOutsideTouchable(false);
 		
@@ -318,17 +329,12 @@ public class DevelopmentActivity extends Activity {
 //		});
 		
 		mPopupWindow.showAsDropDown(button, 0, 0);
-//		mScreen.showDropDown(mPopupWindow, button);
+		mPopupIsShowing = true;
 		setupElements();
 		setupShapes();
 		setupSketch();
 	}
-	
-//	public void dismissPopup() {
-//		Log.i("ACACAC", "DISMISS???");
-//		mPopupWindow.dismiss();
-//	}
-	
+
 	private void setupElements() {
 		mElementsGridView = (GridLayout) mAddContentView
 				.findViewById(R.id.elements_popup);
@@ -504,11 +510,6 @@ public class DevelopmentActivity extends Activity {
 	}
 
 	// -------------------------------------------------------------------------
-	public void onElementBackwardTapped() {
-
-	}
-
-	// -------------------------------------------------------------------------
 	String m_Text = "";
 
 	public void onEditTextTapped() {
@@ -552,10 +553,20 @@ public class DevelopmentActivity extends Activity {
 	}
 
 	// -------------------------------------------------------------------------
-
 	public void onUndoTapped() {
 		if (!mIsTesting) {
 			mScreen.handleUndo();
+		}
+	}
+	// -------------------------------------------------------------------------
+	public void onHelpTapped() {
+		if (!mIsTesting) {
+			if (mHelpImage.isShown()) {
+				mHelpImage.setVisibility(View.INVISIBLE);
+			} else {
+				mHelpImage.bringToFront();
+				mHelpImage.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
@@ -604,9 +615,9 @@ public class DevelopmentActivity extends Activity {
 			// lolol just make random RelativeLayout.LayoutParams(200, 100);buttons man
 			newElement = (MAScreenElement) mLayoutInflater.inflate(
 					R.layout.e_button, mScreen, false);
-			params = (RelativeLayout.LayoutParams) newElement.getLayoutParams();
-			params.topMargin = (int) y;
-			params.leftMargin = (int) x;
+//			params = (RelativeLayout.LayoutParams) newElement.getLayoutParams();
+//			params.topMargin = (int) y;
+//			params.leftMargin = (int) x;
 			newElement.setmScreen(mScreen);
 			break;
 		}
@@ -884,7 +895,7 @@ public class DevelopmentActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 			// Do your thing
-			makeToast("ACHAL ROX MY SOX");
+			makeToast("...champagne?");
 			return true;
 		} else {
 			return super.onKeyDown(keyCode, event);
@@ -901,6 +912,10 @@ public class DevelopmentActivity extends Activity {
 	public void onBackPressed() {
 		// Do nothing.
 		// onHomeButtonTapped();
+		if (mHelpImage.isShown()) {
+			onHelpTapped();
+			return;
+		}
 		MAScreen s = mModel.getFromHistory();
 		if (s != null) {
 			showScreenWithName(s.getName());

@@ -24,7 +24,7 @@ public class MARadioButton extends MAScreenElement {
 	private int min_min_height = 30;
 	private int max_max_height = 50;
 	private int max_max_width = 1000;
-	private int min_min_width = 0;
+	private int min_min_width = 60;
 	
 	private int tolerable_padding = 1;
 	private int padding;
