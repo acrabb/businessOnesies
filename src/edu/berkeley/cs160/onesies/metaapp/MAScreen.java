@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.*;
 
 public class MAScreen extends RelativeLayout {
 
@@ -145,8 +145,12 @@ public class MAScreen extends RelativeLayout {
 		}
 		// If the element is already selected, deselect it.
 		if (e == mSelectedChild) {
-			e.deselect();
-			mSelectedChild = null;
+			if (e instanceof MATextLabel) {
+				mDevelopmentActivity.onEditTextTapped();
+			} else {
+				e.deselect();
+				mSelectedChild = null;
+			}
 		} else {
 		// ...deselect any current selected element...
 			if(mSelectedChild != null) {

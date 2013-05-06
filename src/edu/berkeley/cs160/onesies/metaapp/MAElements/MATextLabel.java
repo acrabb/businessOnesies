@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.view.View;
 import edu.berkeley.cs160.onesies.metaapp.ElementType;
 import edu.berkeley.cs160.onesies.metaapp.MAScreen;
 import edu.berkeley.cs160.onesies.metaapp.MAScreenElement;
@@ -29,7 +30,7 @@ public class MATextLabel extends MAScreenElement {
 		MIN_HEIGHT = 60;
 		MAX_HEIGHT = 300;
 	}
-
+	
 	public MATextLabel(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
