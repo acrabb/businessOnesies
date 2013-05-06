@@ -36,6 +36,7 @@ public class MASidebar extends RelativeLayout{
 	private Button	mElementForwardButton;
 	private View	mSpacerContext;
 	private View	mSpacerBottom;
+	private View	mSpacerAdd;
 	private Button	mLinkButton;
 	private Button	mEditTextButton;
 
@@ -77,6 +78,7 @@ public class MASidebar extends RelativeLayout{
 		mElementForwardButton = (Button) findViewById(R.id.elementForward);
 		mSpacerBottom = findViewById(R.id.spacer4);
 		mSpacerContext = findViewById(R.id.spacer5);
+		mSpacerAdd = findViewById(R.id.spacer2);
 		
 		mHomeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -157,6 +159,8 @@ public class MASidebar extends RelativeLayout{
 	//-------------------------------------------------------------------------
 	public void showDefaultSidebar() {
 		mHomeButton.setVisibility(VISIBLE);
+		mAddButton.setVisibility(VISIBLE);
+		mSpacerAdd.setVisibility(VISIBLE);
 		mSpacerContext.setVisibility(INVISIBLE);
 		mSpacerBottom.setVisibility(VISIBLE);
 		mUndoButton.setVisibility(VISIBLE);
@@ -173,6 +177,8 @@ public class MASidebar extends RelativeLayout{
 	//-------------------------------------------------------------------------
 	public void showSketchZoneBar() {
 		mHomeButton.setVisibility(VISIBLE);
+		mAddButton.setVisibility(INVISIBLE);
+		mSpacerAdd.setVisibility(INVISIBLE);
 		mUndoButton.setVisibility(INVISIBLE);
 		mMenuButton.setVisibility(INVISIBLE);
 		mSpacerContext.setVisibility(INVISIBLE);
@@ -213,9 +219,11 @@ public class MASidebar extends RelativeLayout{
 		default:
 			break;
 		}
+		mSpacerAdd.setVisibility(VISIBLE);
 		mSpacerContext.setVisibility(VISIBLE);
 		mSpacerBottom.setVisibility(VISIBLE);
 
+		mAddButton.setVisibility(VISIBLE);
 		mDeleteButton.setVisibility(VISIBLE);
 		mElementForwardButton.setVisibility(VISIBLE);
 		// IMPLEMENT FIRST
@@ -225,6 +233,8 @@ public class MASidebar extends RelativeLayout{
 	}
 	//-------------------------------------------------------------------------
 	public void showCustomElementBar() {
+		mAddButton.setVisibility(VISIBLE);
+		mSpacerAdd.setVisibility(VISIBLE);
 		mSpacerContext.setVisibility(VISIBLE);
 		mSpacerBottom.setVisibility(VISIBLE);
 		mLinkButton.setVisibility(VISIBLE);
@@ -239,6 +249,8 @@ public class MASidebar extends RelativeLayout{
 	//-------------------------------------------------------------------------
 	public void showTestBar() {
 		mHomeButton.setVisibility(VISIBLE);
+		mAddButton.setVisibility(INVISIBLE);
+		mSpacerAdd.setVisibility(INVISIBLE);
 		mUndoButton.setVisibility(INVISIBLE);
 		mMenuButton.setVisibility(VISIBLE);
 		mSpacerContext.setVisibility(INVISIBLE);
