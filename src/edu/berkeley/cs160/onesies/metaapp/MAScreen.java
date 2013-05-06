@@ -4,16 +4,20 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
 
 public class MAScreen extends RelativeLayout {
 
 	private int backColor = R.color.white;
-	private float mRatio = 1.60f;
+//	private float mRatio = 1.60f;
 	
-	private int 				mChildCount;
+//	private int 				mChildCount;
 	private MAScreenElement 	mSelectedChild;
 	private DevelopmentActivity mDevelopmentActivity;
 //	private TestingActivity 	mTestingActivity;
@@ -33,7 +37,86 @@ public class MAScreen extends RelativeLayout {
 			}
 		});
 		
+		this.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				Log.i("ACACAC", "TOUCH!");
+				return false;
+			}
+		});
+		
+		this.setOnDragListener(new View.OnDragListener() {
+			@Override
+			public boolean onDrag(View v, DragEvent event) {
+				Log.i("ACACAC", "DRAGGGGGG");
+				switch(event.getAction()) {
+					case DragEvent.ACTION_DRAG_ENTERED:
+						Log.i("ACACAC", "DRAG ENTERED");
+						break;
+					case DragEvent.ACTION_DRAG_STARTED:
+						Log.i("ACACAC", "DRAG STARTED");
+						break;
+					case DragEvent.ACTION_DROP:
+						Log.i("ACACAC", "DRAG DROPPED");
+						break;
+					case DragEvent.ACTION_DRAG_ENDED:
+						Log.i("ACACAC", "DRAG DROPPED");
+						break;
+					default:
+				}
+				return true;
+			}
+		});
 	}
+	
+	
+//	public void showDropDown(PopupWindow p, View v) {
+//		p.showAsDropDown(v, 0, 0);
+//	}
+	
+//	@Override
+//	public boolean onDragEvent(DragEvent event) {
+//				Log.i("ACACAC", "DRAGGGGGG");
+//		switch(event.getAction()) {
+//			case DragEvent.ACTION_DRAG_ENTERED:
+//				Log.i("ACACAC", "DRAG ENTERED");
+//				break;
+//			case DragEvent.ACTION_DRAG_STARTED:
+//				Log.i("ACACAC", "DRAG STARTED");
+//				break;
+//			case DragEvent.ACTION_DROP:
+//				Log.i("ACACAC", "DRAG DROPPED");
+//				break;
+//			case DragEvent.ACTION_DRAG_ENDED:
+//				Log.i("ACACAC", "DRAG ENDED");
+////				mDevelopmentActivity.dismissPopup();
+//				break;
+//			default:
+//		}
+//		return true;
+//	}
+	
+//	@Override
+//	public void onFinishInflate() {
+//		this.setOnDragListener(new View.OnDragListener() {
+//			@Override
+//			public boolean onDrag(View v, DragEvent event) {
+//				Log.i("ACACAC", "DRAGGGGGG");
+//				switch(event.getAction()) {
+//					case DragEvent.ACTION_DRAG_ENTERED:
+//						Log.i("ACACAC", "DRAG ENTERED");
+//						break;
+//					case DragEvent.ACTION_DROP:
+//						Log.i("ACACAC", "DRAG DROPPED");
+//						break;
+//					default:
+//				}
+//				return true;
+//			}
+//		});
+//	}
 	
 	public void deselectAll() {
 		if (mSelectedChild != null) {
@@ -48,13 +131,13 @@ public class MAScreen extends RelativeLayout {
 		determineSidebarState();
 	}
 	public void onElementTappedInTest(MAScreenElement e) {
-		switch (e.getmType()) {
-			case BUTTON:
-				mDevelopmentActivity.onButtonTappedInTest((MAButton) e);
-				break;
-			default:
-				break;
-		}
+		mDevelopmentActivity.onButtonTappedInTest(e);
+//		switch (e.getmType()) {
+//			case BUTTON:
+//				break;
+//			default:
+//				break;
+//		}
 	}
 	private void determineSelectionState(MAScreenElement e) {
 		if (e == null) {

@@ -6,15 +6,13 @@
     <dimen name="sidebarButtonPadding">10dp</dimen>
     <dimen name="sidebarButtonTopBottomMargin">5dp</dimen>
     
-    
-    
     <!-- POPUP WINDOW DIMENS -->
     <!-- Popup Width should equal Shape Width * number
     		of columns in shape popup. (currently 3) -->
-    <dimen name="shapePopupWidth">450dp</dimen>
-    <dimen name="shapePopupHeight">150dp</dimen>
-    <dimen name="shapePopupShapeHeight">100dp</dimen>
-    <dimen name="shapePopupShapeWidth">100dp</dimen>
+    <dimen name="shapesPopupWidth">450dp</dimen>
+    <dimen name="shapesPopupHeight">150dp</dimen>
+    <dimen name="shapesPopupShapeHeight">100dp</dimen>
+    <dimen name="shapesPopupShapeWidth">100dp</dimen>
     
     <!-- Popup Width should equal Element Width * number
     		of columns in elements popup. (currently 4) -->
@@ -22,6 +20,11 @@
     <dimen name="elementsPopupHeight">200dp</dimen>
     <dimen name="elementsPopupElementWidth">150dp</dimen>
     <dimen name="elementsPopupElementHeight">75dp</dimen>
+    
+    <dimen name="addPopupWidth">500dp</dimen>
+    <dimen name="addPopupHeight">500dp</dimen>
+    <dimen name="addPopupElementWidth">150dp</dimen>
+    <dimen name="addPopupElementHeight">75dp</dimen>
     
     <dimen name="linkPopupWidth">400dp</dimen>
     <dimen name="linkPopupHeight">200dp</dimen>

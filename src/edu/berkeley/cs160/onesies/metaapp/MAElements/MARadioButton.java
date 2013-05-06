@@ -46,7 +46,7 @@ public class MARadioButton extends MAScreenElement {
 		paint.setTextAlign(Paint.Align.LEFT);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		paint.setColor(Color.BLACK);
-		mText = "Radio button";
+		mText = "Radio";
 		// set right and bottom in onDraw
 		mRectF = new RectF(padding, padding, 0, 0);
 	}

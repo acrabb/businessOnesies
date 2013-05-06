@@ -22,9 +22,7 @@ import edu.berkeley.cs160.onesies.metaapp.R;
 
 public class MAButton extends MAScreenElement {
 
-	private MAScreen	mDestinationScreen;
-	private DrawFilter	mDrawFilter;
-	private MAScreen	mScreen;
+//	private MAScreen	mDestinationScreen;
 	
 	private ImageView	mLinkBadge;
 	
@@ -87,16 +85,6 @@ public class MAButton extends MAScreenElement {
 	
 	
 	//-----------------GETTERS AND SETTERS-----------------------------------
-	public MAScreen getDestinationScreen() {
-		return mDestinationScreen;
-	}
-
-	//-------------------------------------------------------------------------
-	public void setDestinationScreen(MAScreen mDestinationScreen) {
-		this.mDestinationScreen = mDestinationScreen;
-	}
-	
-	//-------------------------------------------------------------------------
 	public void setText(String lbl) {
 		mText = lbl;
 		

@@ -17,11 +17,12 @@ import android.widget.Toast;
 public class MAScreenElement extends FrameLayout {
 
 	protected MAScreen		mMAScreen;
-	private ImageView		mDragTarget;
+	protected MAScreen		mDestinationScreen;
+//	private ImageView		mDragTarget;
 	private View			mHighlightOverlay;
 	private int				mHighlightColor = getResources().getColor(R.color.highlightColor);
 	
-	protected ElementType		mType;
+	protected ElementType	mType;
 	protected boolean 		isSelected = false;
 	protected String		mText;
 	private String			screenLinkedTo = null;
@@ -33,11 +34,14 @@ public class MAScreenElement extends FrameLayout {
     static final int 		RESIZE = 2;
     static final int 		PINCH = 3;
     int						mMode = NONE;
+    static final int		MIN_DRAG_DIST = 10;
 	
 	private float 			mLastX = 0;
 	private float 			mLastY = 0;
 	private int 			mLastW = 0;
 	private int				mLastH = 0;
+	private int 			mLastTop = 0;
+	private int				mLastLeft = 0;
 	
 	private int				INVALID_POINTER_ID = -1;
 	private int 			mActivePointerId = INVALID_POINTER_ID;
@@ -87,34 +91,34 @@ public class MAScreenElement extends FrameLayout {
 		// DO THIS BETTER
 		// DO THIS BETTER
 		//Set up Drag Badge
-		mDragTarget = new ImageView(getContext());
-		mDragTarget.setBackgroundResource(R.drawable.arrow_dr);
-		mDragTarget.setScaleType(ScaleType.FIT_CENTER);
-		FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(40, 40);
-		p.gravity = Gravity.BOTTOM | Gravity.RIGHT;
-		mDragTarget.setLayoutParams(p);
-		mDragTarget.invalidate();
-		this.addView(mDragTarget);
-		mDragTarget.setVisibility(INVISIBLE);
-		mDragTarget.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				switch(event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-//						mResizing = true;
-						mMode = RESIZE;
-						break;
-					case MotionEvent.ACTION_MOVE:
-						break;
-					case MotionEvent.ACTION_UP:
-//						mResizing = false;
-						mMode = NONE;
-						break;
-					default:
-				}
-				return false;
-			}
-		});
+//		mDragTarget = new ImageView(getContext());
+//		mDragTarget.setBackgroundResource(R.drawable.arrow_dr);
+//		mDragTarget.setScaleType(ScaleType.FIT_CENTER);
+//		FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(40, 40);
+//		p.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+//		mDragTarget.setLayoutParams(p);
+//		mDragTarget.invalidate();
+//		this.addView(mDragTarget);
+//		mDragTarget.setVisibility(INVISIBLE);
+//		mDragTarget.setOnTouchListener(new View.OnTouchListener() {
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				switch(event.getAction()) {
+//					case MotionEvent.ACTION_DOWN:
+////						mResizing = true;
+//						mMode = RESIZE;
+//						break;
+//					case MotionEvent.ACTION_MOVE:
+//						break;
+//					case MotionEvent.ACTION_UP:
+////						mResizing = false;
+//						mMode = NONE;
+//						break;
+//					default:
+//				}
+//				return false;
+//			}
+//		});
 		
 		
 		
@@ -162,26 +166,26 @@ public class MAScreenElement extends FrameLayout {
 		// get mHighlightOverlay
 		mHighlightOverlay = findViewById(R.id.highlightOverlay);
 		// get mResizeTarget
-		mDragTarget = (ImageView) findViewById(R.id.dragTarget);
-		mDragTarget.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				switch(event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-//						mResizing = true;
-						mMode = RESIZE;
-						break;
-					case MotionEvent.ACTION_MOVE:
-						break;
-					case MotionEvent.ACTION_UP:
-//						mResizing = false;
-						mMode = NONE;
-						break;
-					default:
-				}
-				return false;
-			}
-		});
+//		mDragTarget = (ImageView) findViewById(R.id.dragTarget);
+//		mDragTarget.setOnTouchListener(new View.OnTouchListener() {
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				switch(event.getAction()) {
+//					case MotionEvent.ACTION_DOWN:
+////						mResizing = true;
+//						mMode = RESIZE;
+//						break;
+//					case MotionEvent.ACTION_MOVE:
+//						break;
+//					case MotionEvent.ACTION_UP:
+////						mResizing = false;
+//						mMode = NONE;
+//						break;
+//					default:
+//				}
+//				return false;
+//			}
+//		});
 		invalidate();
 	}
 
@@ -192,84 +196,111 @@ public class MAScreenElement extends FrameLayout {
 	public boolean onTouchEvent(MotionEvent event) {
 		RelativeLayout.LayoutParams params;
 		params = (RelativeLayout.LayoutParams) this.getLayoutParams();
-		float x = event.getX();
-		float y = event.getY();
+		float x;
+		float y;
 		switch(event.getActionMasked()) {
+			//-----------------------------------------------------------------
 			case MotionEvent.ACTION_DOWN:
-				Log.i("ACACAC", "ACTION DOWN");
 				mActivePointerId = event.getPointerId(0);
-				
 				prev = new RelativeLayout.LayoutParams(params.width, params.height);
 				prev.leftMargin = params.leftMargin;
 				prev.topMargin = params.topMargin;
-				mLastX = x;
-				mLastY = y;
+				mLastX = event.getX();
+				mLastY = event.getY();
+				break;
+			//-----------------------------------------------------------------
+			case MotionEvent.ACTION_POINTER_DOWN:
+				mMode = PINCH;
 				mLastW = params.width;
 				mLastH = params.height;
-				break;
-			case MotionEvent.ACTION_POINTER_DOWN:
-				Log.i("ACACAC", "ACTOIN POINTER DOWN");
-				Log.i("ACACAC", String.format("Dist: %f", spacing(event)));
-				mMode = PINCH;
+				mLastLeft = params.leftMargin;
+				mLastTop = params.topMargin;
 				touchDistX = spacingHoriz(event);
 				touchDistY = spacingVert(event);
-				// Store the X and Y distances here
 				break;
+			//-----------------------------------------------------------------
 			case MotionEvent.ACTION_MOVE:
-				if (!mMAScreen.isTesting()) {
-//					mWasDragged = true;
+				if (!mMAScreen.isTesting() && mActivePointerId == 0) {
+					final int pointerIndex = event.findPointerIndex(mActivePointerId);
+					
+			        x = event.getX(pointerIndex);
+			        y = event.getY(pointerIndex);
 					int horizDiff = (int)(x-mLastX);
 					int vertDiff = (int)(y-mLastY);
-//					if (mResizing) {
-					if (mMode == RESIZE) {
-						params.width = Math.min(Math.max(this.getMinWidth(),
-														mLastW + horizDiff),
-														this.getMaxWidth());
-						params.height = Math.min(Math.max(this.getMinHeight(),
-														mLastH + vertDiff),
-														this.getMaxHeight());
-					} else if (mMode == PINCH) {
+					// If dragging via the drag target.
+//					if (mMode == RESIZE) {
+//						params.width = Math.min(Math.max(this.getMinWidth(),
+//														mLastW + horizDiff),
+//														this.getMaxWidth());
+//						params.height = Math.min(Math.max(this.getMinHeight(),
+//														mLastH + vertDiff),
+//														this.getMaxHeight());
+//					}
+					if (mMode == PINCH) {
 //						Log.i("ACACAC", String.format("Vert: %d", vertDiff));
-						int dX = (int) ((spacingHoriz(event) - touchDistX)/event.getXPrecision());
-						int dY = (int) ((spacingVert(event) - touchDistY)/event.getYPrecision());
+						int dX = (int) ((spacingHoriz(event) - touchDistX));///event.getXPrecision());
+						int dY = (int) ((spacingVert(event) - touchDistY));// /event.getYPrecision());
 						
-						Log.i("ACACAC", String.format("Diff vert: %d", dY));
 						// Add the diff in X distance to width, and diff in Y distance to height
+						int oldWidth = params.width;
+						int oldHeight = params.height;
 						params.width = Math.min(Math.max(this.getMinWidth(),
 														mLastW + dX),
 														this.getMaxWidth());
 						params.height = Math.min(Math.max(this.getMinHeight(),
-														mLastH - dY),
+														mLastH + dY),
 														this.getMaxHeight());
+						// Keep the element centered while resizing.
+						if (oldWidth != params.width) {
+							params.leftMargin = (int) (mLastLeft - dX/2);
+						} if (oldHeight != params.height) {
+							params.topMargin = (int) (mLastTop - dY/2);
+						}
 						
 					} else {
-						mMode = DRAG;
-						params.leftMargin += horizDiff;
-						params.topMargin += vertDiff;
-						params.rightMargin -= horizDiff;
-						params.bottomMargin -= vertDiff;
+						float dist = dist(mLastX, mLastY, event.getX(), event.getY());
+						Log.i("ACACAC", String.format("Drag dist: %f", dist));
+						if (dist > MIN_DRAG_DIST) {
+							mMode = DRAG;
+						}
+						if (mMode == DRAG) {
+							params.leftMargin += horizDiff;
+							params.topMargin += vertDiff;
+							params.rightMargin -= horizDiff;
+							params.bottomMargin -= vertDiff;
+						}
 					}
 					this.setLayoutParams(params);
 				}
 				break;
+			//-----------------------------------------------------------------
 			case MotionEvent.ACTION_UP:
-//				if (!mWasDragged) {
 				if (mMode == NONE) {
-					// Element tapped!
 					elementWasTapped();
 				} else {
 					mMAScreen.updateModel(this, UndoStatus.MOVE, prev);
 				}
-//				if (mResizing) {
 				if (mMode == RESIZE) {
 					mMAScreen.updateModel(this, UndoStatus.RESIZE, prev);
 				}
-//				mResizing = false;
-//				mWasDragged = false;
 				mMode = NONE;
+				mActivePointerId = INVALID_POINTER_ID;
 				break;
+			//-----------------------------------------------------------------
 			case MotionEvent.ACTION_POINTER_UP:
-				Log.i("ACACAC", "ACTOIN POINTER UP");
+				Log.i("ACACAC", "ACTION POINTER UP");
+				// Extract the index of the pointer that left the touch sensor
+		        final int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) 
+		                >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+		        final int pointerId = event.getPointerId(pointerIndex);
+		        if (pointerId == mActivePointerId) {
+		            // This was our active pointer going up. Choose a new
+		            // active pointer and adjust accordingly.
+		            final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+		            mLastX = event.getX(newPointerIndex);
+		            mLastY = event.getY(newPointerIndex);
+		            mActivePointerId = event.getPointerId(newPointerIndex);
+		        }
 				mMode = DRAG;
 				break;
 			default:
@@ -279,6 +310,7 @@ public class MAScreenElement extends FrameLayout {
 		return true;
 	}
 	
+	//-------------------------------------------------------------------------
 	public void enforceDimensionConstraints() {
 		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.getLayoutParams();
 		if (lp == null) return;
@@ -314,7 +346,7 @@ public class MAScreenElement extends FrameLayout {
 	public void select() {
         isSelected = true;
         mHighlightOverlay.setVisibility(VISIBLE);
-		mDragTarget.setVisibility(VISIBLE);
+//		mDragTarget.setVisibility(VISIBLE);
         this.invalidate();
 	}
 
@@ -327,7 +359,7 @@ public class MAScreenElement extends FrameLayout {
 	public void deselect() {
 		isSelected = false;
         mHighlightOverlay.setVisibility(GONE);
-		mDragTarget.setVisibility(GONE);
+//		mDragTarget.setVisibility(GONE);
 		this.invalidate();
 	}
 	
@@ -366,6 +398,11 @@ public class MAScreenElement extends FrameLayout {
         float y = event.getY(0) - event.getY(1);
         return Math.abs(y);
     }
+    private float dist(float x1, float y1, float x2, float y2) {
+    	float x = x1 - x2;
+        float y = y1 - y2;
+        return Math.abs(FloatMath.sqrt(x * x + y * y));
+    }
 	
 	//-------------------------------------------------------------------------
 	public int getMinWidth() {
@@ -379,6 +416,16 @@ public class MAScreenElement extends FrameLayout {
 	}
 	public int getMaxHeight() {
 		return this.MAX_HEIGHT;
+	}
+	
+	//-------------------------------------------------------------------------
+	public MAScreen getDestinationScreen() {
+		return mDestinationScreen;
+	}
+
+	//-------------------------------------------------------------------------
+	public void setDestinationScreen(MAScreen mDestinationScreen) {
+		this.mDestinationScreen = mDestinationScreen;
 	}
 	
 	//-------------------------------------------------------------------------
