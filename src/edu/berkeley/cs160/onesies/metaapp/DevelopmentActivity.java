@@ -81,8 +81,6 @@ public class DevelopmentActivity extends Activity {
 		mDevRelLayout = (RelativeLayout) findViewById(R.id.developmentRelative);
 
 		mHelpImage = (ImageView) findViewById(R.id.helpImage);
-//		mHelpImage = new ImageView(this);
-//		mHelpImage.setBackgroundResource(R.drawable.help_screen);
 		mHelpImage.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -110,17 +108,9 @@ public class DevelopmentActivity extends Activity {
 		} else {
 			// Set up project
 			createNewProject();
+			onHelpTapped();
 		}
-		
-		onHelpTapped();
 	}
-
-//	@Override
-//	public void onAttachedToWindow() {
-//		mHelpImage.setLayoutParams(new RelativeLayout.LayoutParams(mDevRelLayout.getWidth(), mDevRelLayout.getHeight()));
-//		mHelpImage.invalidate();
-//		
-//	}
 	
 	// -------------------------------------------------------------------------
 	private void loadProject(int projIndex) {
@@ -166,29 +156,6 @@ public class DevelopmentActivity extends Activity {
 		}
 		MAScreen newScreen = mProject.getScreenWithName(name);
 		
-//		newScreen.setOnDragListener(new View.OnDragListener() {
-//			@Override
-//			public boolean onDrag(View v, DragEvent event) {
-//				Log.i("ACACAC", "DRAGGGGGG");
-//				switch(event.getAction()) {
-//					case DragEvent.ACTION_DRAG_ENTERED:
-//						Log.i("ACACAC", "DRAG ENTERED");
-//						break;
-//					case DragEvent.ACTION_DRAG_STARTED:
-//						Log.i("ACACAC", "DRAG STARTED");
-//						break;
-//					case DragEvent.ACTION_DROP:
-//						Log.i("ACACAC", "DRAG DROPPED");
-//						break;
-//					case DragEvent.ACTION_DRAG_ENDED:
-//						Log.i("ACACAC", "DRAG DROPPED");
-//						break;
-//					default:
-//				}
-//				return true;
-//			}
-//		});
-		
 		mDevRelLayout.removeView(mScreen);
 		mDevRelLayout.addView(newScreen, mScreen.getLayoutParams());
 		if (!mIsTesting) {
@@ -208,6 +175,9 @@ public class DevelopmentActivity extends Activity {
 		mDevRelLayout.removeView(mScreen);
 
 		Intent intent = new Intent(DevelopmentActivity.this, MainActivity.class);
+		int ind = mModel.getProjects().indexOf(mProject);
+		intent.putExtra("PROJECT_INDEX", ind);
+		makeLogI("PUTTING INDEX %d", ind);
 		if (getParent() == null) {
 			setResult(Activity.RESULT_OK, intent);
 		} else {
@@ -221,29 +191,9 @@ public class DevelopmentActivity extends Activity {
 	 *****************************************************************************/
 	// -------------------------------------------------------------------------
 	public void onHomeButtonTapped() {
-		// AlertDialog.Builder adb = new AlertDialog.Builder(this);
-		// adb.setTitle("Unsaved changes will be set aflame!");
-		// adb
-		// .setCancelable(true)
-		// .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog, int which) {
-		// finish();
-		// }
-		// })
-		// .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog, int which) {
-		// dialog.cancel();
-		// }
-		// });
-		// adb.create().show();
 		finish();
 	}
 
-	// public void onNotesButtonTapped() {
-	// makeToast("IMPLEMENT NOTES!!!");
-	// }
 	// -------------------------------------------------------------------------
 	public void showSketchZone(View sketchButton) {
 		if (!mInSketchZone) {
@@ -271,7 +221,6 @@ public class DevelopmentActivity extends Activity {
 			MAScreenElement custom = (MAScreenElement) mLayoutInflater.inflate(
 					R.layout.e_default, null);
 			setUpCustomElement(custom, map);
-			// MAScreenElement custom = createElement(ElementType.CUSTOM, map);
 			RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
 					map.getWidth(), map.getHeight());
 			p.leftMargin = mSketchCanvas.getLeftMargin();
@@ -284,7 +233,6 @@ public class DevelopmentActivity extends Activity {
 	}
 
 	// -------------------------------------------------------------------------
-
 	public void showAddPopup(View button) {
 		// Custom check needed to dismiss popup on "+" button click again.
 		if (mPopupIsShowing) {
@@ -309,27 +257,6 @@ public class DevelopmentActivity extends Activity {
 			}
 		});
 		mPopupWindow.setOutsideTouchable(true);
-//		mPopupWindow.setOutsideTouchable(false);
-		
-//		mAddContentView.setOnDragListener(new View.OnDragListener() {
-//			@Override
-//			public boolean onDrag(View v, DragEvent event) {
-//				// TODO Auto-generated method stub
-////				Log.i("ACACAC", "ADD DRAGGING");
-//				mScreen.onDragEvent(event);
-////				mPopupWindow.update(0, 0);
-//				switch (event.getAction()) {
-//				case DragEvent.ACTION_DRAG_ENDED:
-//					Log.i("ACACAC", "ADD DRAG ENDED");
-////					event.getX();
-////					event.getY();
-//					makeLogI("ADD DRAG ENDED: %f,%f", event.getX(), event.getY());
-//					break;
-//				}
-//				return true;
-//			}
-//		});
-		
 		mPopupWindow.showAsDropDown(button, 0, 0);
 		mPopupIsShowing = true;
 		setupElements();
@@ -337,6 +264,7 @@ public class DevelopmentActivity extends Activity {
 		setupSketch();
 	}
 
+	// -------------------------------------------------------------------------
 	private void setupElements() {
 		mElementsGridView = (GridLayout) mAddContentView
 				.findViewById(R.id.elements_popup);
@@ -351,45 +279,6 @@ public class DevelopmentActivity extends Activity {
 					mPopupWindow.dismiss();
 				}
 			});
-//			v.setOnLongClickListener(new View.OnLongClickListener() {
-//				@Override
-//				public boolean onLongClick(View v) {
-//					Log.i("ACACAC", "DRAGGING!!!");
-//					View.DragShadowBuilder myShadow = new DragShadowBuilder(v);
-//					v.startDrag(null, myShadow, null, 0);
-//					return false;
-//				}
-//			});
-//			v.setOnTouchListener(new View.OnTouchListener() {
-//				@Override
-//				public boolean onTouch(View ve, MotionEvent event) {
-//					switch(event.getAction()) {
-//						case MotionEvent.ACTION_DOWN:
-////							Log.i("ACACAC", "DRAGGING!!!");
-//							addUIElement(ve, event.getRawX(), event.getRawY());
-//							mPopupWindow.dismiss();
-////							event.setSource(R.id.screen);
-////							self.addUIElement();
-////							mScreen.addView(new Butto);
-////							View.DragShadowBuilder myShadow = new DragShadowBuilder(ve);
-////							ve.startDrag(null, myShadow, null, 0);
-//	//						mPopupWindow.dismiss();
-//	//						mScreen.dispatchDragEvent(new ));
-//							break;
-////						case MotionEvent.ACTION_UP:
-////							Log.i("ACACAC", "IMAGE TOUCH UP");
-////							break;
-//						case MotionEvent.ACTION_MOVE:
-//							Log.i("ACACAC", "DRAGGING!!!");
-//							
-//							break;
-//							
-//						default:
-//					}
-//					return false;
-//				}
-//			});
-			
 		}
 			// lolol just make random buttons man
 		addElementsToPopup(new MAButton(getApplicationContext(),
@@ -404,6 +293,7 @@ public class DevelopmentActivity extends Activity {
 				(MAScreen) null), R.id.ma_toggle);
 	}
 
+	// -------------------------------------------------------------------------
 	private void setupShapes() {
 
 		/*
@@ -411,15 +301,6 @@ public class DevelopmentActivity extends Activity {
 		 * to be dismissed properly
 		 */
 		mShapesGridView = (GridLayout) mAddContentView.findViewById(R.id.shapesGrid);
-//		mShapesGridView.setOnDragListener(new View.OnDragListener() {
-//			
-//			@Override
-//			public boolean onDrag(View v, DragEvent event) {
-//				// TODO Auto-generated method stub
-//				Log.i("ACACAC", "SHAPES DRAG");
-//				return false;
-//			}
-//		});
 		View v;
 		int numChildren = mShapesGridView.getChildCount();
 		for (int i = 0; i < numChildren; i++) {
@@ -443,6 +324,7 @@ public class DevelopmentActivity extends Activity {
 				R.id.ma_star);
 	}
 
+	// -------------------------------------------------------------------------
 	private void setupSketch() {
 		mSketchButton = (Button) mAddContentView
 				.findViewById(R.id.sketchButton);
@@ -455,6 +337,7 @@ public class DevelopmentActivity extends Activity {
 		});
 	}
 
+	// -------------------------------------------------------------------------
 	private void addShapesToPopup(MAScreenElement elem, int id) {
 		ImageView imageView = (ImageView) mShapesGridView.findViewById(id);
 		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(elem,
@@ -463,6 +346,7 @@ public class DevelopmentActivity extends Activity {
 		imageView.setImageBitmap(viewBitmap);
 	}
 
+	// -------------------------------------------------------------------------
 	private void addElementsToPopup(MAScreenElement elem, int id) {
 		ImageView imageView = (ImageView) mElementsGridView.findViewById(id);
 		Bitmap viewBitmap = DevelopmentActivity.createBitmapOfView(elem,
@@ -478,11 +362,6 @@ public class DevelopmentActivity extends Activity {
 		mLinkPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				//Make sure they're linking an MAButton
-//				if (!(mScreen.getSelectedElement() instanceof MAButton)) {
-//					makeToast("CAN ONLY LINK BUTTONS.");
-//					return true;
-//				}
 				MAScreenElement element = mScreen.getSelectedElement();
 				switch(item.getItemId()) {
 					case R.id.link_menu_new:
@@ -585,27 +464,27 @@ public class DevelopmentActivity extends Activity {
 		// TODO HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK
 
-		// LayoutInflater mInflater = new LayoutInflater();
-
 		MAScreenElement newElement;
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				element.getWidth(), element.getHeight());
 		switch (element.getId()) {
 		case R.id.ma_text_label:
-			newElement = new MATextLabel(getApplicationContext(), mScreen,
-					"Text Label");
+			newElement = new MATextLabel(getApplicationContext(), mScreen);
 			newElement.setLayoutParams(params);
 			break;
 		case R.id.ma_slider:
 			newElement = new MASlider(getApplicationContext(), mScreen);
+			params.height = newElement.getMaxHeight();
 			newElement.setLayoutParams(params);
 			break;
 		case R.id.ma_checkbox:
 			newElement = new MACheckbox(getApplicationContext(), mScreen);
+			params.height = newElement.getMaxHeight();
 			newElement.setLayoutParams(params);
 			break;
 		case R.id.ma_radiobutton:
 			newElement = new MARadioButton(getApplicationContext(), mScreen);
+			params.height = newElement.getMaxHeight();
 			newElement.setLayoutParams(params);
 			break;
 		case R.id.ma_toggle:
@@ -614,7 +493,7 @@ public class DevelopmentActivity extends Activity {
 			break;
 		case R.id.ma_button:
 		default:
-			// lolol just make random RelativeLayout.LayoutParams(200, 100);buttons man
+			// lolol just make random buttons man
 			newElement = (MAScreenElement) mLayoutInflater.inflate(
 					R.layout.e_button, mScreen, false);
 //			params = (RelativeLayout.LayoutParams) newElement.getLayoutParams();
@@ -853,13 +732,13 @@ public class DevelopmentActivity extends Activity {
 	 * MISC METHODS
 	 *****************************************************************************/
 	// -------------------------------------------------------------------------
-	public static Bitmap createBitmapOfView(View theView) {
-		theView.setDrawingCacheEnabled(true);
-		theView.buildDrawingCache();
-		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
-		theView.setDrawingCacheEnabled(false);
-		return a;
-	}
+//	public static Bitmap createBitmapOfView(View theView) {
+//		theView.setDrawingCacheEnabled(true);
+//		theView.buildDrawingCache();
+//		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
+//		theView.setDrawingCacheEnabled(false);
+//		return a;
+//	}
 
 	// -------------------------------------------------------------------------
 	public static Bitmap createBitmapOfView(View theView, int width, int height) {

@@ -77,7 +77,7 @@ public class BigPicture extends Activity {
 			
 			// create an image view of the screen
 			final ImageView iv = DevelopmentActivity.createImageViewWithBitmapForContext(
-					DevelopmentActivity.createBitmapOfView(m)
+					MAModel.createBitmapOfView(m)
 					, this);
 			iv.setTag(i);
 			// set the onTouch for the view

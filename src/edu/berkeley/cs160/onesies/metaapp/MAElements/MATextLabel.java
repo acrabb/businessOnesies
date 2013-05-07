@@ -19,11 +19,11 @@ public class MATextLabel extends MAScreenElement {
 	// MATextLabels emphasize width.
 	private int				tolerable_padding = 1;
 	
-	public MATextLabel(Context context, MAScreen maScreen, String text) {
+	public MATextLabel(Context context, MAScreen maScreen) {
 		super(context, maScreen, ElementType.TEXT_LABEL);
 		paint = new Paint();
 		setBackgroundColor(getResources().getColor(R.color.clearColor));
-		mText = text;
+		mText = "Text Label";
 		
 		MIN_WIDTH = 150;
 		MAX_WIDTH = 900;

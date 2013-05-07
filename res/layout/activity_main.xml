@@ -29,7 +29,7 @@
 	    
 	    android:textSize="30sp"
 	    android:textAlignment="center"
-        android:text="Swipe phone for recent projects!"
+        android:text="Change me."
         android:textColor="@color/achalRed"
         
         android:background="@color/whiteTrans"

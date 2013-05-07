@@ -27,7 +27,7 @@ public class MAToggle extends MAScreenElement {
 	private String off = "Off";
 	
 	public MAToggle(Context context, MAScreen maScreen) {
-		super(context, maScreen, ElementType.CHECKBOX);
+		super(context, maScreen, ElementType.TOGGLE);
 		
 		MIN_WIDTH = 100;
 		MAX_WIDTH = 500;
@@ -42,7 +42,7 @@ public class MAToggle extends MAScreenElement {
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.DEFAULT_BOLD);
 		paint.setColor(Color.BLACK);
-		mText = "Toggle";
+//		mText = "Toggle";
 		textBounds = new Rect();
 		// set right and bottom in onDraw
 	}

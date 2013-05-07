@@ -22,10 +22,13 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	private final int CODE_HOME = 1;
-	private final double iPhoneScalar = 0.75; 
-	private MyPagerAdapter mPageAdapter;
-	private MAModel mModel;
+	private final int		CODE_HOME = 1;
+	private final String	PROJECT_INDEX = "PROJECT_INDEX";
+	private final double	iPhoneScalar = 0.75; 
+	private MyPagerAdapter	mPageAdapter;
+	private MAModel			mModel;
+	private ViewPager		mPager;
+	private TextView		mBottomText;
 	
 	
 	//-------------------------------------------------------------------------
@@ -39,8 +42,20 @@ public class MainActivity extends Activity {
 		RelativeLayout phone = (RelativeLayout)findViewById(R.id.phone);
 		final int height = 927;
 		final int width = 550;
-		ViewPager pager = setupPager(width, height);
-		phone.addView(pager);
+		mPager = setupPager(width, height);
+		phone.addView(mPager);
+		
+		mBottomText = (TextView) findViewById(R.id.swipeText);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(mModel.getNumProjects() == 0) {
+			mBottomText.setText("Tap the plus start prototyping!");
+		} else {			
+			mBottomText.setText("Swipe phone for recent projects!");
+		}
 	}
 
 	
@@ -49,6 +64,8 @@ public class MainActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d("ACACAC", String.format("ATTACHED. Size:%d", mModel.getNumProjects()));
 		mPageAdapter.notifyDataSetChanged();
+//		makeLogI("GETTING INDEX %d", data.getIntExtra("PROJECT_INDEX", -1));
+		mPager.setCurrentItem(data.getIntExtra("PROJECT_INDEX", -1) + 1, true);
 	}
 	
 	
@@ -94,6 +111,11 @@ public class MainActivity extends Activity {
 		@Override 
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			container.removeView((ImageView) object);
+		}
+		
+		@Override
+		public int getItemPosition(Object obj) {
+			return POSITION_NONE;
 		}
 	}
 	// -- END MyPagerAdapter Class ------------------------------------------
@@ -146,6 +168,10 @@ public class MainActivity extends Activity {
 //		return true;
 //	}
 	
+	//-------------------------------------------------------------------------
+	public void makeLogI(String format, Object... args) {
+		Log.i("meta", String.format(format, args));
+	}
 	//-------------------------------------------------------------------------
 	public void makeToast(String format, Object... args) {
 		Toast.makeText(getApplicationContext(),

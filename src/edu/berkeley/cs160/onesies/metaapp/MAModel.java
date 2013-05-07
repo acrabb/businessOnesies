@@ -8,6 +8,7 @@ import java.util.Stack;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -90,7 +91,14 @@ public class MAModel {
 		theView.setDrawingCacheEnabled(true);
 		theView.buildDrawingCache();
 		Bitmap a = Bitmap.createBitmap(theView.getDrawingCache());
-		theView.setDrawingCacheEnabled(true);
+		theView.setDrawingCacheEnabled(false);
+		
+//		Bitmap b = Bitmap.createBitmap(theView.getWidth(),
+//				theView.getHeight(), Bitmap.Config.ARGB_8888);
+//		Canvas c = new Canvas(b);
+//		theView.draw(c);
+//		return b;
+		
 		return a;
 	}
 	//-------------------------------------------------------------------------
