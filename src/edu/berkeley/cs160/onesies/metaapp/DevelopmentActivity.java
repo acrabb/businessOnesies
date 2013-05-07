@@ -110,6 +110,7 @@ public class DevelopmentActivity extends Activity {
 			createNewProject();
 			onHelpTapped();
 		}
+		mModel.clearHistory();
 	}
 	
 	// -------------------------------------------------------------------------
@@ -671,6 +672,7 @@ public class DevelopmentActivity extends Activity {
 	// -------------------------------------------------------------------------
 	private void showBigPictureForCode(int requestCode) {
 		Intent intent = new Intent(DevelopmentActivity.this, BigPicture.class);
+		intent.putExtra("PROJECT_INDEX", mModel.getProjects().indexOf(mProject));
 		intent.putExtra("RETURN_TAPPED", true);
 		startActivityForResult(intent, requestCode);
 	}

@@ -56,6 +56,10 @@ public class MAModel {
 			return mHistory.pop();
 		}
 	}
+	//-------------------------------------------------------------------------
+	public void clearHistory() {
+		mHistory.clear();
+	}
 	
 	//-------------------------------------------------------------------------
 	public void addProject(MAProject project) {

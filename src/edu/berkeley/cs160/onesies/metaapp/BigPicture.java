@@ -29,6 +29,7 @@ public class BigPicture extends Activity {
 	private MAModel			mModel;
 	
 	private Intent			mIntent;
+	private int				mProjectIndex;
 	
 	private RelativeLayout	mMap;
 	private float 			mScaleFactor = 1;
@@ -55,6 +56,7 @@ public class BigPicture extends Activity {
 		mMap = (RelativeLayout) findViewById(R.id.bigPicture);
 		
 		mIntent = getIntent();
+		mProjectIndex = mIntent.getIntExtra("PROJECT_INDEX", -1);
 		
 //		mBitmap = Bitmap.createBitmap(mMap.getWidth(), mMap.getHeight(), Config.ARGB_8888);
 //		mCanvas = new Canvas(mBitmap);
@@ -68,7 +70,7 @@ public class BigPicture extends Activity {
 		int width;
 		int height;
 		
-		ArrayList<MAScreen> screens = mModel.getmCurrentProject().getScreens();
+		ArrayList<MAScreen> screens = mModel.getProject(mProjectIndex).getScreens();
 		MAScreen m;
 		for(int i=0; i < screens.size(); i++)
 		{
