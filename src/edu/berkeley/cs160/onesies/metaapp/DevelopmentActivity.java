@@ -111,6 +111,8 @@ public class DevelopmentActivity extends Activity {
 			// Set up project
 			createNewProject();
 		}
+		
+		onHelpTapped();
 	}
 
 //	@Override
