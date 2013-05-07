@@ -677,21 +677,6 @@ public class DevelopmentActivity extends Activity {
 		startActivityForResult(intent, requestCode);
 	}
 
-	// -------------------------------------------------------------------------
-	// private void
-	// showBigPictureWithClickListener(AdapterView.OnItemClickListener listener)
-	// {
-	// mBigPictureDia = new Dialog(this);
-	// View v = mLayoutInflater.inflate(R.layout.overview_temp, null, false);
-	// ListView screenList = (ListView) v.findViewById(android.R.id.list);
-	// screenList.setAdapter(new MAScreensAdapter(getApplicationContext(),
-	// mProject.getScreens()));
-	// screenList.setOnItemClickListener(listener);
-	// mBigPictureDia.setContentView(v);
-	// mBigPictureDia.setTitle("Go To Screen:");
-	// mBigPictureDia.show();
-	// }
-
 	/*****************************************************************************
 	 * TESTING MODE METHODS
 	 *****************************************************************************/
