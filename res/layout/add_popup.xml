@@ -11,37 +11,37 @@
 
         <TextView
             android:id="@+id/addElementsLabel"
+            style="@style/addPopupCategoryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="UI Elements"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/achalRed" />
+            />
 
         <include layout="@layout/elements_popup" 
             	android:id="@+id/elements_popup" />
 
         <TextView
             android:id="@+id/addShapesLabel"
+            style="@style/addPopupCategoryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Shapes"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/achalRed" />
+            />
 
         <include layout="@layout/shape_popup" />
 
         <TextView
             android:id="@+id/addCustomElementsLabel"
+            style="@style/addPopupCategoryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Custom"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/achalRed" />
+            />
         
         <Button
             android:id="@+id/sketchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:background="@drawable/pencil"
             />
     </LinearLayout>

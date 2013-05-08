@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +29,7 @@ public class BigPicture extends Activity {
 	private MAModel			mModel;
 	
 	private Intent			mIntent;
+	private int				mProjectIndex;
 	
 	private RelativeLayout	mMap;
 	private float 			mScaleFactor = 1;
@@ -39,10 +41,10 @@ public class BigPicture extends Activity {
 	private int				mLastLeftMargin;
 	
 	
-	private Canvas			mCanvas;
-	private Bitmap			mBitmap;
-	
-	private boolean			mScreenWasDragged = false;
+	static final int 		NONE = 0;
+    static final int 		DRAG = 1;
+    int						mMode = NONE;
+    static final int		MIN_DRAG_DIST = 10;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class BigPicture extends Activity {
 		mMap = (RelativeLayout) findViewById(R.id.bigPicture);
 		
 		mIntent = getIntent();
+		mProjectIndex = mIntent.getIntExtra("PROJECT_INDEX", -1);
 		
 //		mBitmap = Bitmap.createBitmap(mMap.getWidth(), mMap.getHeight(), Config.ARGB_8888);
 //		mCanvas = new Canvas(mBitmap);
@@ -67,7 +70,7 @@ public class BigPicture extends Activity {
 		int width;
 		int height;
 		
-		ArrayList<MAScreen> screens = mModel.getmCurrentProject().getScreens();
+		ArrayList<MAScreen> screens = mModel.getProject(mProjectIndex).getScreens();
 		MAScreen m;
 		for(int i=0; i < screens.size(); i++)
 		{
@@ -76,7 +79,7 @@ public class BigPicture extends Activity {
 			
 			// create an image view of the screen
 			final ImageView iv = DevelopmentActivity.createImageViewWithBitmapForContext(
-					DevelopmentActivity.createBitmapOfView(m)
+					MAModel.createBitmapOfView(m)
 					, this);
 			iv.setTag(i);
 			// set the onTouch for the view
@@ -100,22 +103,26 @@ public class BigPicture extends Activity {
 							/**/
 							int horizDiff = (int)(x-mLastX);
 							int vertDiff = (int)(y-mLastY);
+							float dist = dist(mLastX, mLastY, event.getX(), event.getY());
 //							Log.d("ACACAC", String.format("dx:%d, dy:%d", horizDiff, vertDiff));
-//							if (Math.abs(horizDiff) > 20 || Math.abs(vertDiff) > 20) {
-								mScreenWasDragged = true;
+							if (dist > MIN_DRAG_DIST) {
+								mMode = DRAG;
+							}
+							if (mMode == DRAG) {
+								
 								params.leftMargin += horizDiff;
 								params.topMargin += vertDiff;
 								params.rightMargin -= horizDiff;
 								params.bottomMargin -= vertDiff;
 								iv.setLayoutParams(params);
-//							}
+							}
 							/**/
 							break;
 						case MotionEvent.ACTION_UP:
-							if (!mScreenWasDragged) {
+							if (mMode == NONE) {
 								screenWasTapped(iv);
 							}
-							mScreenWasDragged = false;
+							mMode = NONE;
 							break;
 						default:
 							break;
@@ -152,6 +159,11 @@ public class BigPicture extends Activity {
 		}
 	}
 	
+    private float dist(float x1, float y1, float x2, float y2) {
+    	float x = x1 - x2;
+        float y = y1 - y2;
+        return Math.abs(FloatMath.sqrt(x * x + y * y));
+    }
 	private void finishWithIndex(int i)
 	{
 	   Intent intent = new Intent(BigPicture.this, DevelopmentActivity.class);

@@ -22,7 +22,7 @@
     <dimen name="elementsPopupElementHeight">75dp</dimen>
     
     <dimen name="addPopupWidth">500dp</dimen>
-    <dimen name="addPopupHeight">500dp</dimen>
+    <dimen name="addPopupHeight">510dp</dimen>
     <dimen name="addPopupElementWidth">150dp</dimen>
     <dimen name="addPopupElementHeight">75dp</dimen>
     

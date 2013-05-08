@@ -31,4 +31,12 @@
         <item name="android:background">@color/achalRed</item>
     </style>
 
+    
+    <!-- Popup Themes -->
+    <style name="addPopupCategoryTextStyle">
+            <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+            <item name="android:textColor">@color/achalRed</item>
+            <item name="android:textSize">30sp</item>
+    </style>
+    
 </resources>

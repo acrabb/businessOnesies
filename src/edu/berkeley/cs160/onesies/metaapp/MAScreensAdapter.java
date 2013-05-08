@@ -47,7 +47,7 @@ public class MAScreensAdapter extends ArrayAdapter<MAScreen> {
 //		imageView = DevelopmentActivity.createImageViewWithBitmapForContext(
 //				DevelopmentActivity.createBitmapOfView(mScreen), getContext());
 		imageView = (ImageView) listItem.findViewById(R.id.item_image);
-		imageView.setImageBitmap(DevelopmentActivity.createBitmapOfView(mScreen));
+		imageView.setImageBitmap(MAModel.createBitmapOfView(mScreen));
 //		imageView.setLayoutParams(new LinearLayout.LayoutParams(300, 300*16/10));
 		textView = (TextView) listItem.findViewById(R.id.item_text);
 		textView.setText(mScreen.getName());
