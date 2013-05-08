@@ -153,7 +153,7 @@ public class DevelopmentActivity extends Activity {
 			// FIXME What is this doing here??
 			// FIXME What is this doing here??
 			selected.setScreenLinkedTo(name);
-			selected.deselect();
+			mScreen.deselectAll();
 		}
 		MAScreen newScreen = mProject.getScreenWithName(name);
 		
@@ -607,6 +607,7 @@ public class DevelopmentActivity extends Activity {
 		if (!mIsTesting) {
 			mIsTesting = true;
 			makeLogI(">>> Test mode tapped");
+			mScreen.deselectAll();
 			showScreenWithName(mProject.getFirstScreen().getName());
 			showTestSidebar();
 			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test)
@@ -674,6 +675,7 @@ public class DevelopmentActivity extends Activity {
 		Intent intent = new Intent(DevelopmentActivity.this, BigPicture.class);
 		intent.putExtra("PROJECT_INDEX", mModel.getProjects().indexOf(mProject));
 		intent.putExtra("RETURN_TAPPED", true);
+		mScreen.deselectAll();
 		startActivityForResult(intent, requestCode);
 	}
 

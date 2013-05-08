@@ -6,17 +6,44 @@
     android:background="@color/white"
     tools:context=".MainActivity"
     >
-    
-    <TextView 
+    <LinearLayout
         android:id="@+id/metaAppText"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentTop="true"
-	    android:layout_centerHorizontal="true"
-	    android:textSize="100sp"
-        android:text="MetaApp"
-        android:textColor="@color/achalRed"
-        />
+	    android:layout_centerInParent="true"
+	    android:orientation="horizontal"
+        >
+	    <TextView 
+	        android:id="@+id/metaAppText"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textSize="100sp"
+	        android:text="Meta"
+	        android:textColor="@color/achalRed"
+	        />
+	    
+	    <ImageView 
+	        android:id="@+id/metaAppIcon"
+		    android:layout_width="100dp"
+		    android:layout_height="100dp"
+		    android:layout_marginTop="15dp"
+		    android:layout_marginRight="0dp"
+		    android:layout_marginLeft="0dp"
+		    android:background="@drawable/icon_black"
+	        />
+	    
+	    <TextView 
+	        android:id="@+id/metaTextPp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textSize="100sp"
+	        android:text="pp"
+	        android:textColor="@color/achalRed"
+	        />
+    </LinearLayout>
+    
+    
     
     
     <TextView 
