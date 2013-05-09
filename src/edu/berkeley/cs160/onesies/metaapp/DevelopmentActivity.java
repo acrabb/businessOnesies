@@ -116,7 +116,7 @@ public class DevelopmentActivity extends Activity {
 	// -------------------------------------------------------------------------
 	private void loadProject(int projIndex) {
 		mProject = mModel.getProject(projIndex);
-		showScreenWithName(mProject.getFirstScreen().getName());
+		setCurrentScreenWithName(mProject.getFirstScreen().getName());
 		for (MAScreen s : mProject.getScreens()) {
 			s.setmDevelopmentActivity(this);
 		}
@@ -133,23 +133,20 @@ public class DevelopmentActivity extends Activity {
 		mProject.addScreenToProject(name, mScreen);
 		mScreen.setName(name);
 		mProject.addFirstScreen(mScreen);
-		showScreenWithName(name);
+		setCurrentScreenWithName(name);
 		makeToast("Screen '%s' Created.", name);
 	}
 
 	// -------------------------------------------------------------------------
-	private void showScreenWithName(String name) {
-		showScreenWithName(name, false);
+	private void setCurrentScreenWithName(String name) {
+		setCurrentScreenWithName(name, false);
 	}
 
 	// -------------------------------------------------------------------------
-	private void showScreenWithName(String name, boolean addToHistory) {
+	private void setCurrentScreenWithName(String name, boolean addToHistory) {
 		// Deselect any current selection.
 		MAScreenElement selected = mScreen.getSelectedElement();
 		if (selected != null) {
-			// FIXME What is this doing here??
-			// FIXME What is this doing here??
-			// FIXME What is this doing here??
 			// FIXME What is this doing here??
 			// FIXME What is this doing here??
 			selected.setScreenLinkedTo(name);
@@ -159,6 +156,11 @@ public class DevelopmentActivity extends Activity {
 		
 		mDevRelLayout.removeView(mScreen);
 		mDevRelLayout.addView(newScreen, mScreen.getLayoutParams());
+		
+		// TODO Add logic to check all forward-links of children.
+//		for(int i = 0; i < mScreen.getChildCount(); i++) {
+		
+		
 		if (!mIsTesting) {
 			showDefaultSidebar();
 		}
@@ -541,36 +543,35 @@ public class DevelopmentActivity extends Activity {
 	private void onLinkToNewScreenSelected(MAScreenElement button) {
 		// TODO MODULARIZE
 		// Create new Screen
+		MAScreen newScreen = addNewScreen();
+		// Actually link the button to new screen
+		if (button != null) {
+			button.setDestinationScreen(newScreen);
+		}
+
+		setCurrentScreenWithName(newScreen.getName(), true);
+		makeToast("Screen '%s' Created.", newScreen.getName());
+	}
+	//-------------------------------------------------------------------------
+	private MAScreen addNewScreen() {
 		MAScreen newScreen = (MAScreen) mLayoutInflater.inflate(
 				R.layout.ma_screen, null);
 		newScreen.setmDevelopmentActivity(this);
 		String newName = mProject.getNextDefaultScreenName();
 		newScreen.setName(newName);
 		mProject.addScreenToProject(newName, newScreen);
-		if (button != null) {
-			button.setDestinationScreen(newScreen);
-		}
-
-		showScreenWithName(newName, true);
-
-		// Actually link the button to new screen
-		button.setDestinationScreen(newScreen);
-		makeToast("Screen '%s' Created.", newName);
+		return newScreen;
 	}
 	//-------------------------------------------------------------------------
 	private void onLinkToExistingScreenSelected(MAScreenElement button) {
-//		makeToast("LINK TO EXISTING SCREEN");
 		mButtonToLink = button;
 		showBigPictureForCode(LINK_TAPPED);
 	}
 
 	// -------------------------------------------------------------------------
 	public void showMenuPopup(View button) {
-		mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_delete_screen)
-				.setVisible(false);
-		mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_new_screen)
-				.setVisible(false);
-
+//		mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_delete_screen)
+//				.setVisible(false);
 		mMenuPopupMenu
 				.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 					@Override
@@ -580,16 +581,16 @@ public class DevelopmentActivity extends Activity {
 							onBigPictureSelected();
 							break;
 						case R.id.dev_menu_delete_screen:
-							// onDeleteScreenSelected();
+							 onDeleteScreenSelected();
 							break;
 						case R.id.dev_menu_new_screen:
-							// onNewScreenSelected();
+							 onAddNewScreenSelected();
 							break;
 						case R.id.dev_menu_test:
-							onTestModeTapped();
+							onTestModeSelected();
 							break;
 						case R.id.dev_menu_test_exit:
-							onExitTestModeTapped();
+							onExitTestModeSelected();
 							break;
 						default:
 						}
@@ -603,14 +604,18 @@ public class DevelopmentActivity extends Activity {
 	 * MENU "CALLBACK" METHODS
 	 *****************************************************************************/
 	// -------------------------------------------------------------------------
-	public void onTestModeTapped() {
+	public void onTestModeSelected() {
 		if (!mIsTesting) {
 			mIsTesting = true;
 			makeLogI(">>> Test mode tapped");
 			mScreen.deselectAll();
-			showScreenWithName(mProject.getFirstScreen().getName());
+			setCurrentScreenWithName(mProject.getFirstScreen().getName());
 			showTestSidebar();
 			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test)
+					.setVisible(false);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_new_screen)
+					.setVisible(false);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_delete_screen)
 					.setVisible(false);
 			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit)
 					.setVisible(true);
@@ -618,18 +623,50 @@ public class DevelopmentActivity extends Activity {
 	}
 
 	// -------------------------------------------------------------------------
-	public void onExitTestModeTapped() {
+	public void onExitTestModeSelected() {
 		if (mIsTesting) {
 			mIsTesting = false;
 			makeLogI(">>> Exit test mode tapped");
-			showScreenWithName(mScreen.getName());
+			setCurrentScreenWithName(mScreen.getName());
 			showDefaultSidebar();
 			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test)
+					.setVisible(true);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_new_screen)
+					.setVisible(true);
+			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_delete_screen)
 					.setVisible(true);
 			mMenuPopupMenu.getMenu().findItem(R.id.dev_menu_test_exit)
 					.setVisible(false);
 		}
 	}
+	// -------------------------------------------------------------------------
+	private void onAddNewScreenSelected() {
+		MAScreen newScreen = addNewScreen();
+		setCurrentScreenWithName(newScreen.getName(), true);
+	}
+	// -------------------------------------------------------------------------
+	private void onDeleteScreenSelected() {
+		int numScreens = mProject.getNumScreens();
+		if (numScreens == 1) {
+			makeToast("You cannon delete your only screen.");
+			return;
+		}
+		MAScreen nextScreen;
+		mProject.deleteScreenFromProject(mScreen.getName());
+		if (mScreen.equals(mProject.getFirstScreen())){
+			Log.i("ACACAC", "DELETED screen is first screen.");
+			mProject.setFirstScreen(mProject.getScreens().get(0));
+		}
+		// Delete the screen.
+		// Determine which screen to show next.
+		if(!mModel.historyIsEmpty()) {
+			nextScreen = mModel.getScreenFromHistory();
+		} else {
+			nextScreen = mProject.getFirstScreen();
+		}
+		setCurrentScreenWithName(nextScreen.getName(), false);
+	}
+	
 
 	// -------------------------------------------------------------------------
 	/**
@@ -654,7 +691,7 @@ public class DevelopmentActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				int i = data.getIntExtra("INDEX", -1);
 				Log.d("ACACAC", "SELECTED:" + i);
-				showScreenWithName(mProject.getScreens().get(i).getName(), true);
+				setCurrentScreenWithName(mProject.getScreens().get(i).getName(), true);
 			}
 			break;
 		// When BigPicture finishes for linking a button to the tapped screen.
@@ -685,7 +722,10 @@ public class DevelopmentActivity extends Activity {
 	//-------------------------------------------------------------------------
 	public void onButtonTappedInTest(MAScreenElement button) {
 		if (button.getDestinationScreen() != null) {
-			showScreenWithName(button.getDestinationScreen().getName());
+			// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+			// TODO HACK HACK HACK HACK HACK HACK HACK HACK
+			String s = button.getDestinationScreen().getName();
+			setCurrentScreenWithName(s);
 			showTestSidebar(); // HANDLED IN ONTESTBUTTONTAPPED
 		}
 	}
@@ -710,8 +750,6 @@ public class DevelopmentActivity extends Activity {
 
 	// -------------------------------------------------------------------------
 	public void showTestSidebar() {
-		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
-		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
 		// TODO HACK HACK HACK HACK HACK HACK HACK HACK
 		mSidebar.showTestBar();
@@ -780,17 +818,16 @@ public class DevelopmentActivity extends Activity {
 	// -------------------------------------------------------------------------
 	@Override
 	public void onBackPressed() {
-		// Do nothing.
-		// onHomeButtonTapped();
 		if (mHelpImage.isShown()) {
 			onHelpTapped();
 			return;
 		}
-		MAScreen s = mModel.getFromHistory();
+		// History
+		MAScreen s = mModel.getScreenFromHistory();
 		if (s != null) {
-			showScreenWithName(s.getName());
+			setCurrentScreenWithName(s.getName());
 		} else if (isTesting()) {
-			onExitTestModeTapped();
+			onExitTestModeSelected();
 		} else {
 			makeToast("History is empty...");
 		}

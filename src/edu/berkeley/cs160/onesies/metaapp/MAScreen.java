@@ -1,16 +1,13 @@
 package edu.berkeley.cs160.onesies.metaapp;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import edu.berkeley.cs160.onesies.metaapp.MAElements.*;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MAButton;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MACheckbox;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MARadioButton;
+import edu.berkeley.cs160.onesies.metaapp.MAElements.MATextLabel;
 
 public class MAScreen extends RelativeLayout {
 
@@ -127,6 +124,38 @@ public class MAScreen extends RelativeLayout {
 
 	}
 	
+	
+//	/* (non-Javadoc)
+//	 * @see java.lang.Object#hashCode()
+//	 */
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((mName == null) ? 0 : mName.hashCode());
+//		return result;
+//	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MAScreen other = (MAScreen) obj;
+		if (mName == null) {
+			if (other.mName != null)
+				return false;
+		} else if (!mName.equals(other.mName))
+			return false;
+		return true;
+	}
+
 	/** Activity will use information from UndoModel, and handle it accordingly. */
 	public void handleUndo() {
 		undo.undoHandler();

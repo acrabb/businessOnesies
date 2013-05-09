@@ -49,12 +49,28 @@ public class MAModel {
 		mHistory.push(s);
 	}
 	//-------------------------------------------------------------------------
-	public MAScreen getFromHistory() {
+	private MAScreen getFromHistory() {
 		if (mHistory.isEmpty()) {
 			return null;
 		} else {
 			return mHistory.pop();
 		}
+	}
+	public MAScreen getScreenFromHistory() {
+		MAScreen retval = getFromHistory();
+		// If the history is empty, return;
+		if (retval == null) {
+			return null;
+		}
+		// If the screen has been deleted, try the next screen.
+		if (mCurrentProject.getScreenWithName(retval.getName()) == null) {
+			retval = getScreenFromHistory();
+		}
+		return retval;
+	}
+	//-------------------------------------------------------------------------
+	public boolean historyIsEmpty() {
+		return mHistory.isEmpty();
 	}
 	//-------------------------------------------------------------------------
 	public void clearHistory() {

@@ -4,7 +4,7 @@
         android:id="@+id/dev_menu_big_picture"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="View All"
+        android:title="View Screens"
         />
     <item
         android:id="@+id/dev_menu_delete_screen"

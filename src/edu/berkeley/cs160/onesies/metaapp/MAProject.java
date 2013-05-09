@@ -3,7 +3,6 @@
  */
 package edu.berkeley.cs160.onesies.metaapp;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,7 +34,7 @@ public class MAProject {
 	public void addScreenToProject(String name, MAScreen screen) {
 		mScreens.put(name, screen);
 	}
-	public void deleteScreenToProject(String name) {
+	public void deleteScreenFromProject(String name) {
 		mScreens.remove(name);
 	}
 	public void renameScreen(String oldName, String newName) {
@@ -74,6 +73,9 @@ public class MAProject {
 	}
 	public MAScreen getFirstScreen() {
 		return firstScreen;
+	}
+	public void setFirstScreen(MAScreen s) {
+		firstScreen = s;
 	}
 
 	public String getName() {
